@@ -14,10 +14,13 @@
 ActiveRecord::Schema.define(version: 20141211134046) do
 
   create_table "answers", force: true do |t|
+    t.integer  "question_id"
     t.string   "title"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "answers", ["question_id"], name: "index_answers_on_question_id", using: :btree
 
   create_table "groups", force: true do |t|
     t.integer  "instructor_id"
@@ -39,11 +42,14 @@ ActiveRecord::Schema.define(version: 20141211134046) do
   end
 
   create_table "questions", force: true do |t|
+    t.integer  "quiz_id"
     t.string   "title"
     t.integer  "right_answer_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "questions", ["quiz_id"], name: "index_questions_on_quiz_id", using: :btree
 
   create_table "quizzes", force: true do |t|
     t.integer  "group_id"
@@ -61,9 +67,9 @@ ActiveRecord::Schema.define(version: 20141211134046) do
   add_index "quizzes", ["group_id"], name: "index_quizzes_on_group_id", using: :btree
 
   create_table "users", force: true do |t|
-    t.string   "username"
-    t.string   "first_name"
-    t.string   "last_name"
+    t.string   "username",   null: false
+    t.string   "first_name", null: false
+    t.string   "last_name",  null: false
     t.string   "password"
     t.string   "email"
     t.string   "type"
