@@ -1,15 +1,20 @@
-class GroupsController < ApplicationController
-  before_action :set_group, only: [:show, :edit, :update, :destroy]
+module API
+
+  class GroupsController < ApplicationController
+    before_action :set_group, only: [:show, :edit, :update, :destroy]
 
   # GET /groups
   # GET /groups.json
   def index
     @groups = Group.all
+    render json: @groups
   end
 
   # GET /groups/1
   # GET /groups/1.json
   def show
+    @group=Group.find(params[:id])
+    render json: @group
   end
 
   # GET /groups/new
@@ -19,6 +24,9 @@ class GroupsController < ApplicationController
 
   # GET /groups/1/edit
   def edit
+        @group=Group.find(params[:id])
+        render json: @group
+
   end
 
   # POST /groups
@@ -71,4 +79,5 @@ class GroupsController < ApplicationController
     def group_params
       params.require(:group).permit(:group_name, :title, :year, :subject, :description)
     end
+  end
 end

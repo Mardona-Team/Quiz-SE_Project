@@ -1,3 +1,6 @@
+module API
+
+
 class QuizzesController < ApplicationController
   before_action :set_quiz, only: [:show, :edit, :update, :destroy]
 
@@ -71,4 +74,6 @@ class QuizzesController < ApplicationController
     def quiz_params
       params.require(:quiz).permit(:title, :subject, :year, :description, :marks, :status)
     end
+end
+
 end

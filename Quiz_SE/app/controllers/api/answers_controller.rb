@@ -1,5 +1,8 @@
-class AnswersController < ApplicationController
-  before_action :set_answer, only: [:show, :edit, :update, :destroy]
+module API
+
+
+  class AnswersController < ApplicationController
+    before_action :set_answer, only: [:show, :edit, :update, :destroy]
 
   # GET /answers
   # GET /answers.json
@@ -71,4 +74,5 @@ class AnswersController < ApplicationController
     def answer_params
       params.require(:answer).permit(:title)
     end
+  end
 end
