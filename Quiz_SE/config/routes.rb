@@ -1,15 +1,14 @@
 Rails.application.routes.draw do
-  resources :quizzes
 
-  resources :groups
 
-  resources :memberships
+  namespace :api do
 
-  resources :answers
+  resources :quizzes 
+  resources :groups 
+  resources :questions 
+  resources :users 
 
-  resources :questions
-
-  resources :users
+end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
