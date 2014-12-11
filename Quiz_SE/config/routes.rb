@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :quizzes
+
+  resources :groups
+
   resources :memberships
 
   resources :answers
