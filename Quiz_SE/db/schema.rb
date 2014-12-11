@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20141211124631) do
+ActiveRecord::Schema.define(version: 20141211134046) do
 
   create_table "answers", force: true do |t|
     t.string   "title"
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 20141211124631) do
     t.string   "year"
     t.string   "description"
     t.integer  "marks"
+    t.boolean  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

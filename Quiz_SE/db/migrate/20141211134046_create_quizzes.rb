@@ -6,6 +6,7 @@ class CreateQuizzes < ActiveRecord::Migration
       t.string :year
       t.string :description
       t.integer :marks
+      t.boolean :status
 
       t.timestamps
     end
