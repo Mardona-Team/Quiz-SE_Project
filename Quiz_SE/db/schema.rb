@@ -20,6 +20,7 @@ ActiveRecord::Schema.define(version: 20141211134046) do
   end
 
   create_table "groups", force: true do |t|
+    t.integer  "instructor_id"
     t.string   "group_name"
     t.string   "title"
     t.string   "year"
@@ -45,6 +46,8 @@ ActiveRecord::Schema.define(version: 20141211134046) do
   end
 
   create_table "quizzes", force: true do |t|
+    t.integer  "group_id"
+    t.integer  "instructor_id"
     t.string   "title"
     t.string   "subject"
     t.string   "year"
@@ -54,6 +57,8 @@ ActiveRecord::Schema.define(version: 20141211134046) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "quizzes", ["group_id"], name: "index_quizzes_on_group_id", using: :btree
 
   create_table "users", force: true do |t|
     t.string   "username"
