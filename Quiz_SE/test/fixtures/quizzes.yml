@@ -6,6 +6,7 @@ one:
   year: MyString
   description: MyString
   marks: 1
+  status: false
 
 two:
   title: MyString
@@ -13,3 +14,4 @@ two:
   year: MyString
   description: MyString
   marks: 1
+  status: false
