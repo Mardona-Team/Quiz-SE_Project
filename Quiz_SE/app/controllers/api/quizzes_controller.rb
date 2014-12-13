@@ -8,11 +8,14 @@ class QuizzesController < ApplicationController
   # GET /quizzes.json
   def index
     @quizzes = Quiz.all
+    render json: @quizzes
   end
 
   # GET /quizzes/1
   # GET /quizzes/1.json
   def show
+    @quiz=Quiz.find(params[:id])
+    render json: @quiz
   end
 
   # GET /quizzes/new
@@ -22,6 +25,8 @@ class QuizzesController < ApplicationController
 
   # GET /quizzes/1/edit
   def edit
+    @quiz=Quiz.find(params[:id])
+    render json: @quiz
   end
 
   # POST /quizzes
