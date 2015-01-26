@@ -32,7 +32,7 @@ public class MainActivity extends ActionBarActivity {
 
     private SharedPreferences mPreferences;
     private Button mLogOutButton;
-    private final static String LOGOUT_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions.json";
+    private final static String LOGOUT_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions";
 
 
 
@@ -99,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
     public void logOut(View button) {
 
             LogOutTask logOutTask = new LogOutTask();
-             logOutTask.execute(LOGOUT_API_ENDPOINT_URL);
+             logOutTask.execute(LOGOUT_API_ENDPOINT_URL+"?auth_token="+mPreferences.getString("AuthToken",""));
 
     }
 
@@ -125,7 +125,7 @@ public class MainActivity extends ActionBarActivity {
 
                     delete.setHeader("Accept", "application/json");
                   	delete.setHeader("Content-Type", "application/json");
-                    delete.setHeader("Auth_Token",mPreferences.getString("AuthToken",""));
+                    //delete.setHeader("Auth_Token",mPreferences.getString("AuthToken",""));
 
 
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();
