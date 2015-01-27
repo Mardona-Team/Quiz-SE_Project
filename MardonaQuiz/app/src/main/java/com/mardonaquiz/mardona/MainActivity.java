@@ -97,7 +97,7 @@ public class MainActivity extends ActionBarActivity {
 
     private class LogOutTask extends AsyncTask<String,Void,JSONObject> {
 
-        protected void on() {
+        protected void onPreExecute() {
             super.onPreExecute();
             ProgressDialog progDailog = new ProgressDialog(MainActivity.this);
             progDailog.setMessage("Loading...");
