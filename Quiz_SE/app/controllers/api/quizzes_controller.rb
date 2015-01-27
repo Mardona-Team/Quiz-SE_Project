@@ -36,10 +36,8 @@ class QuizzesController < ApplicationController
 
     respond_to do |format|
       if @quiz.save
-        format.html { redirect_to @quiz, notice: 'Quiz was successfully created.' }
-        format.json { render :show, status: :created, location: @quiz }
+        format.json { render :show, id: @quiz.id }
       else
-        format.html { render :new }
         format.json { render json: @quiz.errors, status: :unprocessable_entity }
       end
     end
@@ -50,10 +48,8 @@ class QuizzesController < ApplicationController
   def update
     respond_to do |format|
       if @quiz.update(quiz_params)
-        format.html { redirect_to @quiz, notice: 'Quiz was successfully updated.' }
-        format.json { render :show, status: :ok, location: @quiz }
+        format.json { render :show, id: @quiz.id }
       else
-        format.html { render :edit }
         format.json { render json: @quiz.errors, status: :unprocessable_entity }
       end
     end
@@ -64,7 +60,6 @@ class QuizzesController < ApplicationController
   def destroy
     @quiz.destroy
     respond_to do |format|
-      format.html { redirect_to quizzes_url, notice: 'Quiz was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
