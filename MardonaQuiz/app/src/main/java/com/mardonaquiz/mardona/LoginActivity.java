@@ -1,5 +1,6 @@
 package com.mardonaquiz.mardona;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -29,8 +30,8 @@ import java.io.IOException;
 
 public class LoginActivity extends ActionBarActivity {
 
-    protected TextView signUpRedirect;
-    protected Button logIn;
+    private TextView signUpRedirect;
+    private Button logIn;
     private final static String LOGIN_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions.json";
     private SharedPreferences mPreferences;
     private String mUserEmail;
@@ -107,6 +108,17 @@ public class LoginActivity extends ActionBarActivity {
 
     private class LoginTask extends AsyncTask<String,Void,JSONObject> {
 
+        ProgressDialog progDailog = new ProgressDialog(LoginActivity.this);
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
 
         @Override
         protected JSONObject doInBackground(String... urls) {
@@ -170,10 +182,13 @@ public class LoginActivity extends ActionBarActivity {
 
                     // launch the HomeActivity and close this one
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
                 Toast.makeText(getApplicationContext(), json.getString("info"), Toast.LENGTH_LONG).show();
+                progDailog.cancel();
             } catch (Exception e) {
                 // something went wrong: show a Toast
                 // with the exception message

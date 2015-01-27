@@ -1,5 +1,6 @@
 package com.mardonaquiz.mardona;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -152,6 +153,17 @@ public class RegistrationActivity extends ActionBarActivity {
 
     private class RegisterTask extends AsyncTask<String,Void,JSONObject> {
 
+        ProgressDialog progDailog = new ProgressDialog(RegistrationActivity.this);
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
         @Override
         protected JSONObject doInBackground(String... urls) {
             DefaultHttpClient client = new DefaultHttpClient();
@@ -216,10 +228,13 @@ public class RegistrationActivity extends ActionBarActivity {
 
                     // launch the HomeActivity and close this one
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
                 Toast.makeText(getApplicationContext(), json.getString("info"), Toast.LENGTH_LONG).show();
+                progDailog.cancel();
             } catch (Exception e) {
                 // something went wrong: show a Toast
                 // with the exception message

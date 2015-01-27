@@ -10,25 +10,28 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/firstName_hint"
+        android:hint="@string/firstName_hint"
         android:ems="10"
         android:id="@+id/first_name"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="@dimen/sign_up_spacing"/>
+        android:layout_marginTop="@dimen/sign_up_spacing"
+        android:autoText="false"
+        android:inputType="text" />
     <requestFocus/>
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/lastName_hint"
+        android:hint="@string/lastName_hint"
         android:ems="10"
         android:id="@+id/last_name"
         android:layout_below="@+id/first_name"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp" />
+        android:layout_marginTop="33dp"
+        android:inputType="text" />
 
     <EditText
         android:layout_width="match_parent"
@@ -43,11 +46,9 @@
         android:layout_marginTop="33dp" />
 
     <Spinner
-        android:layout_width="match_parent"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:id="@+id/role"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:layout_below="@+id/role_textview"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

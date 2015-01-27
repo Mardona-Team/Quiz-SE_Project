@@ -1,5 +1,6 @@
 package com.mardonaquiz.mardona;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -41,10 +42,15 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Intent intent= new Intent(this,LoginActivity.class);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//        startActivity(intent);
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+
+
+        if (!mPreferences.contains("AuthToken")) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+           }
 
         mLogOutButton=(Button)findViewById(R.id.logOut_button);
         mLogOutButton.setOnClickListener(new View.OnClickListener() {
@@ -54,23 +60,8 @@ public class MainActivity extends ActionBarActivity {
             }
         });
 
-        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
 
-    }
-
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        if (mPreferences.contains("AuthToken")) {
-
-
-        } else {
-            Intent intent = new Intent(this, LoginActivity.class);
-            startActivity(intent);
-        }
     }
 
 
@@ -105,6 +96,16 @@ public class MainActivity extends ActionBarActivity {
 
 
     private class LogOutTask extends AsyncTask<String,Void,JSONObject> {
+
+        protected void on() {
+            super.onPreExecute();
+            ProgressDialog progDailog = new ProgressDialog(MainActivity.this);
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
 
 
         @Override
@@ -154,6 +155,11 @@ public class MainActivity extends ActionBarActivity {
                 if (json.getBoolean("success")) {
 
 
+                    SharedPreferences.Editor editor = mPreferences.edit();
+                    // save the returned auth_token into
+                    // the SharedPreferences
+                    editor.remove("AuthToken");
+                    editor.commit();
                     // launch the HomeActivity and close this one
                     Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                     startActivity(intent);
