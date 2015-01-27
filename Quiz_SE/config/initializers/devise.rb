@@ -260,7 +260,7 @@ Devise.setup do |config|
   # ==> Configuration for :token_authenticatable
   # Defines name of the authentication token params key
   Devise::TokenAuthenticatable.setup do |config|
-  config.token_authentication_key = :other_key_name
+  config.token_authentication_key = :auth_token
 end
 
 end
