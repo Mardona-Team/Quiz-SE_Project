@@ -1,5 +1,12 @@
 class User < ActiveRecord::Base
 
+before_save :ensure_authentication_token
+
+  # Include default devise modules. Others available are:
+  # :confirmable, :lockable, :timeoutable and :omniauthable
+  devise :database_authenticatable, :registerable,
+       :recoverable, :rememberable, :trackable, :validatable,
+       :token_authenticatable,:confirmable
 
 
     USERNAME_REGEX = /[a-zA-Z](([\._\-][a-zA-Z0-9])|[a-zA-Z0-9])*[a-z0-9]/
@@ -19,7 +26,10 @@ class User < ActiveRecord::Base
 
 
 
-#devise for password and email
+#A method used to bypass confirmation step after creating a new userx
+def skip_confirmation!
+  self.confirmed_at = Time.now
+end
    
 
 end
@@ -30,6 +40,9 @@ class Student < User
 
     has_many    :memberships ,foreign_key: 'student_id'
 
+    def self.model_name
+		User.model_name
+	end
 
 end
 
@@ -38,6 +51,10 @@ class Instructor < User
 
 	has_many    :groups, dependent: :destroy
     has_many    :quizzes, dependent: :destroy
+
+    def self.model_name
+		User.model_name
+	end
 
 
 end
