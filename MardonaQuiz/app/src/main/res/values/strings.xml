@@ -20,4 +20,21 @@
     <string name="email_singUp">Email</string>
     <string name="signUp_button">Sign Up</string>
 
+    <string-array name="navigation_drawer_items_array">
+        <item>Profile</item>
+        <item>My Groups</item>
+        <item>My Quizzes</item>
+        <item>Create Group</item>
+        <item>Create Quiz</item>
+        <item>Log Out</item>
+    </string-array>
+
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_group_list">My Groups</string>
+    <string name="title_activity_quiz_list">My Quizzes</string>
+    <string name="title_activity_create_group">Create Group</string>
+    <string name="title_activity_create_quiz">Create Quiz</string>
+
 </resources>
