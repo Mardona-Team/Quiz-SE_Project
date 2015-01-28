@@ -1,6 +1,7 @@
 package com.mardonaquiz.mardona;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -17,7 +18,6 @@ import android.widget.Toast;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -28,47 +28,47 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 
-public class MainActivity extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity {
 
-
+    private TextView signUpRedirect;
+    private Button logIn;
+    private final static String LOGIN_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions.json";
     private SharedPreferences mPreferences;
-    private Button mLogOutButton;
-    private final static String LOGOUT_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions";
-
+    private String mUserEmail;
+    private String mUserPassword;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_login);
 
-        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
-
-
-        if (!mPreferences.contains("AuthToken")) {
-            Intent intent = new Intent(this, LoginActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-            startActivity(intent);
-           }
-
-        mLogOutButton=(Button)findViewById(R.id.logOut_button);
-        mLogOutButton.setOnClickListener(new View.OnClickListener() {
+        signUpRedirect=(TextView)findViewById(R.id.signUp_Link);
+        signUpRedirect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                logOut(mLogOutButton);
+                Intent registerIntent=new Intent(LoginActivity.this,RegistrationActivity.class);
+                startActivity(registerIntent);
             }
         });
 
 
+        logIn=(Button)findViewById(R.id.logInButton);
+        logIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login(logIn);
+            }
+        });
 
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
@@ -87,19 +87,31 @@ public class MainActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void logOut(View button) {
+    public void login(View button) {
+        EditText userEmailField = (EditText) findViewById(R.id.email_editText_logIn);
+        mUserEmail = userEmailField.getText().toString();
+        EditText userPasswordField = (EditText) findViewById(R.id.passwordField);
+        mUserPassword = userPasswordField.getText().toString();
 
-            LogOutTask logOutTask = new LogOutTask();
-             logOutTask.execute(LOGOUT_API_ENDPOINT_URL+"?auth_token="+mPreferences.getString("AuthToken",""));
-
+        if (mUserEmail.length() == 0 || mUserPassword.length() == 0) {
+            // input fields are empty
+            Toast.makeText(this, "Please complete all the fields",
+                    Toast.LENGTH_LONG).show();
+            return;
+        } else {
+            LoginTask loginTask = new LoginTask();
+            loginTask.execute(LOGIN_API_ENDPOINT_URL);
+        }
     }
 
 
-    private class LogOutTask extends AsyncTask<String,Void,JSONObject> {
+
+    private class LoginTask extends AsyncTask<String,Void,JSONObject> {
+
+        ProgressDialog progDailog = new ProgressDialog(LoginActivity.this);
 
         protected void onPreExecute() {
             super.onPreExecute();
-            ProgressDialog progDailog = new ProgressDialog(MainActivity.this);
             progDailog.setMessage("Loading...");
             progDailog.setIndeterminate(false);
             progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -111,7 +123,9 @@ public class MainActivity extends ActionBarActivity {
         @Override
         protected JSONObject doInBackground(String... urls) {
             DefaultHttpClient client = new DefaultHttpClient();
-            HttpDelete delete = new HttpDelete(urls[0]);
+            HttpPost post = new HttpPost(urls[0]);
+            JSONObject holder = new JSONObject();
+            JSONObject userObj = new JSONObject();
             String response = null;
             JSONObject json = new JSONObject();
 
@@ -123,14 +137,20 @@ public class MainActivity extends ActionBarActivity {
                     // something goes wrong
                     json.put("success", false);
                     json.put("info", "Something went wrong. Retry!");
+                    // add the user email and password to
+                    // the params
+                    userObj.put("email", mUserEmail);
+                    userObj.put("password", mUserPassword);
+                    holder.put("user", userObj);
+                    StringEntity se = new StringEntity(holder.toString());
+                    post.setEntity(se);
 
-                    delete.setHeader("Accept", "application/json");
-                  	delete.setHeader("Content-Type", "application/json");
-                    //delete.setHeader("Auth_Token",mPreferences.getString("AuthToken",""));
-
+                    // setup the request headers
+                    post.setHeader("Accept", "application/json");
+                    post.setHeader("Content-Type", "application/json");
 
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                    response = client.execute(delete,responseHandler);
+                    response = client.execute(post, responseHandler);
                     json = new JSONObject(response);
 
                 } catch (HttpResponseException e) {
@@ -153,19 +173,22 @@ public class MainActivity extends ActionBarActivity {
         protected void onPostExecute(JSONObject json) {
             try {
                 if (json.getBoolean("success")) {
-
-
+                    // everything is ok
                     SharedPreferences.Editor editor = mPreferences.edit();
                     // save the returned auth_token into
                     // the SharedPreferences
-                    editor.remove("AuthToken");
+                    editor.putString("AuthToken", json.getJSONObject("data").getString("auth_token"));
                     editor.commit();
+
                     // launch the HomeActivity and close this one
-                    Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
                     finish();
                 }
                 Toast.makeText(getApplicationContext(), json.getString("info"), Toast.LENGTH_LONG).show();
+                progDailog.cancel();
             } catch (Exception e) {
                 // something went wrong: show a Toast
                 // with the exception message
