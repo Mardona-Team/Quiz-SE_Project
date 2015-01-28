@@ -1,17 +1,29 @@
 package com.mardonaquiz.mardona;
 
+import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +38,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -34,6 +47,13 @@ public class MainActivity extends ActionBarActivity {
     private SharedPreferences mPreferences;
     private Button mLogOutButton;
     private final static String LOGOUT_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions";
+
+    private String[] mNavigationDrawerItemTitles;
+    private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    ActionBarDrawerToggle mDrawerToggle;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
 
 
@@ -44,6 +64,55 @@ public class MainActivity extends ActionBarActivity {
 
         mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
+        mTitle = mDrawerTitle = getTitle();
+        mNavigationDrawerItemTitles = getResources().getStringArray(R.array.navigation_drawer_items_array);
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+
+        ArrayList<ObjectDrawerItem> drawerItem = new ArrayList<ObjectDrawerItem>();
+
+
+        drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Profile"));
+        drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "My Groups"));
+        if (mPreferences.getString("Type", "").equals("Instructor")){
+            drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "My Quizzes"));
+            drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Group"));
+            drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Quiz"));
+    }
+            drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Log Out"));
+
+
+
+        DrawerItemCustomAdapter adapter = new DrawerItemCustomAdapter(this, R.layout.listview_item_row, drawerItem);
+        mDrawerList.setAdapter(adapter);
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerToggle = new ActionBarDrawerToggle(
+                this,                  /* host Activity */
+                mDrawerLayout,         /* DrawerLayout object */
+                R.string.drawer_open,  /* "open drawer" description */
+                R.string.drawer_close  /* "close drawer" description */
+        ){
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getSupportActionBar().setTitle(mTitle);
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(mDrawerTitle);
+            }
+        };
+
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
         if (!mPreferences.contains("AuthToken")) {
             Intent intent = new Intent(this, LoginActivity.class);
@@ -51,16 +120,6 @@ public class MainActivity extends ActionBarActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
            }
-
-        mLogOutButton=(Button)findViewById(R.id.logOut_button);
-        mLogOutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                logOut(mLogOutButton);
-            }
-        });
-
-
 
     }
 
@@ -83,9 +142,84 @@ public class MainActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
+    }
+
+
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectItem(position);
+        }
+
+    }
+
+    private void selectItem(int position) {
+
+        Fragment fragment = null;
+
+        switch (position) {
+            case 0:
+                fragment = new ProfileFragment();
+                break;
+            case 1:
+                Intent groupListintent = new Intent(this, GroupListActivity.class);
+                startActivity(groupListintent);
+                break;
+            case 2:
+                if(mPreferences.getString("Type","").equals("Student")) logOut(mLogOutButton);
+                else {
+                    Intent quizListintent = new Intent(this, QuizListActivity.class);
+                    startActivity(quizListintent);
+                }
+                break;
+            case 3:
+                Intent createGroupintent = new Intent(this,CreateGroupActivity.class);
+                startActivity(createGroupintent);
+                break;
+            case 4:
+                Intent createQuizintent = new Intent(this, CreateQuizActivity.class);
+                startActivity(createQuizintent);
+                break;
+            case 5:
+                logOut(mLogOutButton);
+            default:
+                break;
+        }
+
+        if (fragment != null) {
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+            mDrawerList.setItemChecked(position, true);
+            mDrawerList.setSelection(position);
+            setTitle(mNavigationDrawerItemTitles[position]);
+            mDrawerLayout.closeDrawer(mDrawerList);
+
+        } else {
+            Log.e("MainActivity", "Error in creating fragment");
+        }
+    }
+
+
+
 
     public void logOut(View button) {
 
