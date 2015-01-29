@@ -29,6 +29,9 @@
         <item>Log Out</item>
     </string-array>
 
+    <string name="search_group">Search Group</string>
+    <string name="search_group_name">Group Name</string>
+
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -36,5 +39,6 @@
     <string name="title_activity_quiz_list">My Quizzes</string>
     <string name="title_activity_create_group">Create Group</string>
     <string name="title_activity_create_quiz">Create Quiz</string>
+    <string name="title_activity_search_group">Search Group</string>
 
 </resources>

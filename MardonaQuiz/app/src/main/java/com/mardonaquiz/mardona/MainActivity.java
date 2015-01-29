@@ -78,7 +78,9 @@ public class MainActivity extends ActionBarActivity {
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "My Quizzes"));
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Group"));
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Quiz"));
-    }
+        } else if (mPreferences.getString("Type", "").equals("Student")) {
+            drawerItem.add(new ObjectDrawerItem((R.drawable.abc_ab_share_pack_holo_dark), "Search Group"));
+        }
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Log Out"));
 
 
@@ -119,7 +121,7 @@ public class MainActivity extends ActionBarActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
-           }
+        }
 
     }
 
@@ -184,15 +186,21 @@ public class MainActivity extends ActionBarActivity {
                 startActivity(groupListintent);
                 break;
             case 2:
-                if(mPreferences.getString("Type","").equals("Student")) logOut(mLogOutButton);
+                if(mPreferences.getString("Type","").equals("Student")) {
+                    Intent searchGroupIntent = new Intent(this, SearchGroupActivity.class);
+                    startActivity(searchGroupIntent);
+                }
                 else {
                     Intent quizListintent = new Intent(this, QuizListActivity.class);
                     startActivity(quizListintent);
                 }
                 break;
             case 3:
-                Intent createGroupintent = new Intent(this,CreateGroupActivity.class);
-                startActivity(createGroupintent);
+                if(mPreferences.getString("Type","").equals("Student")) logOut(mLogOutButton);
+                else {
+                    Intent createGroupintent = new Intent(this, CreateGroupActivity.class);
+                    startActivity(createGroupintent);
+                }
                 break;
             case 4:
                 Intent createQuizintent = new Intent(this, CreateQuizActivity.class);
@@ -200,6 +208,7 @@ public class MainActivity extends ActionBarActivity {
                 break;
             case 5:
                 logOut(mLogOutButton);
+                break;
             default:
                 break;
         }
