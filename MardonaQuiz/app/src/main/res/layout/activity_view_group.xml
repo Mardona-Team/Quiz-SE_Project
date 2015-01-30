@@ -19,7 +19,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
         android:id="@+id/Gtitle"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -31,7 +30,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
         android:id="@+id/Gyear"
         android:layout_below="@+id/Gtitle"
         android:layout_alignParentLeft="true"
@@ -43,7 +41,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
         android:id="@+id/Gsubject"
         android:layout_below="@+id/Gyear"
         android:layout_alignParentLeft="true"
@@ -55,7 +52,6 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="New Text"
         android:id="@+id/Gdesc"
         android:layout_below="@+id/Gsubject"
         android:layout_alignParentLeft="true"
