@@ -103,15 +103,14 @@ public class GroupListActivity extends ListActivity {
 
 
     public void openCreateGroup(View view) {
-        //TODO replace this function with a function calling the group creation activity
 
-    }
 
-    public void openViewGroup(View view) {
-        //TODO replace this function with a function calling the group creation activity
-        Intent intent = new Intent(this, ViewGroup.class);
+        Intent intent = new Intent(this, CreateGroupActivity.class);
         startActivity(intent);
+
     }
+
+
 
 
 
