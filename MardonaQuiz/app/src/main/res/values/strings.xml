@@ -36,5 +36,17 @@
     <string name="title_activity_quiz_list">My Quizzes</string>
     <string name="title_activity_create_group">Create Group</string>
     <string name="title_activity_create_quiz">Create Quiz</string>
+    <string name="Group_title">Group title</string>
+    <string name="Group_year">Group year</string>
+    <string name="Group_desc">Group description</string>
+    <string name="Group_subject">Group subject</string>
+    <string name="Create_group">Create new group</string>
+    <string name="empty_field_error">Please complete all the fields </string>
+    <string name="Group_Created">group has been Created Successfully</string>
+    <string name="title_activity_answer_quiz">Answer_quiz</string>
+    <string name="title_section1">Section 1</string>
+    <string name="title_section2">Section 2</string>
+    <string name="title_section3">Section 3</string>
+    <string name="title_activity_view_group">ViewGroup</string>
 
 </resources>

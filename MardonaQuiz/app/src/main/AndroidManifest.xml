@@ -3,6 +3,7 @@
     package="com.mardonaquiz.mardona" >
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <application
         android:allowBackup="true"
@@ -45,6 +46,18 @@
         <activity
             android:name=".CreateQuizActivity"
             android:label="@string/title_activity_create_quiz" >
+        </activity>
+        <activity
+            android:name=".AnswerQuiz"
+            android:label="@string/title_activity_answer_quiz" >
+        </activity>
+        <activity
+            android:name=".ViewGroup"
+            android:label="@string/title_activity_view_group"
+            android:parentActivityName=".GroupListActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mardonaquiz.mardona.GroupListActivity" />
         </activity>
     </application>
 
