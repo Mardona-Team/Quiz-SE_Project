@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -57,10 +59,6 @@ public class GroupListActivity extends ListActivity {
         Intent intent = new Intent(this, ViewGroup.class);
 
         intent.putExtra(KEY_ID,allGroups.get(position).get(KEY_ID));
-        intent.putExtra(KEY_TITLE,allGroups.get(position).get(KEY_TITLE));
-        intent.putExtra(KEY_SUBJECT,allGroups.get(position).get(KEY_SUBJECT));
-        intent.putExtra(KEY_YEAR,allGroups.get(position).get(KEY_YEAR));
-        intent.putExtra(KEY_Desc,allGroups.get(position).get(KEY_Desc));
 
         startActivity(intent);
 
@@ -138,6 +136,7 @@ public class GroupListActivity extends ListActivity {
 
     public void handleResponse() {
         mProgressBar.setVisibility(View.INVISIBLE);
+        ArrayList<String> GroupTitles = new ArrayList<String>();
 
         if (mGroups == null) {
             updateDisplayForError();
@@ -152,9 +151,7 @@ public class GroupListActivity extends ListActivity {
 
                     String ID = post.getString(KEY_ID);
                     String title = post.getString(KEY_TITLE);
-                    String Subject = post.getString(KEY_SUBJECT);
-                    String year = post.getString(KEY_YEAR);
-                    String description = post.getString(KEY_Desc);
+
 
 
 
@@ -162,22 +159,20 @@ public class GroupListActivity extends ListActivity {
 
                     mygroup.put(KEY_ID, ID);
                     mygroup.put(KEY_TITLE, title);
-                    mygroup.put(KEY_SUBJECT, Subject);
-                    mygroup.put(KEY_YEAR, year);
-                    mygroup.put(KEY_Desc, description);
 
+                    GroupTitles.add(title);
 
 
                     allGroups.add(mygroup);
                 }
 
-                String[] keys = { KEY_TITLE, KEY_SUBJECT};
-                int[] ids = { android.R.id.text1, android.R.id.text2 };
-                SimpleAdapter adapter = new SimpleAdapter(this, allGroups,
-                        android.R.layout.simple_list_item_2,
-                        keys, ids);
 
+
+
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, GroupTitles);
                 setListAdapter(adapter);
+
             }
             catch (JSONException e) {
                 Log.e(TAG, "Exception caught!", e);

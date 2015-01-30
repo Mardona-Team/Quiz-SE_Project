@@ -49,4 +49,6 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_view_group">ViewGroup</string>
 
+    <string name="Group_list">Group List</string>
+
 </resources>

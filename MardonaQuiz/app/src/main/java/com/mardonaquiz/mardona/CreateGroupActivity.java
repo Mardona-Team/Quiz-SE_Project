@@ -142,7 +142,7 @@ public class CreateGroupActivity extends ActionBarActivity {
 
             try {
                 // launch the HomeActivity and close this one
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                Intent intent = new Intent(getApplicationContext(), GroupListActivity.class);
                 startActivity(intent);
                 finish();
 
