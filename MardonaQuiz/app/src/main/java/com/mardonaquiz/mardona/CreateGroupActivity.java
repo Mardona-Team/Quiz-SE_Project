@@ -110,6 +110,7 @@ public class CreateGroupActivity extends ActionBarActivity {
                     groupObj.put("year",GroupYear);
                     groupObj.put("subject",GroupSubj);
                     groupObj.put("description",GroupDesc);
+
                     StringEntity se = new StringEntity(groupObj.toString());
                     post.setEntity(se);
 

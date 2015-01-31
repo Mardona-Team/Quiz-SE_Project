@@ -7,12 +7,13 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,18 +26,26 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 
 public class AnswerQuiz extends ActionBarActivity {
 
+    //kyes
     public static final String  KEY_ID="id";
     public static final String  KEY_questions="questions";
     public static final  String  KEY_TITLE="title";
@@ -45,17 +54,27 @@ public class AnswerQuiz extends ActionBarActivity {
     public static final String KEY_YEAR = "year";
     public static final String KEY_Marks = "marks";
     public static final String KEY_Desc = "description";
+    public static final String KEY_Answe = "answers";
+    public static final String KEY_user = "user";
+    public static final String KEY_Quiz = "quiz";
 
-    protected String quizId="3";
-    protected int NUM_Questions;
-    protected ArrayList<String> Questions = new ArrayList<String>();
-    protected ArrayList<String>  answer1 =  new ArrayList<String>();
-    protected ArrayList<String>   answer2 =  new ArrayList<String>();
-    protected ArrayList<String>   answer3 =  new ArrayList<String>();
-    protected ArrayList<String>   answer4 =  new ArrayList<String>();
-    HashMap<String, String> Quiz_Data = new HashMap<String, String>();
+    private String Result_Score;
+    private String Result_Max;
+
 
     private  String TAG="AnswerQuiz";
+    protected String quizId="3";//todo to be changed
+    protected String userID="1";//todo to be changed
+
+
+    protected int NUM_Questions;
+
+    protected ArrayList<String> Questions = new ArrayList<String>();
+    protected ArrayList<String[][]> Shuffled_Answers_array =  new ArrayList<String[][]>();
+    //this is 3D array
+    //quiz data include quiz title , desc, and so on
+    HashMap<String, String> Quiz_Data = new HashMap<String, String>();
+    //optput answer is array contain the answers of the user
     protected   ArrayList<Integer> Output_Answers = new ArrayList<Integer>();
 
     SectionsPagerAdapter mSectionsPagerAdapter;
@@ -94,6 +113,121 @@ public class AnswerQuiz extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
+
+    private class SubmitQuiz extends AsyncTask<String,Void,JSONObject> {
+
+
+        ProgressDialog progDailog = new ProgressDialog(AnswerQuiz.this);
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
+
+        @Override
+        protected JSONObject doInBackground(String... urls) {
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(urls[0]);
+            String response = null;
+            JSONObject json = new JSONObject();
+
+            try{
+                try {
+                        JSONArray answersJSonArray = new JSONArray();
+                        for (int i = 0; i < Output_Answers.size(); i++) {
+                            //  Log.e("question ", i + " answer " + Output_Answers.get(i) + " was " + Shuffled_Answers_array.get(i)[Output_Answers.get(i)][0] + " index" + Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
+                            JSONObject tempJson = new JSONObject();
+                            tempJson.put(KEY_ID,Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
+                            answersJSonArray.put(tempJson);
+                        }
+                        JSONObject quiz_holderJSON =new JSONObject();
+                        quiz_holderJSON.put(KEY_ID,quizId);
+                        JSONObject user_holderJSON =new JSONObject();
+
+                        user_holderJSON.put(KEY_ID,userID);
+                    user_holderJSON.put(KEY_Quiz,quiz_holderJSON);
+
+                    user_holderJSON.put(KEY_Answe,answersJSonArray);
+
+
+                        JSONObject Holder=new JSONObject();
+
+                        Holder.put(KEY_user,user_holderJSON);
+
+                        Log.e("json was",Holder.toString());
+                        StringEntity se = new StringEntity(Holder.toString());
+
+
+
+                        post.setEntity(se);
+
+                    post.setHeader("Accept", "application/json");
+                    post.setHeader("Content-Type", "application/json");
+                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                    response = client.execute(post, responseHandler);
+                    json = new JSONObject(response);
+
+
+                }catch (HttpResponseException e) {
+                    e.printStackTrace();
+                    Log.e("ClientProtocol", "" + e);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("IO", "" + e);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSON", "" + e);
+            }
+
+
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+
+
+            try {
+
+             Log.e("the output is", json.toString());
+               Result_Score=json.getString("marks");
+
+                ResultPageAdapter resultPageAdapter=new ResultPageAdapter(getSupportFragmentManager(),Result_Score);
+
+              //todo put the result activity here
+                progDailog.cancel();
+                for(int i=0;i<mViewPager.getAdapter().getCount();i++)
+                {
+                    getSupportFragmentManager().beginTransaction().remove(mSectionsPagerAdapter.getItem(i)).commit();
+                }
+                mViewPager.removeAllViews();
+                mViewPager.setAdapter(null);
+                mViewPager.setAdapter(resultPageAdapter);
+
+
+
+
+            } catch (Exception e) {
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            } finally {
+                super.onPostExecute(json);
+            }
+
+        }
+    }
+
+
+
     public void Monitor_Answers_changes(final int question) {
         RadioGroup agroup = (RadioGroup) mSectionsPagerAdapter.getItem(question).getView().findViewById(R.id.rgroup);
         agroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -115,18 +249,21 @@ public class AnswerQuiz extends ActionBarActivity {
 
         QuestionsEndFragments fragmentEnd= QuestionsEndFragments.newInstance(NUM_Questions+1);
 
-        public SectionsPagerAdapter(FragmentManager fm,ArrayList questions,ArrayList a1,ArrayList a2,ArrayList a3,ArrayList a4) {
+        public SectionsPagerAdapter(FragmentManager fm,ArrayList questions, ArrayList<String[][]> answers) {
             super(fm);
 
             for(int i=0;i< NUM_Questions;i++)
             {
                 ArrayList<String> Question_Answers = new ArrayList<String>();
-                Question_Answers.add(Questions.get(i).toString());
-                Question_Answers.add(a1.get(i).toString());
-                Question_Answers.add(a2.get(i).toString());
-                Question_Answers.add(a3.get(i).toString());
-                Question_Answers.add(a4.get(i).toString());
 
+                Question_Answers.add(Questions.get(i));
+                Question_Answers.add(answers.get(i)[0][0]);
+                Question_Answers.add(answers.get(i)[1][0]);
+                Question_Answers.add(answers.get(i)[2][0]);
+                Question_Answers.add(answers.get(i)[3][0]);
+
+
+//
                 fragment[i]=QuestionsFragments.newInstance(i,Question_Answers);
 
             }
@@ -134,12 +271,16 @@ public class AnswerQuiz extends ActionBarActivity {
 
         @Override
         public int getCount() {
-            return NUM_Questions +2;
+
+
+                return NUM_Questions + 2;
+
         }
 
 
         @Override
         public Fragment getItem(int position) {
+
 
             if(position== NUM_Questions+1)
             {
@@ -148,8 +289,10 @@ public class AnswerQuiz extends ActionBarActivity {
             }
             else if(position==0)
             {
-                //this is the first fragment whic is intro
-                return fragmentStart;
+
+                    //this is the first fragment whic is intro
+                    return fragmentStart;
+
             }
             else{
                 // i return position-1 to compensate that my first page is taken by onther fragment
@@ -160,10 +303,37 @@ public class AnswerQuiz extends ActionBarActivity {
 
     }
 
+    public class ResultPageAdapter extends FragmentPagerAdapter {
+
+        answerQuizResult answerQuizResultFragment=answerQuizResult.newInstance(Result_Score,Quiz_Data);
+        public ResultPageAdapter(FragmentManager fm,String score) {
+
+            super(fm);
+
+        }
+
+        @Override
+        public int getCount() {
+            return 1;
+        }
+
+
+        @Override
+        public Fragment getItem(int position) {
+
+                // i return position-1 to compensate that my first page is taken by onther fragment
+                return answerQuizResultFragment;
+
+        }
+
+    }
+
+
+
     public void handleResponse(JSONObject result) {
 
 
-        ArrayList<HashMap<String, String>> AllQuestions =  new ArrayList<HashMap<String, String>>();
+       ArrayList<HashMap<String, String>> AllQuestions =  new ArrayList<HashMap<String, String>>();
 
         if (result == null) {
             //Todo here the errore messege
@@ -181,41 +351,27 @@ public class AnswerQuiz extends ActionBarActivity {
 
                     JSONArray shuffled_answers = post.getJSONArray(KEY_shuffled_answers);
 
-                    HashMap<String, String> shuffled_Answers_list = new HashMap<String, String>();
+                    String[][] TempAnswerS=new String[4][2];
 
                     for (int j=0;j<shuffled_answers.length();j++) {
-                        shuffled_Answers_list.put(shuffled_answers.getJSONObject(j).getString(KEY_ID), shuffled_answers.getJSONObject(j).getString(KEY_TITLE));
+
+                        TempAnswerS[j][0]=shuffled_answers.getJSONObject(j).getString(KEY_TITLE);
+                        TempAnswerS[j][1]=shuffled_answers.getJSONObject(j).getString(KEY_ID);
+
                     }
-
-
-                    HashMap<String, String> mQuestion = new HashMap<String, String>();
-
-                    mQuestion.put(KEY_ID, ID);
-                    mQuestion.put(KEY_TITLE, title);
-
+                    //TempAnswers have all answers of one question
+                    Shuffled_Answers_array.add(TempAnswerS);
+                    //Shuffled answers array have all answers in all questions
                     Questions.add(title);
-                    answer1.add(shuffled_answers.getJSONObject(0).getString(KEY_TITLE));
-                    answer2.add(shuffled_answers.getJSONObject(1).getString(KEY_TITLE));
-                    answer3.add(shuffled_answers.getJSONObject(2).getString(KEY_TITLE));
-                    answer4.add(shuffled_answers.getJSONObject(3).getString(KEY_TITLE));
-/*
-
-
-                    mQuestion.put(KEY_SUBJECT, Subject);
-                    mQuestion.put(KEY_YEAR, year);
-                    mQuestion.put(KEY_Desc, description);
-*/
-
-
-                    AllQuestions.add(mQuestion);
                 }
+                Log.e("title is ", Shuffled_Answers_array.get(0)[0].toString());
+                Log.e("id is", Shuffled_Answers_array.get(0)[1].toString());
                 Quiz_Data.put(KEY_ID,result.getString(KEY_ID));
                 Quiz_Data.put(KEY_TITLE,result.getString(KEY_TITLE));
                 Quiz_Data.put(KEY_SUBJECT,result.getString(KEY_SUBJECT));
                 Quiz_Data.put(KEY_YEAR,result.getString(KEY_YEAR));
                 Quiz_Data.put(KEY_Desc,result.getString(KEY_Desc));
                 Quiz_Data.put(KEY_Marks,result.getString(KEY_Marks));
-
                 NUM_Questions=Questions.size();
                 initiate_view();
 
@@ -227,14 +383,8 @@ public class AnswerQuiz extends ActionBarActivity {
     }
 
     private void initiate_view()   {
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),Questions,Shuffled_Answers_array);
 
-        //start
-
-
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),Questions,answer1,answer2,answer3,answer4);
-
-
-        // Set up the ViewPager with the sections adapter.
         mViewPager = (ViewPager) findViewById(R.id.pager);
         mViewPager.setAdapter(mSectionsPagerAdapter);
 
@@ -243,7 +393,6 @@ public class AnswerQuiz extends ActionBarActivity {
             @Override
             public void onPageScrolled(int i, float v, int i2) {
             }
-
             @Override
             public void onPageSelected(int i) {
 
@@ -253,9 +402,22 @@ public class AnswerQuiz extends ActionBarActivity {
                     Log.e("i selected is", "" + i);
 
                 }
+                if(i==NUM_Questions+1)
+                {
+
+                    ((Button)mSectionsPagerAdapter.getItem(NUM_Questions+1).getView().findViewById(R.id.submitQuiz)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            SubmitQuiz submitQuiz = new SubmitQuiz();
+                            submitQuiz.execute("http://es2alny.herokuapp.com/api/answer_quiz");
+
+                        }
+                    });
+
+                }
 
             }
-
             @Override
             public void onPageScrollStateChanged(int i) {
 
@@ -263,7 +425,6 @@ public class AnswerQuiz extends ActionBarActivity {
         });
 
 
-        ///end
 
 
     }
@@ -478,6 +639,45 @@ public class AnswerQuiz extends ActionBarActivity {
             return rootView;
         }
 
+    }
+
+
+    public static class answerQuizResult extends Fragment {
+
+        private static final String ArG_Score = "score";
+
+        public static answerQuizResult newInstance(String Score,HashMap<String, String> Quiz_Data) {
+            answerQuizResult fragment = new answerQuizResult();
+
+            Bundle args = new Bundle();
+            args.putString(ArG_Score, Score);
+            args.putString(KEY_Marks,Quiz_Data.get(KEY_Marks));
+            args.putString(KEY_TITLE,Quiz_Data.get(KEY_TITLE));
+
+            fragment.setArguments(args);
+
+
+            return fragment;
+        }
+
+
+        public answerQuizResult() {
+        }
+
+
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            //todo here
+            View rootView = inflater.inflate(R.layout.fragment_answer_quiz__result, container, false);
+
+
+            ((TextView) rootView.findViewById(R.id.Result_TextView)).setText(getArguments().getString(ArG_Score)+"/"+getArguments().getString(KEY_Marks));
+
+
+            return rootView;
+        }
     }
 
 
