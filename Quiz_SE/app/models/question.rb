@@ -6,7 +6,9 @@ class Question < ActiveRecord::Base
    	belongs_to  :quiz
 
    	
-
+	def shuffled_answers
+		self.answers.select("id, title").shuffle
+	end
 
 
 end

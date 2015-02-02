@@ -8,14 +8,14 @@ class QuizzesController < ApplicationController
   # GET /quizzes.json
   def index
     @quizzes = Quiz.all
-    render json: @quizzes
+    render json: @quizzes.limit(20).as_json(only: [:id, :title])
   end
 
   # GET /quizzes/1
   # GET /quizzes/1.json
   def show
     @quiz=Quiz.find(params[:id])
-    render json: @quiz
+    render json: @quiz.show_full_datails
   end
 
   # GET /quizzes/new

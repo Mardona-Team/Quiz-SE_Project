@@ -11,4 +11,13 @@ class Quiz < ActiveRecord::Base
 	validates_presence_of :year
 	validates :marks, presence: true, less_than_or_equal_to: 10000, greater_than: 0
 
+	def show_full_details(options={})
+		super(:only => [:id, :title, :subject, :year, :description, :marks, :created_ar],
+				:include => {
+					:questions => {:only => [:id, :title],
+			  			:methods => [:shuffled_answers]
+			  		},
+				}
+			)
+	end
 end
