@@ -39,10 +39,22 @@ end
 class Student < User
 
     has_many    :memberships ,foreign_key: 'student_id'
-
+	has_and_belongs_to_many :answers, join_table: :students_answers, foreign_key: :student_id
+    
     def self.model_name
 		User.model_name
 	end
+
+	def answer_quiz(answers_id, quiz_id)
+        mark = 0
+        answers_id.each do |answer_id|
+            answer = Answer.find(answer_id)
+            if answer.question.right_answer == answer
+                mark += 1
+            end
+        end
+        grade = mark.to_f / Quiz.find(quiz_id).questions.count * Quiz.find(quiz_id).marks
+    end
 
 end
 

@@ -17,7 +17,9 @@ class Question < ActiveRecord::Base
 		self.answers << right_answer
 	end
    	
-
+	def shuffled_answers
+		self.answers.select("id, title").shuffle
+	end
 
 
 end
