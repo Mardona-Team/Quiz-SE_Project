@@ -3,7 +3,7 @@
     package="com.mardonaquiz.mardona" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -58,6 +58,10 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mardonaquiz.mardona.GroupListActivity" />
+        </activity>
+        <activity
+            android:name=".publishedQuizListActivity"
+            android:label="@string/title_activity_published_quizzes" >
         </activity>
     </application>
 
