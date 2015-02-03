@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :groups 
   resources :questions 
   resources :users 
-
+  post '/answer_quiz', to: "students_answers#create"
   
     devise_scope :user do
       post 'registrations' => 'registrations#create', :as => 'register'

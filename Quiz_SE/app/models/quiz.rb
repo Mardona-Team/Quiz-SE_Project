@@ -13,7 +13,7 @@ class Quiz < ActiveRecord::Base
 	validates :marks, presence: true, :numericality => { less_than_or_equal_to: 10000, greater_than: 0 }
 
 	def show_full_details(options={})
-		super(:only => [:id, :title, :subject, :year, :description, :marks, :created_ar],
+		as_json(:only => [:id, :title, :subject, :year, :description, :marks, :created_ar],
 				:include => {
 					:questions => {:only => [:id, :title],
 			  			:methods => [:shuffled_answers]

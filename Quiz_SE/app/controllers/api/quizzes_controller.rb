@@ -15,7 +15,12 @@ class QuizzesController < ApplicationController
   # GET /quizzes/1.json
   def show
     @quiz=Quiz.find(params[:id])
-    render json: @quiz.show_full_datails
+    render json: @quiz.as_json(:only => [:id, :title, :subject, :year, :description, :marks, :created_ar],
+                                :include => {
+                                  :questions => {:only => [:id, :title],
+                                      :methods => [:shuffled_answers]
+                                    },
+                                })
   end
 
   # GET /quizzes/new
