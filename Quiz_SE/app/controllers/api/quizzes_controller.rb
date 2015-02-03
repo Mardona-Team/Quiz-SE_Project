@@ -7,25 +7,18 @@ class QuizzesController < ApplicationController
   # GET /quizzes
   # GET /quizzes.json
   def index
-    @quizzes = Quiz.all
-    render json: @quizzes.limit(20).as_json(only: [:id, :title])
+    if params[:group_id]
+      render json: Quiz.where("group_id = #{params[:group_id]} or group_id IS NULL").limit(20).as_json(only: [:id, :title], :methods => [:published])
+    else
+      render json: Quiz.limit(20).as_json(only: [:id, :title], :methods => [:published])
+    end
   end
 
   # GET /quizzes/1
   # GET /quizzes/1.json
   def show
     @quiz=Quiz.find(params[:id])
-    render json: @quiz.as_json(:only => [:id, :title, :subject, :year, :description, :marks, :created_ar],
-                                :include => {
-                                  :questions => {:only => [:id, :title],
-                                      :methods => [:shuffled_answers]
-                                    },
-                                })
-  end
-
-  # GET /quizzes/new
-  def new
-    @quiz = Quiz.new
+    render json: @quiz.show_full_details
   end
 
   # GET /quizzes/1/edit
@@ -41,7 +34,7 @@ class QuizzesController < ApplicationController
 
     respond_to do |format|
       if @quiz.save
-        format.json { render :show, id: @quiz.id }
+        format.json { render json: @quiz.show_full_details }
       else
         format.json { render json: @quiz.errors, status: :unprocessable_entity }
       end
@@ -51,11 +44,14 @@ class QuizzesController < ApplicationController
   # PATCH/PUT /quizzes/1
   # PATCH/PUT /quizzes/1.json
   def update
+    @new_quiz = @quiz.dup
     respond_to do |format|
-      if @quiz.update(quiz_params)
-        format.json { render :show, id: @quiz.id }
+      unless Quiz.find_by(group_id: params[:group_id])
+        @new_quiz.group_id = params[:group_id]
+        @new_quiz.save
+        format.json { render json: @quiz.show_full_details }
       else
-        format.json { render json: @quiz.errors, status: :unprocessable_entity }
+        format.json { render json: @quiz, status: :unprocessable_entity }
       end
     end
   end
