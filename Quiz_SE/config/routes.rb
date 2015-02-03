@@ -4,12 +4,14 @@ Rails.application.routes.draw do
   devise_for :users
   namespace :api do
 
-  resources :quizzes 
-  resources :groups 
-  resources :questions 
-  resources :users 
-  post '/answer_quiz', to: "students_answers#create"
-  
+    resources :quizzes, only: [:show, :create, :destroy]
+    resources :groups do
+      resources :quizzes, only: [:index, :update]
+    end
+    resources :questions 
+    resources :users 
+    post '/answer_quiz', to: "students_answers#create"
+    
     devise_scope :user do
       post 'registrations' => 'registrations#create', :as => 'register'
       post 'sessions' => 'sessions#create', :as => 'login'
