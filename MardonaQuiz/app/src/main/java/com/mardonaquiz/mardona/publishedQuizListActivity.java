@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.Toast;
+import android.app.AlertDialog;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -58,8 +59,8 @@ public class publishedQuizListActivity extends ListActivity {
 
         if (isNetworkAvailable()) {
             mProgressBar.setVisibility(View.VISIBLE);
-            GetPublishedList GETPublishedQuizlist = new GetPublishedList();
-            GETPublishedQuizlist.execute();
+            GetPublishedList getPublishedQuizList = new GetPublishedList();
+            getPublishedQuizList.execute();
         }
         else {
             Toast.makeText(this, getString(R.string.networkMsg), Toast.LENGTH_LONG).show();
@@ -111,11 +112,13 @@ public class publishedQuizListActivity extends ListActivity {
         ArrayList<String> PublishedTitles = new ArrayList<String>();
 
         if (mPublished == null) {
-           Toast.makeText(this,"No Published Quizzes", Toast.LENGTH_LONG);
+            updateDisplayForError();
         }
+
+
         else {
             try {
-                JSONArray MPublished = mPublished.getJSONArray(keyPublished);
+                JSONArray MPublished = mPublished.getJSONArray(keyTitle);
 
                 for (int i = 0; i < MPublished.length(); i++) {
                     JSONObject post = MPublished.getJSONObject(i);
@@ -139,14 +142,14 @@ public class publishedQuizListActivity extends ListActivity {
         }
     }
 
-   /* private void updateDisplayForError() {
+    private void updateDisplayForError() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("connection error");
         builder.setMessage(getString(R.string.Error_msg));
         builder.setPositiveButton(android.R.string.ok, null);
         AlertDialog dialog = builder.create();
         dialog.show();
-    }*/
+    }
 
 
 

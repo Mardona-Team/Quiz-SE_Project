@@ -66,5 +66,14 @@
 
         android:textSize="20sp" />
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Published Quizzes"
+        android:id="@+id/published"
+        android:layout_above="@+id/publish"
+        android:layout_alignRight="@+id/publish"
+        android:layout_alignEnd="@+id/publish" />
+
 
 </RelativeLayout>

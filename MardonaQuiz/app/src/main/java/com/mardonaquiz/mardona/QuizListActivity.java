@@ -53,6 +53,10 @@ public class QuizListActivity extends ListActivity {
 
 
     private final String keyID = "id";
+    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/groups/2/quizzes";
+     private String publishedId = null;
+    private String publishedTitle = null;
+    private String publishedFlag = null;
 
     private ArrayList<HashMap<String, String>> allQuizzes =
             new ArrayList<HashMap<String, String>>();
@@ -74,7 +78,8 @@ public class QuizListActivity extends ListActivity {
                     {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            addPublishedQuiz();
+                            AddPublishedQuizToAPI addPublishedQuiztoapi = new AddPublishedQuizToAPI();
+                            addPublishedQuiztoapi.execute(REGISTER_API_ENDPOINT_URL);
                             Intent PublishedList = new Intent(QuizListActivity.this, publishedQuizListActivity.class);
                             startActivity(PublishedList);
                         }
@@ -87,7 +92,7 @@ public class QuizListActivity extends ListActivity {
 
     }
 
-    private void addPublishedQuiz() {
+
 
 
         class AddPublishedQuizToAPI extends AsyncTask<String,Void,JSONObject> {
@@ -99,15 +104,17 @@ public class QuizListActivity extends ListActivity {
                 HttpPost post = new HttpPost(urls[0]);
                 String response = null;
 
-                JSONObject groupObj = new JSONObject();
+                JSONObject publishedObj = new JSONObject();
                 JSONObject holder = new JSONObject();
                 JSONObject json = new JSONObject();
                 try{
                     try {
-                        String publishedId = "";
-                        groupObj.put("published", publishedId);
 
-                        StringEntity se = new StringEntity(groupObj.toString());
+                        publishedObj.put("id", publishedId);
+                        publishedObj.put("title", publishedTitle);
+                        publishedObj.put("published", publishedFlag);
+
+                        StringEntity se = new StringEntity(publishedObj.toString());
                         post.setEntity(se);
 
                         post.setHeader("Accept", "application/json");
@@ -132,8 +139,27 @@ public class QuizListActivity extends ListActivity {
 
                 return json;
             }
+            @Override
+            protected void onPostExecute(JSONObject json) {
 
-    } }
+
+                try {
+                    // launch the HomeActivity and close this one
+                    Intent intent = new Intent(QuizListActivity.this, publishedQuizListActivity.class);
+                    startActivity(intent);
+                    finish();
+
+
+                    Toast.makeText(getApplicationContext(),publishedTitle+ " " + "Quiz has been published successfully!", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                } finally {
+                    super.onPostExecute(json);
+                }
+
+            }
+
+    }
 
 
     @Override

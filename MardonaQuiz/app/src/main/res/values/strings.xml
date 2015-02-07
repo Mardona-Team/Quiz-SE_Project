@@ -62,5 +62,5 @@
     <string name="no_msg">No</string>
     <string name="networkMsg">Network is unavailable!</string>
     <string name="connectionError">connection error</string>
-
+   <string name="quizPublished">Quiz has been published successfully!</string>
 </resources>
