@@ -48,7 +48,9 @@
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
     <string name="title_activity_view_group">ViewGroup</string>
-
     <string name="Group_list">Group List</string>
+    <string name="title_activity_statistics_activty">Quiz Statistics</string>
+    <string name="title_activity_students_scores">Students\' Scores</string>
+    <string name="title_activity_student_answers">Answers</string>
 
 </resources>
