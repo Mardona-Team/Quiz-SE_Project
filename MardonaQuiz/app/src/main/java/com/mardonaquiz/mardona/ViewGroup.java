@@ -90,7 +90,7 @@ public class ViewGroup extends ActionBarActivity {
                             {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                                                   Log.e("this is","join group");
+                                    Log.e("this is","join group");
 
 
                                     JoinGroupAPI joinGroupAPI=new JoinGroupAPI();
@@ -158,10 +158,10 @@ public class ViewGroup extends ActionBarActivity {
             try {
 
 
-                    title  = result.getString(KEY_TITLE);
-                    subject = result.getString(KEY_SUBJECT);
-                    Year = result.getString(KEY_YEAR);
-                    description = result.getString(KEY_Desc);
+                title  = result.getString(KEY_TITLE);
+                subject = result.getString(KEY_SUBJECT);
+                Year = result.getString(KEY_YEAR);
+                description = result.getString(KEY_Desc);
 
 
 
@@ -305,7 +305,7 @@ public class ViewGroup extends ActionBarActivity {
             Log.e("return json is ",json.toString());
 
 
-             //   Toast.makeText(getApplicationContext(), GroupTitle + " " + getString(R.string.Group_Created), Toast.LENGTH_LONG).show();
+            //   Toast.makeText(getApplicationContext(), GroupTitle + " " + getString(R.string.Group_Created), Toast.LENGTH_LONG).show();
 
         }
     }

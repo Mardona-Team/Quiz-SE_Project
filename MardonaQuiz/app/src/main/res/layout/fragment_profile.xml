@@ -8,8 +8,11 @@
     android:layout_height="wrap_content"
     android:text="Log Out"
     android:id="@+id/logOut_button"
-        android:layout_marginBottom="92dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+    android:layout_alignParentTop="true"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_marginLeft="55dp"
+    android:layout_marginStart="55dp"
+    android:layout_marginTop="117dp" />
 
 </RelativeLayout>

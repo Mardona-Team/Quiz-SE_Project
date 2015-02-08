@@ -1,15 +1,9 @@
 package com.mardonaquiz.mardona;
 
-import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.TextView;
-import android.widget.Toast;
 
 
 public class CreateQuizActivity extends ActionBarActivity {
@@ -18,59 +12,7 @@ public class CreateQuizActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_quiz);
-
-        Button Submit = (Button) findViewById(R.id.button3);
-
-        Submit.setOnClickListener(new View.OnClickListener() {
-            public  void  onClick(View arg0) {
-
-
-
-                //Declaring the variables
-
-                EditText Title = (EditText) findViewById(R.id.editText);
-                 String Q_Title = Title.getText().toString();
-
-                EditText Desc = (EditText) findViewById(R.id.editText2);
-                 String Q_Desc = Desc.getText().toString();
-
-                EditText Subj = (EditText) findViewById(R.id.editText3);
-                 String Q_Subj = Subj.getText().toString();
-
-                EditText Qu_Num = (EditText) findViewById(R.id.editText4);
-                 String Qu_NO = Qu_Num.getText().toString();
-
-                EditText Final = (EditText) findViewById(R.id.editText5);
-                 String FinalMarks = Final.getText().toString();
-
-
-                if(Q_Title.length()==0|| Q_Desc.length()==0|| Q_Subj.length()==0||Qu_NO.length()==0||FinalMarks.length()==0) {
-                    Toast.makeText(CreateQuizActivity.this, "Please fill in the missing data", Toast.LENGTH_SHORT).show();
-
-                }
-                else {
-                    Intent QuizIntent=new Intent(CreateQuizActivity.this,QuizForm.class);
-                    QuizIntent.putExtra("Number_Of_Questions",Qu_NO);
-                    QuizIntent.putExtra("Quiz_Title",Q_Title);
-                    QuizIntent.putExtra("Quiz_Description", Q_Desc);
-                    QuizIntent.putExtra("Final_Mark",FinalMarks);
-                    QuizIntent.putExtra("Quiz_Subject",Q_Subj);
-                    startActivity(QuizIntent);
-                }
-
-                }
-
-
-
-
-        });
-
-        }
-
-
-
-
-
+    }
 
 
     @Override

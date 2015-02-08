@@ -472,7 +472,8 @@ public class AnswerQuiz extends ActionBarActivity {
             ((TextView)rootView.findViewById(R.id.QuizMarks)).setText("Total Marks "+getArguments().getString(KEY_Marks));
             ((TextView)rootView.findViewById(R.id.QuizYear)).setText("Year "+getArguments().getString(KEY_YEAR));
 
-            TextView t1;
+
+
 
             return rootView;
         }
