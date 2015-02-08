@@ -1,6 +1,8 @@
 package com.mardonaquiz.mardona;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -9,8 +11,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import org.apache.http.client.HttpResponseException;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -33,6 +43,7 @@ public class ViewGroup extends ActionBarActivity {
 
 
     protected String group_id;
+    protected String student_id;
     protected String title;
     protected String subject ;
     protected String Year ;
@@ -48,11 +59,14 @@ public class ViewGroup extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_group);
 
+
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
 
             group_id    =  extras.getString(KEY_ID);
+            student_id="1";
+            //todo get student id from login
 
             Get_Group_info_from_server get_group_info_from_server = new Get_Group_info_from_server();
             get_group_info_from_server.execute(); // getting questions from server
@@ -60,11 +74,46 @@ public class ViewGroup extends ActionBarActivity {
 
         }
 
+        final Button joinGroup = (Button)findViewById(R.id.joinGroup);
+        if(isMember()){
+            joinGroup.setVisibility(View.VISIBLE);
+            joinGroup.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
 
 
+                    new AlertDialog.Builder(ViewGroup.this)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .setTitle(getString(R.string.comfirm_title))
+                            .setMessage(getString(R.string.confirmation_msg))
+                            .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                            {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.e("this is","join group");
+
+
+                                    JoinGroupAPI joinGroupAPI=new JoinGroupAPI();
+                                    joinGroupAPI.execute("http://es2alny.herokuapp.com/api/join_group");
+
+                                }
+
+                            })
+                            .setNegativeButton(getString(R.string.no_msg), null)
+                            .show();
+
+
+                }
+            });
+
+
+        }
 
 
     }
+
+
+
     public void openAnswersQuiz(View view) {
         //TODO replace this function with a function calling the group creation activity
         Intent intent = new Intent(this, AnswerQuiz.class);
@@ -76,6 +125,12 @@ public class ViewGroup extends ActionBarActivity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_view_group, menu);
         return true;
+    }
+
+    protected boolean isMember(){
+        //TODO check if he is member or not in this group
+        return true;
+
     }
 
     @Override
@@ -103,10 +158,10 @@ public class ViewGroup extends ActionBarActivity {
             try {
 
 
-                    title  = result.getString(KEY_TITLE);
-                    subject = result.getString(KEY_SUBJECT);
-                    Year = result.getString(KEY_YEAR);
-                    description = result.getString(KEY_Desc);
+                title  = result.getString(KEY_TITLE);
+                subject = result.getString(KEY_SUBJECT);
+                Year = result.getString(KEY_YEAR);
+                description = result.getString(KEY_Desc);
 
 
 
@@ -193,6 +248,65 @@ public class ViewGroup extends ActionBarActivity {
 
             progDailog.cancel();
             handleResponse(result);
+        }
+    }
+
+
+    //this is post class
+    private class JoinGroupAPI extends AsyncTask<String,Void,JSONObject> {
+
+        @Override
+        protected JSONObject doInBackground(String... urls) {
+
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(urls[0]);
+
+            String response = null;
+
+            JSONObject joinGtoupObj = new JSONObject();
+
+            JSONObject json =new JSONObject();
+
+            try{
+                try {
+
+                    joinGtoupObj.put("student_id",student_id);
+                    joinGtoupObj.put("group_id",group_id);
+
+                    StringEntity se = new StringEntity(joinGtoupObj.toString());
+                    post.setEntity(se);
+
+                    post.setHeader("Accept", "application/json");
+                    post.setHeader("Content-Type", "application/json");
+                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                    response = client.execute(post, responseHandler);
+                    json = new JSONObject(response);
+
+
+                }catch (HttpResponseException e) {
+                    e.printStackTrace();
+                    Log.e("ClientProtocol", "" + e);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("IO", "" + e);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+                Log.e("JSON", "" + e);
+            }
+
+
+            return json;
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject json) {
+
+            Log.e("return json is ",json.toString());
+
+
+            //   Toast.makeText(getApplicationContext(), GroupTitle + " " + getString(R.string.Group_Created), Toast.LENGTH_LONG).show();
+
         }
     }
 
