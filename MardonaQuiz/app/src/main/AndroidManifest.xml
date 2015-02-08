@@ -60,8 +60,12 @@
                 android:value="com.mardonaquiz.mardona.GroupListActivity" />
         </activity>
         <activity
-            android:name=".publishedQuizListActivity"
-            android:label="@string/title_activity_published_quizzes" >
+            android:name=".QuizForm"
+            android:label="@string/title_activity_quiz_form"
+            android:parentActivityName=".CreateQuizActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mardonaquiz.mardona.CreateQuizActivity" />
         </activity>
     </application>
 

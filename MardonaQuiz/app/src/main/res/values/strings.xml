@@ -19,7 +19,6 @@
     <string name="password_confirmation">Confirm Password</string>
     <string name="email_singUp">Email</string>
     <string name="signUp_button">Sign Up</string>
-    <string name="No_Quizzes">No Quizzes to publish!</string>
 
     <string-array name="navigation_drawer_items_array">
         <item>Profile</item>
@@ -50,6 +49,9 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_view_group">ViewGroup</string>
     <string name="Group_list">Group List</string>
+    <string name="title_activity_quiz_form">QuizForm</string>
+
+
     <string name="network_error">Network is unavailable!</string>
     <string name="unsuccessful_response">"Unsuccessful HTTP response code: "</string>
     <string name="No_Quizzes_msg">No Quizzes to Publish</string>
@@ -62,5 +64,7 @@
     <string name="no_msg">No</string>
     <string name="networkMsg">Network is unavailable!</string>
     <string name="connectionError">connection error</string>
-   <string name="quizPublished">Quiz has been published successfully!</string>
+    <string name="quizPublished">Quiz has been published successfully!</string>
+
+
 </resources>

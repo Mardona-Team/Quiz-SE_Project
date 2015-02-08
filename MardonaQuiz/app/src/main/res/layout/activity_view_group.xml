@@ -16,15 +16,6 @@
         android:layout_alignParentEnd="true"
         android:onClick="openAnswersQuiz" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Publish Quiz"
-        android:id="@+id/publish"
-        android:layout_above="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -43,7 +34,8 @@
         android:layout_below="@+id/Gtitle"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button"
         android:textSize="20sp" />
 
     <TextView
@@ -53,7 +45,8 @@
         android:layout_below="@+id/Gyear"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button"
         android:textSize="20sp" />
 
     <TextView
@@ -63,17 +56,19 @@
         android:layout_below="@+id/Gsubject"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button"
         android:textSize="20sp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Published Quizzes"
-        android:id="@+id/published"
-        android:layout_above="@+id/publish"
-        android:layout_alignRight="@+id/publish"
-        android:layout_alignEnd="@+id/publish" />
-
+        android:text="Join Group"
+        android:id="@+id/joinGroup"
+        android:layout_alignBottom="@+id/button"
+        android:layout_toLeftOf="@+id/button"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:visibility="invisible" />
 
 </RelativeLayout>

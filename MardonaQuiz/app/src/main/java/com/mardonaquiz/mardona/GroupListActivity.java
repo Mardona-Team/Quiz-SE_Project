@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -56,7 +57,7 @@ public class GroupListActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
 
 
-        Intent intent = new Intent(this, ViewGroup.class);
+                Intent intent = new Intent(this, ViewGroup.class);
 
         intent.putExtra(KEY_ID,allGroups.get(position).get(KEY_ID));
 
@@ -82,6 +83,16 @@ public class GroupListActivity extends ListActivity {
         else {
             Toast.makeText(this, "Network is unavailable!", Toast.LENGTH_LONG).show();
         }
+        Button Create_Quiz = (Button) findViewById(R.id.button4);
+        Create_Quiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Create =new Intent(GroupListActivity.this,CreateQuizActivity.class);
+                startActivity(Create);
+
+
+            }
+        });
 
 
     }
