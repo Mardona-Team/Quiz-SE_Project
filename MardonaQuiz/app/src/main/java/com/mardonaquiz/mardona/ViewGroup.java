@@ -84,8 +84,8 @@ public class ViewGroup extends ActionBarActivity {
 
                     new AlertDialog.Builder(ViewGroup.this)
                             .setIcon(android.R.drawable.ic_dialog_alert)
-                            .setTitle(getString(R.string.comfirm_title))
-                            .setMessage(getString(R.string.confirmation_msg))
+                            .setTitle(getString(R.string.confirmTitle1))
+                            .setMessage(getString(R.string.confirmationMsg1))
                             .setPositiveButton("Yes", new DialogInterface.OnClickListener()
                             {
                                 @Override
@@ -94,7 +94,7 @@ public class ViewGroup extends ActionBarActivity {
 
 
                                     JoinGroupAPI joinGroupAPI=new JoinGroupAPI();
-                                    joinGroupAPI.execute("http://es2alny.herokuapp.com/api/join_group");
+                                    joinGroupAPI.execute("http://es2alny.herokuapp.com/api/memberships");
 
                                 }
 

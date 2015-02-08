@@ -51,4 +51,8 @@
 
     <string name="Group_list">Group List</string>
 
+    <string name="confirmationMsg1">Are you sure you want to join this group?</string>
+    <string name="confirmTitle1">Joining group</string>
+    <string name="no_msg">No</string>
+
 </resources>
