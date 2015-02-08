@@ -4,14 +4,28 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ListView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class StudentAnswersActivity extends ActionBarActivity {
 
+    protected ListView mStudentAnswerList;
+
+
+    //Dummy DAta
+    StudentAnswerItem[] dummyanswers= {new StudentAnswerItem("Q1","Paris","Paris"),new StudentAnswerItem("Q2","Cairo","Paris"),new StudentAnswerItem("Q3","London","London"),new StudentAnswerItem("Q4","LiverPool","Paris")};
+    ArrayList<StudentAnswerItem> dummylist=new ArrayList<StudentAnswerItem>(Arrays.asList(dummyanswers));
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_answers);
+
+        mStudentAnswerList=(ListView) findViewById(R.id.student_answers_listview);
+        StudentAnswerCustomAdapter answersAdapter= new StudentAnswerCustomAdapter(this,R.layout.item_student_answer,dummylist);
+        mStudentAnswerList.setAdapter(answersAdapter);
     }
 
 

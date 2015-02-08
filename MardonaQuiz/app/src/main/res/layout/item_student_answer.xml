@@ -7,27 +7,28 @@
     android:weightSum="1">
 
     <TextView
-        android:id="@+id/student_name"
+        android:id="@+id/question_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Student Name"
+        android:text="Question"
         android:layout_weight="0.3" />
 
     <TextView
-        android:id="@+id/grade"
+        android:id="@+id/student_answer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Score"
-        android:textSize="20sp"
+        android:text="answer"
         android:layout_weight="0.30" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
+    <TextView
+        android:id="@+id/correctness"
         android:layout_width="wrap_content"
-        android:layout_height="36dp"
-        android:text="Show Answers"
-        android:id="@+id/show_answers_button"
-        android:layout_weight="0.3" />
+        android:layout_height="wrap_content"
+        android:text="True"
+        android:layout_weight="0.30"
+        android:textStyle="bold" />
+
+
 
 
 </LinearLayout>

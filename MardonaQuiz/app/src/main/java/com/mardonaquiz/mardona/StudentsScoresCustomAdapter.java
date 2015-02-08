@@ -2,31 +2,30 @@ package com.mardonaquiz.mardona;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.*;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class StudentsScoresCustomAdapter extends ArrayAdapter<StudentScore> {
+public class StudentsScoresCustomAdapter extends ArrayAdapter<StudentScoreItem> {
 
     Context mContext;
     int layoutResourceId;
-    ArrayList<StudentScore> studentScores = null;
+    ArrayList<StudentScoreItem> studentScoreItems = null;
 
-    public StudentsScoresCustomAdapter(Context mContext, int layoutResourceId, ArrayList<StudentScore> studentScores) {
-        super(mContext, layoutResourceId, studentScores);
+    public StudentsScoresCustomAdapter(Context mContext, int layoutResourceId, ArrayList<StudentScoreItem> studentScoreItems) {
+        super(mContext, layoutResourceId, studentScoreItems);
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
-        this.studentScores = studentScores;
+        this.studentScoreItems = studentScoreItems;
     }
 
 
     @Override
-    public View getView(int position, View convertView, android.view.ViewGroup parent) {
+    public View getView(int position, final View convertView, android.view.ViewGroup parent) {
 
         View listItem = convertView;
 
@@ -37,12 +36,22 @@ public class StudentsScoresCustomAdapter extends ArrayAdapter<StudentScore> {
         TextView studentGradeTextView = (TextView) listItem.findViewById(R.id.grade);
         Button showAnswersButton= (Button) listItem.findViewById(R.id.show_answers_button);
 
+        showAnswersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(mContext, StudentAnswersActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                mContext.startActivity(i);
 
-        StudentScore studentScore = studentScores.get(position);
+                }
+        });
 
 
-        studentNameTextView.setText(studentScore.name);
-        studentGradeTextView.setText(studentScore.grade);
+        StudentScoreItem studentScoreItem = studentScoreItems.get(position);
+
+
+        studentNameTextView.setText(studentScoreItem.name);
+        studentGradeTextView.setText(studentScoreItem.grade);
 
         return listItem;
     }
