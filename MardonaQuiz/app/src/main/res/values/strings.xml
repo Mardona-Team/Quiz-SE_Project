@@ -51,4 +51,20 @@
     <string name="Group_list">Group List</string>
     <string name="title_activity_quiz_form">QuizForm</string>
 
+
+    <string name="network_error">Network is unavailable!</string>
+    <string name="unsuccessful_response">"Unsuccessful HTTP response code: "</string>
+    <string name="No_Quizzes_msg">No Quizzes to Publish</string>
+    <string name="Publish">Publish</string>
+    <string name="really_publish">Publish this Quiz?</string>
+    <string name="confirmation_msg">Are you sure you want to publish this Quiz?</string>
+    <string name="comfirm_title">Publishing Quiz</string>
+    <string name="title_activity_published_quizzes">Published_quizzes</string>
+    <string name="Error_msg">there is a connection error</string>
+    <string name="no_msg">No</string>
+    <string name="networkMsg">Network is unavailable!</string>
+    <string name="connectionError">connection error</string>
+    <string name="quizPublished">Quiz has been published successfully!</string>
+
+
 </resources>

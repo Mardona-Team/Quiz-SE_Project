@@ -8,6 +8,7 @@ import java.util.Locale;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -45,68 +46,62 @@ public class QuizForm extends ActionBarActivity {
     protected ArrayList<String> All_Questions = new ArrayList<String>();
     protected ArrayList<String> First_Answer = new ArrayList<String>();
     //The First Answer of each question is the correct answer, then answers are shuffled in server before the students perform the quiz
-    protected ArrayList<String > Second_Answer = new ArrayList<String>();
+    protected ArrayList<String> Second_Answer = new ArrayList<String>();
     protected ArrayList<String> Third_Answer = new ArrayList<String>();
     protected ArrayList<String> Fourth_Answer = new ArrayList<String>();
 
-    protected static EditText Questions ;
-    protected static EditText First_ans ;
-    protected static EditText Second_ans ;
-    protected static EditText Third_ans ;
+    protected static EditText Questions;
+    protected static EditText First_ans;
+    protected static EditText Second_ans;
+    protected static EditText Third_ans;
     protected static EditText Fourth_ans;
 
-    protected String question ;
-    protected String answer_1 ;
-    protected String answer_2 ;
-    protected String answer_3 ;
-    protected String answer_4 ;
+    protected String question;
+    protected String answer_1;
+    protected String answer_2;
+    protected String answer_3;
+    protected String answer_4;
 
-    protected String Questions_Numbers ;
-    protected String Title_of_Quiz ;
-    protected  String Description_of_quiz ;
-    protected String subject_of_quiz ;
-    protected String final_mark_of_quiz ;
-
-
+    protected String Questions_Numbers;
+    protected String Title_of_Quiz;
+    protected String Description_of_quiz;
+    protected String subject_of_quiz;
+    protected String final_mark_of_quiz;
 
 
-   public void Monitor_Text_Changes(int fragment_position){
-        Questions = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText6);
-        First_ans =(EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText7);
-        Second_ans = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText8) ;
-        Third_ans = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText9);
-        Fourth_ans = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText10);
+    public void Monitor_Text_Changes(int fragment_position) {
+        Questions = (EditText) mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText6);
+        First_ans = (EditText) mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText7);
+        Second_ans = (EditText) mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText8);
+        Third_ans = (EditText) mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText9);
+        Fourth_ans = (EditText) mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText10);
 
-       Questions.addTextChangedListener(new TextWatcher() {
-           @Override
-           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        Questions.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-           }
+            }
 
-           @Override
-           public void onTextChanged(CharSequence s, int start, int before, int count) {
-               question = Questions.getText().toString();
-               answer_1 = First_ans.getText().toString();
-               answer_2 = Second_ans.getText().toString();
-               answer_3 = Third_ans.getText().toString();
-               answer_4 = Fourth_ans.getText().toString();
-
-
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                question = Questions.getText().toString();
+                answer_1 = First_ans.getText().toString();
+                answer_2 = Second_ans.getText().toString();
+                answer_3 = Third_ans.getText().toString();
+                answer_4 = Fourth_ans.getText().toString();
 
 
-           }
+            }
 
-           @Override
-           public void afterTextChanged(Editable Questions) {
-
-
-
-           }
-       });
+            @Override
+            public void afterTextChanged(Editable Questions) {
 
 
+            }
+        });
 
-   }
+
+    }
 
 
     /**
@@ -125,7 +120,7 @@ public class QuizForm extends ActionBarActivity {
      */
     ViewPager mViewPager;
 
-    public void Add_to_Array (String question,String firstAnswer,String secondAnswer,String thirdAnswer , String fourthAnswer){
+    public void Add_to_Array(String question, String firstAnswer, String secondAnswer, String thirdAnswer, String fourthAnswer) {
 
         All_Questions.add(question);
         First_Answer.add(firstAnswer);
@@ -196,8 +191,6 @@ public class QuizForm extends ActionBarActivity {
             public void onPageScrollStateChanged(int state) {
 
 
-
-
             }
         });
 
@@ -249,7 +242,7 @@ public class QuizForm extends ActionBarActivity {
         @Override
         public int getCount() {
             // Show 3 total pages.
-            return Integer.parseInt(Questions_Numbers) ;
+            return Integer.parseInt(Questions_Numbers);
         }
 
         @Override
@@ -296,7 +289,7 @@ public class QuizForm extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_quiz_form, container, false);
-            Questions = (EditText)rootView. findViewById(R.id.editText6);
+            Questions = (EditText) rootView.findViewById(R.id.editText6);
 
             First_ans = (EditText) rootView.findViewById(R.id.editText7);
 
@@ -304,7 +297,7 @@ public class QuizForm extends ActionBarActivity {
 
             Third_ans = (EditText) rootView.findViewById(R.id.editText9);
 
-            Fourth_ans = (EditText)rootView. findViewById(R.id.editText10);
+            Fourth_ans = (EditText) rootView.findViewById(R.id.editText10);
 
 
             return rootView;
@@ -313,79 +306,91 @@ public class QuizForm extends ActionBarActivity {
 
     }
 
-    protected JSONObject doInBackground(String... urls) {
-        DefaultHttpClient client = new DefaultHttpClient();
-        HttpPost post = new HttpPost("http://es2alny.herokuapp.com/api/quizzes");
-        JSONObject holder = new JSONObject();
-        // Quiz_Details object contains details about the quiz (title,marks,...)
-        JSONObject Quiz_Details = new JSONObject();
-        //title object contains the three wrong answers
-        JSONObject Questions_and_answers = new JSONObject();
-        //Wrong_Answers JSON contains the remaining three wrong answers
-        JSONObject Wrong_Answers = new JSONObject();
-        String response = null;
-        JSONObject json = new JSONObject();
+    private class AddQuestions extends AsyncTask<String, Void, JSONObject> {
 
-        try {
+        protected JSONObject doInBackground(String... urls) {
+            DefaultHttpClient client = new DefaultHttpClient();
+            HttpPost post = new HttpPost(urls[0]);
+            JSONObject holder = new JSONObject();
+            // Quiz_Details object contains details about the quiz (title,marks,...)
+            JSONObject Quiz_Details = new JSONObject();
+            //title object contains the three wrong answers
+            JSONObject Questions_and_answers = new JSONObject();
+            //Wrong_Answers JSON contains the remaining three wrong answers
+            JSONObject Wrong_Answers = new JSONObject();
+            String response = null;
+            JSONObject json = new JSONObject();
+
             try {
-                // setup the returned values in case
-                // something goes wrong
-                json.put("success", false);
-                json.put("info", "Something went wrong. Retry!");
-                //add the quiz details to the params
-                Quiz_Details.put("title", Title_of_Quiz);
-                Quiz_Details.put("subject", subject_of_quiz);
-                Quiz_Details.put("description", Description_of_quiz);
-                Quiz_Details.put("marks", final_mark_of_quiz);
-                for (int counter = 0; counter< All_Questions.size();counter++ )
-                {
-                    Questions_and_answers.put("title",All_Questions.get(counter
-                    ));
+                try {
+                    // setup the returned values in case
+                    // something goes wrong
+                    json.put("success", false);
+                    json.put("info", "Something went wrong. Retry!");
+                    //add the quiz details to the params
+                    Quiz_Details.put("title", Title_of_Quiz);
+                    Quiz_Details.put("subject", subject_of_quiz);
+                    Quiz_Details.put("description", Description_of_quiz);
+                    Quiz_Details.put("marks", final_mark_of_quiz);
+                    for (int counter = 0; counter < All_Questions.size(); counter++) {
+                        Questions_and_answers.put("title", All_Questions.get(counter
+                        ));
+                    }
+                    for (int counter2 = 0; counter2 < First_Answer.size(); counter2++) {
+                        Questions_and_answers.put("right_answer_attributes", First_Answer.get(counter2));
+                    }
+                    Quiz_Details.put("questions_attributes", Questions_and_answers);
+                    for (int counter3 = 0; counter3 < Second_Answer.size(); counter3++) {
+                        Wrong_Answers.put("title", Second_Answer.get(counter3));
+                    }
+                    for (int counter4 = 0; counter4 < Third_Answer.size(); counter4++) {
+                        Wrong_Answers.put("title", Third_Answer.get(counter4));
+                    }
+                    for (int counter5 = 0; counter5 < Fourth_Answer.size(); counter5++) {
+                        Wrong_Answers.put("title", Fourth_Answer.get(counter5));
+                    }
+                    Quiz_Details.put("answers_attributes", Wrong_Answers);
+
+
+                    holder.put("user", Quiz_Details);
+
+                    StringEntity se = new StringEntity(holder.toString());
+                    post.setEntity(se);
+
+
+                    // setup the request headers
+                    post.setHeader("Accept", "application/json");
+                    post.setHeader("Content-Type", "application/json");
+
+                    ResponseHandler<String> responseHandler = new BasicResponseHandler();
+                    response = client.execute(post, responseHandler);
+                    json = new JSONObject(response);
+
+                } catch (HttpResponseException e) {
+                    e.printStackTrace();
+                    Log.e("ClientProtocol", "" + e);
+                    json.put("info", "Email and/or password are invalid. Retry!");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Log.e("IO", "" + e);
                 }
-                for(int counter2=0; counter2 <First_Answer.size();counter2++){
-                    Questions_and_answers.put("right_answer_attributes",First_Answer.get(counter2));
-                }
-                Quiz_Details.put("questions_attributes",Questions_and_answers);
-                for (int counter3 = 0 ;counter3<Second_Answer.size();counter3++){
-                    Wrong_Answers.put("title",Second_Answer.get(counter3));
-                }
-                for (int counter4=0;counter4<Third_Answer.size();counter4++){
-                    Wrong_Answers.put("title",Third_Answer.get(counter4));
-                }
-                for(int counter5=0; counter5<Fourth_Answer.size();counter5++){
-                    Wrong_Answers.put("title",Fourth_Answer.get(counter5));
-                }
-                Quiz_Details.put("answers_attributes",Wrong_Answers);
-
-
-                holder.put("user", Quiz_Details);
-
-                StringEntity se = new StringEntity(holder.toString());
-                post.setEntity(se);
-
-
-                // setup the request headers
-                post.setHeader("Accept", "application/json");
-                post.setHeader("Content-Type", "application/json");
-
-                ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                response = client.execute(post, responseHandler);
-                json = new JSONObject(response);
-
-            } catch (HttpResponseException e) {
+            } catch (JSONException e) {
                 e.printStackTrace();
-                Log.e("ClientProtocol", "" + e);
-                json.put("info", "Email and/or password are invalid. Retry!");
-            } catch (IOException e) {
-                e.printStackTrace();
-                Log.e("IO", "" + e);
+                Log.e("JSON", "" + e);
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            Log.e("JSON", "" + e);
+
+            return json;
         }
 
-        return json;
+        @Override
+        protected void onPostExecute(JSONObject json) {
+
+
+
+            Log.e("return json is ",json.toString());
+
+
+        }
     }
 
 
