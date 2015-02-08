@@ -16,6 +16,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -47,11 +49,11 @@ public class QuizForm extends ActionBarActivity {
     protected ArrayList<String> Third_Answer = new ArrayList<String>();
     protected ArrayList<String> Fourth_Answer = new ArrayList<String>();
 
-    protected EditText Questions ;
-    protected EditText First_ans ;
-    protected  EditText Second_ans ;
-    protected  EditText Third_ans ;
-    protected EditText Fourth_ans;
+    protected static EditText Questions ;
+    protected static EditText First_ans ;
+    protected static EditText Second_ans ;
+    protected static EditText Third_ans ;
+    protected static EditText Fourth_ans;
 
     protected String question ;
     protected String answer_1 ;
@@ -68,9 +70,43 @@ public class QuizForm extends ActionBarActivity {
 
 
 
-   /* for(int i ; i < arraylist.size() ; i++)
-    {
-        if(result == null)}*/
+   public void Monitor_Text_Changes(int fragment_position){
+        Questions = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText6);
+        First_ans =(EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText7);
+        Second_ans = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText8) ;
+        Third_ans = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText9);
+        Fourth_ans = (EditText)mSectionsPagerAdapter.getItem(fragment_position).getView().findViewById(R.id.editText10);
+
+       Questions.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+               question = Questions.getText().toString();
+               answer_1 = First_ans.getText().toString();
+               answer_2 = Second_ans.getText().toString();
+               answer_3 = Third_ans.getText().toString();
+               answer_4 = Fourth_ans.getText().toString();
+
+
+
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable Questions) {
+
+
+
+           }
+       });
+
+
+
+   }
 
 
     /**
@@ -106,18 +142,6 @@ public class QuizForm extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_form);
 
-         Questions = (EditText) findViewById(R.id.editText6);
-
-         First_ans = (EditText) findViewById(R.id.editText7);
-
-         Second_ans = (EditText) findViewById(R.id.editText8);
-
-         Third_ans = (EditText) findViewById(R.id.editText9);
-
-         Fourth_ans = (EditText) findViewById(R.id.editText10);
-
-
-
 
         Bundle Number = getIntent().getExtras();
 
@@ -127,13 +151,10 @@ public class QuizForm extends ActionBarActivity {
             Title_of_Quiz = Number.getString("Quiz_Title");
             Description_of_quiz = Number.getString("Quiz_Description");
             subject_of_quiz = Number.getString("Quiz_Subject");
-           final_mark_of_quiz = Number.getString("Final_Mark");
-
+            final_mark_of_quiz = Number.getString("Final_Mark");
 
 
         }
-
-
 
 
         // Create the adapter that will return a fragment for each of the three
@@ -150,6 +171,15 @@ public class QuizForm extends ActionBarActivity {
             // This method will be invoked when a new page becomes selected.
             @Override
             public void onPageSelected(int position) {
+
+                if (question.length() == 0 || answer_1.length() == 0 || answer_2.length() == 0 || answer_3.length() == 0 || answer_4.length() == 0) {
+                    Toast.makeText(QuizForm.this, "Please fill in the missing data", Toast.LENGTH_SHORT).show();
+                } else {
+                    Monitor_Text_Changes(position);
+
+                    Add_to_Array(question, answer_1, answer_2, answer_3, answer_4);
+
+                }
                 Toast.makeText(QuizForm.this,
                         "Selected page position: " + position, Toast.LENGTH_SHORT).show();
             }
@@ -164,25 +194,14 @@ public class QuizForm extends ActionBarActivity {
             // SCROLL_STATE_IDLE, SCROLL_STATE_DRAGGING, SCROLL_STATE_SETTLING
             @Override
             public void onPageScrollStateChanged(int state) {
-                question = Questions.getText().toString();
-                answer_1 = First_ans.getText().toString();
-                answer_2 = Second_ans.getText().toString();
-                answer_3 = Third_ans.getText().toString();
-                answer_4 = Fourth_ans.getText().toString();
 
-                //if (question.length() == 0 || answer_1.length() == 0 || answer_2.length() == 0 || answer_3.length() == 0 || answer_4.length() == 0) {
-                  //  Toast.makeText(QuizForm.this, "Please fill in the missing data", Toast.LENGTH_SHORT).show();
-                //} else {
 
-                    Add_to_Array(question, answer_1, answer_2, answer_3, answer_4);
+
 
             }
         });
 
-
     }
-
-
 
 
     @Override
@@ -277,6 +296,17 @@ public class QuizForm extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_quiz_form, container, false);
+            Questions = (EditText)rootView. findViewById(R.id.editText6);
+
+            First_ans = (EditText) rootView.findViewById(R.id.editText7);
+
+            Second_ans = (EditText) rootView.findViewById(R.id.editText8);
+
+            Third_ans = (EditText) rootView.findViewById(R.id.editText9);
+
+            Fourth_ans = (EditText)rootView. findViewById(R.id.editText10);
+
+
             return rootView;
         }
 
