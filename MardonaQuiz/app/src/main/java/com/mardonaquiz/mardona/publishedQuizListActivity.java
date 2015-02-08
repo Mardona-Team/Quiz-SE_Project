@@ -107,37 +107,40 @@ public class publishedQuizListActivity extends ListActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void handleResponse() {
+    public void handleResponse(JSONObject responce) {
         mProgressBar.setVisibility(View.INVISIBLE);
         ArrayList<String> PublishedTitles = new ArrayList<String>();
 
-        if (mPublished == null) {
+        if (responce == null) {
             updateDisplayForError();
         }
 
 
         else {
             try {
-                JSONArray MPublished = mPublished.getJSONArray(keyTitle);
+                JSONArray MPublished = responce.getJSONArray(keyPublished);
 
                 for (int i = 0; i < MPublished.length(); i++) {
                     JSONObject post = MPublished.getJSONObject(i);
                     String ID = post.getString(keyId);
                     String title = post.getString(keyTitle);
-                    String published =post.getString(keyPublished);
+                    String published = post.getString(keyPublished);
+                    int pstatus=Integer.parseInt(published);
 
-                    HashMap<String, String> myPublished = new HashMap<String, String>();
-                    myPublished.put(keyId, ID);
-                    myPublished.put(keyTitle, title);
-                    myPublished.put(keyPublished, published);
+                    Log.e("json is",title+""+published);
+
+                   if(pstatus==1){
                     PublishedTitles.add(title);
-                    allPublished.add(myPublished);
+
+                    }
+
                 }
+
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, PublishedTitles);
                 setListAdapter(adapter);
             }
             catch (JSONException e) {
-                //Log.e(TAG, "Exception caught!", e);
+                Log.e(TAG, "Exception caught!", e);
             }
         }
     }
@@ -199,7 +202,7 @@ public class publishedQuizListActivity extends ListActivity {
         @Override
         protected void onPostExecute(JSONObject result) {
             mPublished = result;
-            handleResponse();
+            handleResponse(result);
         }
 
     }

@@ -4,7 +4,6 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -20,8 +19,7 @@ import android.widget.Toast;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
+import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
@@ -49,14 +47,17 @@ public class QuizListActivity extends ListActivity {
 
     private final String keyTitle = "title";
     private final String keyQuiz = "myQuiz";
+    private final String keyPublished = "published";
 
 
-
+    private String  groupID;
+    private String instructorID;
     private final String keyID = "id";
-    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/groups/2/quizzes";
+
      private String publishedId = null;
     private String publishedTitle = null;
     private String publishedFlag = null;
+    final int position =0;
 
     private ArrayList<HashMap<String, String>> allQuizzes =
             new ArrayList<HashMap<String, String>>();
@@ -64,24 +65,34 @@ public class QuizListActivity extends ListActivity {
 
 
     @Override
-    protected void onListItemClick(ListView l, View v, int position, long id) {
+    protected void onListItemClick(ListView l, View v, final int position, long id) {
         super.onListItemClick(l, v, position, id);
 
 
-
+        publishedId = allQuizzes.get(position).get(keyID);
+        publishedTitle = allQuizzes.get(position).get(keyTitle);
+        publishedFlag = allQuizzes.get(position).get(keyPublished);
 
             new AlertDialog.Builder(this)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setTitle(getString(R.string.comfirm_title))
                     .setMessage(getString(R.string.confirmation_msg))
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
                             AddPublishedQuizToAPI addPublishedQuiztoapi = new AddPublishedQuizToAPI();
-                            addPublishedQuiztoapi.execute(REGISTER_API_ENDPOINT_URL);
-                            Intent PublishedList = new Intent(QuizListActivity.this, publishedQuizListActivity.class);
-                            startActivity(PublishedList);
+                            addPublishedQuiztoapi.execute("http://es2alny.herokuapp.com/api/groups/2/quizzes/3");
+
+                          /*  Intent intent = new Intent(QuizListActivity.this, publishedQuizListActivity.class);
+                            intent.putExtra(keyID, allQuizzes.get(position).get(keyID));
+
+                            startActivity(intent);
+                            finish(); */
+
+
+
+
                         }
 
                     })
@@ -95,32 +106,22 @@ public class QuizListActivity extends ListActivity {
 
 
 
-        class AddPublishedQuizToAPI extends AsyncTask<String,Void,JSONObject> {
+       private class AddPublishedQuizToAPI extends AsyncTask<String,Void,JSONObject> {
 
             @Override
             protected JSONObject doInBackground(String... urls) {
-
                 DefaultHttpClient client = new DefaultHttpClient();
-                HttpPost post = new HttpPost(urls[0]);
+                HttpPut put = new HttpPut(urls[0]);
                 String response = null;
+                JSONObject json=new JSONObject();
 
-                JSONObject publishedObj = new JSONObject();
-                JSONObject holder = new JSONObject();
-                JSONObject json = new JSONObject();
                 try{
                     try {
+                        put.setHeader("Accept", "application/json");
+                        put.setHeader("Content-Type", "application/json");
 
-                        publishedObj.put("id", publishedId);
-                        publishedObj.put("title", publishedTitle);
-                        publishedObj.put("published", publishedFlag);
-
-                        StringEntity se = new StringEntity(publishedObj.toString());
-                        post.setEntity(se);
-
-                        post.setHeader("Accept", "application/json");
-                        post.setHeader("Content-Type", "application/json");
                         ResponseHandler<String> responseHandler = new BasicResponseHandler();
-                        response = client.execute(post, responseHandler);
+                        response = client.execute(put, responseHandler);
                         json = new JSONObject(response);
 
 
@@ -145,12 +146,10 @@ public class QuizListActivity extends ListActivity {
 
                 try {
                     // launch the HomeActivity and close this one
-                    Intent intent = new Intent(QuizListActivity.this, publishedQuizListActivity.class);
-                    startActivity(intent);
-                    finish();
+Log.e("the responce is ",json.toString());
 
 
-                    Toast.makeText(getApplicationContext(),publishedTitle+ " " + "Quiz has been published successfully!", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(),"Quiz has been published successfully!", Toast.LENGTH_LONG).show();
                 } catch (Exception e) {
                     Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
                 } finally {
@@ -180,7 +179,9 @@ public class QuizListActivity extends ListActivity {
               Toast.makeText(this, getString(R.string.networkMsg), Toast.LENGTH_LONG).show();
           }
 
-        String  groupID = getIntent().getStringExtra(keyID);
+          groupID = getIntent().getStringExtra(keyID);
+        instructorID="1";
+        //todo get instuctor id
 
 
       }
@@ -244,7 +245,18 @@ public class QuizListActivity extends ListActivity {
                     myQuizzes.put(keyID, ID);
                     myQuizzes.put(keyTitle, title);
 
-                    QuizTitles.add(title);
+
+                    String published = post.getString(keyPublished);
+                    int pstatus=Integer.parseInt(published);
+
+                    Log.e("json is",title+""+published);
+
+                    if(pstatus==0){
+                        QuizTitles.add(title);
+
+                    }
+
+
                     allQuizzes.add(myQuizzes);
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, QuizTitles);
@@ -273,7 +285,7 @@ public class QuizListActivity extends ListActivity {
             JSONObject jsonResponse = null;
 
             try {
-                URL blogFeedUrl = new URL("https://es2alny.herokuapp.com/api/quizzes");
+                URL blogFeedUrl = new URL("http://es2alny.herokuapp.com/api/groups/"+groupID+"/quizzes");
                 HttpURLConnection connection = (HttpURLConnection) blogFeedUrl.openConnection();
                 connection.connect();
 
