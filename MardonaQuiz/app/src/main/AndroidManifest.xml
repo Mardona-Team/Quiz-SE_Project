@@ -72,6 +72,7 @@
             android:label="@string/title_activity_student_answers"
             android:parentActivityName=".StudentsScoresActivity">
         </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
     </application>
 
 </manifest>
