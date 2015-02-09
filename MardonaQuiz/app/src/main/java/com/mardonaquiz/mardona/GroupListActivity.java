@@ -188,8 +188,8 @@ public class GroupListActivity extends ListActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-        TextView emptyTextView = (TextView) getListView().getEmptyView();
-        emptyTextView.setText("no items to be displayed");
+       // TextView emptyTextView = (TextView) getListView().getEmptyView();
+    //    emptyTextView.setText("no items to be displayed");
     }
 
     private class GET_Group_list extends AsyncTask<Object, Void, JSONObject> {
@@ -209,14 +209,16 @@ public class GroupListActivity extends ListActivity {
                     InputStream inputStream = connection.getInputStream();
                     Reader reader = new InputStreamReader(inputStream);
                     int contentLength = connection.getContentLength();
+
                     char[] charArray = new char[contentLength];
                     reader.read(charArray);
                     String responseData = new String(charArray);
 
-                    JSONArray j1=new JSONArray(responseData);
-                   JSONObject j2=new JSONObject();
-                    j2.put(KEY_group,j1);
-                    jsonResponse = j2;
+                    JSONArray Jinput=new JSONArray(responseData);
+                   JSONObject Jinputobject=new JSONObject();
+                    Jinputobject.put(KEY_group,Jinput);
+                    jsonResponse = Jinputobject;
+                    Log.e("responce data is",responseData);
                 }
                 else {
                     Log.i(TAG, "Unsuccessful HTTP Response Code: " + responseCode);
