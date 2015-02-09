@@ -12,8 +12,6 @@ class Quiz < ActiveRecord::Base
 	validates_presence_of :year
 	validates :marks, presence: true, :numericality => { less_than_or_equal_to: 10000, greater_than: 0 }
 
-	before_save :set_published
-
     def set_published
     	self.status = true
     end
