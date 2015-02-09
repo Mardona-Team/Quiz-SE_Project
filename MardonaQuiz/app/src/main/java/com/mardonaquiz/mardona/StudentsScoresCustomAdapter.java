@@ -3,6 +3,7 @@ package com.mardonaquiz.mardona;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.*;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -36,21 +37,26 @@ public class StudentsScoresCustomAdapter extends ArrayAdapter<StudentScoreItem> 
         TextView studentGradeTextView = (TextView) listItem.findViewById(R.id.grade);
         Button showAnswersButton= (Button) listItem.findViewById(R.id.show_answers_button);
 
+
+        StudentScoreItem studentScoreItem = studentScoreItems.get(position);
+        final String studentID=studentScoreItem.id;
+
         showAnswersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, StudentAnswersActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.putExtra("id",studentID);
                 mContext.startActivity(i);
 
-                }
+            }
         });
 
+        if(studentScoreItem.passing)  studentGradeTextView.setTextColor(Color.GREEN);
+        else studentGradeTextView.setTextColor(Color.RED);
 
-        StudentScoreItem studentScoreItem = studentScoreItems.get(position);
 
-
-        studentNameTextView.setText(studentScoreItem.name);
+            studentNameTextView.setText(studentScoreItem.name);
         studentGradeTextView.setText(studentScoreItem.grade);
 
         return listItem;

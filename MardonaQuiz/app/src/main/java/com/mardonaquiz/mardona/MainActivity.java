@@ -180,7 +180,7 @@ public class MainActivity extends ActionBarActivity {
                 fragment = new ProfileFragment();
                 break;
             case 1:
-                Intent groupListintent = new Intent(this, GroupListActivity.class);
+                Intent groupListintent = new Intent(this, StudentsScoresActivity.class);
                 startActivity(groupListintent);
                 break;
             case 2:

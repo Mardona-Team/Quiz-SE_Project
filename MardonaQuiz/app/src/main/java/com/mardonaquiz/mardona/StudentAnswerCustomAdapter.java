@@ -36,8 +36,7 @@ public class StudentAnswerCustomAdapter extends ArrayAdapter<StudentAnswerItem> 
 
         TextView questionTextView = (TextView) listItem.findViewById(R.id.question_number);
         TextView answerTextView = (TextView) listItem.findViewById(R.id.student_answer);
-        TextView correctnessTextView= (TextView) listItem.findViewById(R.id.correctness);
-
+        TextView correctnessTextView =(TextView) listItem.findViewById(R.id.correctness);
 
         StudentAnswerItem studentAnswerItem = studentAnswerItems.get(position);
 

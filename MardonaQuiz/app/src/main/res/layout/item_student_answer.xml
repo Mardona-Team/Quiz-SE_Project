@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Question"
+        android:textSize="18sp"
         android:layout_weight="0.3" />
 
     <TextView
@@ -18,6 +19,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="answer"
+        android:textSize="18sp"
         android:layout_weight="0.30" />
 
     <TextView
@@ -26,6 +28,7 @@
         android:layout_height="wrap_content"
         android:text="True"
         android:layout_weight="0.30"
+        android:textSize="18sp"
         android:textStyle="bold" />
 
 
