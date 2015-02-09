@@ -8,7 +8,7 @@ class QuizzesController < ApplicationController
   # GET /quizzes.json
   def index
     if params[:group_id]
-      render json: Quiz.where("group_id = #{params[:group_id]} or group_id IS NULL").limit(20).as_json(only: [:id, :title], :methods => [:published])
+      render json: Quiz.where("group_id = #{params[:group_id]} or group_id IS NULL AND status = 0").limit(20).as_json(only: [:id, :title], :methods => [:published])
     else
       render json: Quiz.limit(20).as_json(only: [:id, :title], :methods => [:published])
     end
@@ -34,6 +34,7 @@ class QuizzesController < ApplicationController
 
     respond_to do |format|
       if @quiz.save
+        @quiz.refrence_id = @quiz.id
         format.json { render json: @quiz.show_full_details }
       else
         format.json { render json: @quiz.errors, status: :unprocessable_entity }
@@ -44,14 +45,15 @@ class QuizzesController < ApplicationController
   # PATCH/PUT /quizzes/1
   # PATCH/PUT /quizzes/1.json
   def update
-    @new_quiz = @quiz.dup
     respond_to do |format|
-      unless Quiz.find_by(group_id: params[:group_id])
+      unless Quiz.find_by(group_id: params[:group_id], refrence_id: params[:id]).group_id == params[:group_id]
+        @quiz.set_published
+        @new_quiz = @quiz.dup
         @new_quiz.group_id = params[:group_id]
         @new_quiz.save
         format.json { render json: @quiz.show_full_details }
       else
-        format.json { render json: @quiz, status: :unprocessable_entity }
+        format.json { render json: { errors: "Either published before or not found"}, status: :unprocessable_entity }
       end
     end
   end
