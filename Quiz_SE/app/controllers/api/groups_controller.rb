@@ -13,8 +13,11 @@ module API
   # GET /groups/1
   # GET /groups/1.json
   def show
-    @group=Group.find(params[:id])
-    render json: @group
+    if params[:student_id]
+      render json: @group.memberships.find_by(student_id: params[:student_id]).present?
+    else
+      render json: @group
+    end
   end
 
   # GET /groups/new
