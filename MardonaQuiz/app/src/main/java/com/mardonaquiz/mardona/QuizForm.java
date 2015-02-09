@@ -76,14 +76,15 @@ public class QuizForm extends ActionBarActivity {
         boolean haveErr=false;
         //this for loop is for validation
         for(int i=0;i<Questions_Numbers;i++) {
-         if(  All_Questions[i]=="") {
+         if(  All_Questions[i]==""|| First_Answer[i]==""||Second_Answer[i]==""||Third_Answer[i]==""||Fourth_Answer[i]=="") {
 
          haveErr=true;
          }
+
         }
         if(haveErr==true){
 
-            Toast.makeText(this,"Please fill in all the questions titles",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Please make sure that all questions and answers are filled",Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -203,6 +204,22 @@ public class QuizForm extends ActionBarActivity {
         {
 
             All_Questions[i]="";
+        }
+        First_Answer = new String[Questions_Numbers];
+        for(int i = 0;i <Questions_Numbers;i++){
+            First_Answer[i]="";
+        }
+        Second_Answer = new String[Questions_Numbers];
+        for(int i =0; i<Questions_Numbers;i++){
+            Second_Answer[i]="";
+        }
+        Third_Answer = new String[Questions_Numbers];
+        for(int i = 0; i<Questions_Numbers;i++){
+            Third_Answer[i]="";
+        }
+        Fourth_Answer = new String[Questions_Numbers];
+        for(int i = 0 ; i<Questions_Numbers;i++){
+            Fourth_Answer[i]="";
         }
 
 
