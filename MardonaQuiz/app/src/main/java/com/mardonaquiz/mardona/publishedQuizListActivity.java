@@ -2,6 +2,7 @@ package com.mardonaquiz.mardona;
 
 import android.app.ListActivity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -37,6 +38,8 @@ public class publishedQuizListActivity extends ListActivity {
     protected JSONObject mPublished;
     protected ProgressBar mProgressBar;
 
+    protected SharedPreferences mPreferences;
+
 
     private final String keyTitle = "title";
     private final String keyPublished = "published";
@@ -53,6 +56,9 @@ public class publishedQuizListActivity extends ListActivity {
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_list);
+
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+
 
         mProgressBar = (ProgressBar) findViewById(R.id.progressBar2);
 

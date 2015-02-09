@@ -17,8 +17,11 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
@@ -26,6 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -199,7 +203,51 @@ Log.e("the responce is ",json.toString());
     }
 
 
+    public static JSONObject GET(String url){
+        InputStream inputStream = null;
+        String result = "";
+        JSONObject jsonResponse=null;
+        try {
 
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // make GET request to the given URL
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+            JSONArray scoreItemsArray=new JSONArray(result);
+            JSONObject scoreItemsObject=new JSONObject();
+            scoreItemsObject.put("myQuiz",scoreItemsArray);
+            jsonResponse = scoreItemsObject;
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+
+        return jsonResponse;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
 
 
     @Override
@@ -253,7 +301,6 @@ Log.e("the responce is ",json.toString());
 
                     if(pstatus==0){
                         QuizTitles.add(title);
-
                     }
 
 
@@ -281,43 +328,7 @@ Log.e("the responce is ",json.toString());
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            int responseCode = -1;
-            JSONObject jsonResponse = null;
-
-            try {
-                URL blogFeedUrl = new URL("http://es2alny.herokuapp.com/api/groups/"+groupID+"/quizzes");
-                HttpURLConnection connection = (HttpURLConnection) blogFeedUrl.openConnection();
-                connection.connect();
-
-                responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    InputStream inputStream = connection.getInputStream();
-                    Reader reader = new InputStreamReader(inputStream);
-                    int contentLength = connection.getContentLength();
-                    char[] charArray = new char[contentLength];
-                    reader.read(charArray);
-                    String responseData = new String(charArray);
-                    JSONArray jsonArray=new JSONArray(responseData);
-                    JSONObject jsonObject=new JSONObject();
-                    jsonObject.put(keyQuiz,jsonArray);
-                    jsonResponse = jsonObject;
-
-                }
-                else {
-                    Log.i(TAG, "Unsuccessful HTTP Response Code: " + responseCode);
-                }
-            }
-            catch (MalformedURLException e) {
-               // Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (IOException e) {
-              //  Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (Exception e) {
-              //  Log.e(TAG, "Exception caught: ", e);
-            }
-
-            return jsonResponse;
+            return GET("http://es2alny.herokuapp.com/api/groups/"+groupID+"/quizzes");
         }
 
         @Override
@@ -325,6 +336,9 @@ Log.e("the responce is ",json.toString());
             mQuiz = result;
             handleResponse();
         }
+
+
+
 
     }
 

@@ -13,9 +13,14 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Button;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -132,6 +137,54 @@ public class ViewGroup extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
+
+    public static JSONObject GET(String url){
+        InputStream inputStream = null;
+        String result = "";
+        JSONObject jsonResponse=null;
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // make GET request to the given URL
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+            JSONObject scoreItemsObject=new JSONObject(result);
+            jsonResponse = scoreItemsObject;
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+
+        return jsonResponse;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
+
     public void handleResponse(JSONObject result) {
 
 
@@ -191,41 +244,7 @@ public class ViewGroup extends ActionBarActivity {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            int responseCode = -1;
-            JSONObject jsonResponse = null;
-
-            try {
-                URL blogFeedUrl = new URL("https://es2alny.herokuapp.com/api/groups/"+group_id);
-                HttpURLConnection connection = (HttpURLConnection) blogFeedUrl.openConnection();
-                connection.connect();
-
-                responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    InputStream inputStream = connection.getInputStream();
-                    Reader reader = new InputStreamReader(inputStream);
-                    int contentLength = connection.getContentLength();
-                    char[] charArray = new char[contentLength];
-                    reader.read(charArray);
-                    String responseData = new String(charArray);
-
-
-                    jsonResponse = new JSONObject(responseData);
-                }
-                else {
-                    Log.i(TAG, "Unsuccessful HTTP Response Code: " + responseCode);
-                }
-            }
-            catch (MalformedURLException e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (IOException e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (Exception e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-
-            return jsonResponse;
+               return GET("https://es2alny.herokuapp.com/api/groups/"+group_id);
         }
 
         @Override
