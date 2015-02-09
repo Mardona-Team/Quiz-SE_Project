@@ -8,14 +8,19 @@ class QuizzesController < ApplicationController
   # GET /quizzes.json
   def index
     @quizzes = Quiz.all
-    render json: @quizzes
+    render json: @quizzes.limit(20).as_json(only: [:id, :title])
   end
 
   # GET /quizzes/1
   # GET /quizzes/1.json
   def show
     @quiz=Quiz.find(params[:id])
-    render json: @quiz
+    render json: @quiz.as_json(:only => [:id, :title, :subject, :year, :description, :marks, :created_ar],
+                                :include => {
+                                  :questions => {:only => [:id, :title],
+                                      :methods => [:shuffled_answers]
+                                    },
+                                })
   end
 
   # GET /quizzes/new
@@ -72,7 +77,7 @@ class QuizzesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def quiz_params
-      params.require(:quiz).permit(:title, :subject, :year, :description, :marks, :status)
+      params.require(:quiz).permit(:title, :subject, :year, :description, :marks, questions_attributes: [:title, right_answer_attributes: [:title], answers_attributes: [:title]])
     end
 end
 

@@ -1,5 +1,6 @@
 package com.mardonaquiz.mardona;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,8 +33,11 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
@@ -45,7 +49,9 @@ import org.json.JSONObject;
 
 public class AnswerQuiz extends ActionBarActivity {
 
-    //kyes
+    /**
+     * ########################  Kyes ###############################
+     **/
     public static final String  KEY_ID="id";
     public static final String  KEY_questions="questions";
     public static final  String  KEY_TITLE="title";
@@ -58,27 +64,26 @@ public class AnswerQuiz extends ActionBarActivity {
     public static final String KEY_user = "user";
     public static final String KEY_Quiz = "quiz";
 
+    /**
+     * ########################  variables  ###############################
+     **/
+
     private String Result_Score;
     private String Result_Max;
-
-
     private  String TAG="AnswerQuiz";
-    protected String quizId="3";//todo to be changed
+    protected String quizId="1";//todo to be changed
     protected String userID="1";//todo to be changed
-
-
     protected int NUM_Questions;
-
     protected ArrayList<String> Questions = new ArrayList<String>();
     protected ArrayList<String[][]> Shuffled_Answers_array =  new ArrayList<String[][]>();
-    //this is 3D array
-    //quiz data include quiz title , desc, and so on
     HashMap<String, String> Quiz_Data = new HashMap<String, String>();
-    //optput answer is array contain the answers of the user
     protected   ArrayList<Integer> Output_Answers = new ArrayList<Integer>();
-
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
+
+    /**
+     * ########################  main functions ###############################
+     **/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +94,6 @@ public class AnswerQuiz extends ActionBarActivity {
         Get_questions_From_server get_questions = new Get_questions_From_server();
         get_questions.execute(); // getting questions from server
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,14 +117,17 @@ public class AnswerQuiz extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    /**
+     * ########################  Custom functions ###############################
+     **/
 
 
 
-
-    private class SubmitQuiz extends AsyncTask<String,Void,JSONObject> {
-
+    //Get data
+    private class Get_questions_From_server extends AsyncTask<Object, Void, JSONObject> {
 
         ProgressDialog progDailog = new ProgressDialog(AnswerQuiz.this);
+
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -133,8 +140,192 @@ public class AnswerQuiz extends ActionBarActivity {
 
 
         @Override
-        protected JSONObject doInBackground(String... urls) {
+        protected JSONObject doInBackground(Object... arg0) {
+            return GET( "https://es2alny.herokuapp.com/api/quizzes/"+quizId);
+        }
 
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            Log.e("json is",result.toString());
+            handleResponse(result);
+            progDailog.cancel();
+        }
+
+    }
+    public static JSONObject GET(String url){
+        InputStream inputStream = null;
+        String result = "";
+        JSONObject jsonResponse=null;
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // make GET request to the given URL
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+
+
+
+            jsonResponse = new JSONObject(result);
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+
+        return jsonResponse;
+    }
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
+    public void handleResponse(JSONObject result) {
+
+
+        ArrayList<HashMap<String, String>> AllQuestions =  new ArrayList<HashMap<String, String>>();
+
+        if (result == null) {
+            //Todo here the errore messege
+        }
+        else {
+            try {
+                JSONArray QuestionsJason = result.getJSONArray(KEY_questions);
+
+                for (int i = 0; i < QuestionsJason.length(); i++) {
+                    JSONObject post = QuestionsJason.getJSONObject(i);
+
+
+                    String ID = post.getString(KEY_ID);
+                    String title = post.getString(KEY_TITLE);
+
+                    JSONArray shuffled_answers = post.getJSONArray(KEY_shuffled_answers);
+
+                    String[][] TempAnswerS=new String[4][2];
+
+                    for (int j=0;j<shuffled_answers.length();j++) {
+
+                        TempAnswerS[j][0]=shuffled_answers.getJSONObject(j).getString(KEY_TITLE);
+                        TempAnswerS[j][1]=shuffled_answers.getJSONObject(j).getString(KEY_ID);
+
+                    }
+                    //TempAnswers have all answers of one question
+                    Shuffled_Answers_array.add(TempAnswerS);
+                    //Shuffled answers array have all answers in all questions
+                    Questions.add(title);
+                }
+
+                Quiz_Data.put(KEY_ID,result.getString(KEY_ID));
+                Quiz_Data.put(KEY_TITLE,result.getString(KEY_TITLE));
+                Quiz_Data.put(KEY_SUBJECT,result.getString(KEY_SUBJECT));
+                Quiz_Data.put(KEY_YEAR,result.getString(KEY_YEAR));
+                Quiz_Data.put(KEY_Desc,result.getString(KEY_Desc));
+                Quiz_Data.put(KEY_Marks,result.getString(KEY_Marks));
+                NUM_Questions=Questions.size();
+                initiate_view();
+
+            }
+            catch (JSONException e) {
+                Log.e("", "Exception caught!", e);
+            }
+        }
+    }
+
+    //view data
+    private void initiate_view()   {
+        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),Questions,Shuffled_Answers_array);
+
+        mViewPager = (ViewPager) findViewById(R.id.pager);
+        mViewPager.setAdapter(mSectionsPagerAdapter);
+
+
+        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int i, float v, int i2) {
+            }
+            @Override
+            public void onPageSelected(int i) {
+
+                if(i!= NUM_Questions+1 &&i!=0) {
+
+                    Monitor_Answers_changes(i);
+                    Log.e("i selected is", "" + i);
+
+                }
+                if(i==NUM_Questions+1)
+                {
+
+                    ((Button)mSectionsPagerAdapter.getItem(NUM_Questions+1).getView().findViewById(R.id.submitQuiz)).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                            SubmitQuiz submitQuiz = new SubmitQuiz();
+                            submitQuiz.execute("http://es2alny.herokuapp.com/api/answer_quiz");
+
+                        }
+                    });
+
+                }
+
+            }
+            @Override
+            public void onPageScrollStateChanged(int i) {
+
+            }
+        });
+
+
+
+
+    }
+
+    //monitor data
+    public void Monitor_Answers_changes(final int question) {
+        RadioGroup agroup = (RadioGroup) mSectionsPagerAdapter.getItem(question).getView().findViewById(R.id.rgroup);
+        agroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                int answerdIndex = group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId()));
+                Log.d("question ", question-1+" answer " + answerdIndex);
+                Output_Answers.add(question - 1, answerdIndex);
+
+            }
+        });
+    }
+
+//Post data
+
+    private class SubmitQuiz extends AsyncTask<String,Void,JSONObject> {
+
+        ProgressDialog progDailog = new ProgressDialog(AnswerQuiz.this);
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
+
+        @Override
+        protected JSONObject doInBackground(String... urls) {
             DefaultHttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost(urls[0]);
             String response = null;
@@ -142,40 +333,29 @@ public class AnswerQuiz extends ActionBarActivity {
 
             try{
                 try {
-                        JSONArray answersJSonArray = new JSONArray();
-                        for (int i = 0; i < Output_Answers.size(); i++) {
-                            //  Log.e("question ", i + " answer " + Output_Answers.get(i) + " was " + Shuffled_Answers_array.get(i)[Output_Answers.get(i)][0] + " index" + Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
-                            JSONObject tempJson = new JSONObject();
-                            tempJson.put(KEY_ID,Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
-                            answersJSonArray.put(tempJson);
-                        }
-                        JSONObject quiz_holderJSON =new JSONObject();
-                        quiz_holderJSON.put(KEY_ID,quizId);
-                        JSONObject user_holderJSON =new JSONObject();
-
-                        user_holderJSON.put(KEY_ID,userID);
+                    JSONArray answersJSonArray = new JSONArray();
+                    for (int i = 0; i < Output_Answers.size(); i++) {
+                        JSONObject tempJson = new JSONObject();
+                        tempJson.put(KEY_ID,Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
+                        answersJSonArray.put(tempJson);
+                    }
+                    JSONObject quiz_holderJSON =new JSONObject();
+                    quiz_holderJSON.put(KEY_ID,quizId);
+                    JSONObject user_holderJSON =new JSONObject();
+                    user_holderJSON.put(KEY_ID,userID);
                     user_holderJSON.put(KEY_Quiz,quiz_holderJSON);
-
                     user_holderJSON.put(KEY_Answe,answersJSonArray);
+                    JSONObject Holder=new JSONObject();
+                    Holder.put(KEY_user,user_holderJSON);
 
-
-                        JSONObject Holder=new JSONObject();
-
-                        Holder.put(KEY_user,user_holderJSON);
-
-                        Log.e("json was",Holder.toString());
-                        StringEntity se = new StringEntity(Holder.toString());
-
-
-
-                        post.setEntity(se);
-
+                   Log.e("json sent is",Holder.toString());
+                    StringEntity se = new StringEntity(Holder.toString());
+                    post.setEntity(se);
                     post.setHeader("Accept", "application/json");
                     post.setHeader("Content-Type", "application/json");
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();
                     response = client.execute(post, responseHandler);
                     json = new JSONObject(response);
-
 
                 }catch (HttpResponseException e) {
                     e.printStackTrace();
@@ -199,12 +379,12 @@ public class AnswerQuiz extends ActionBarActivity {
 
             try {
 
-             Log.e("the output is", json.toString());
-               Result_Score=json.getString("marks");
+                Log.e("the output is", json.toString());
+                Result_Score=json.getString("marks");
 
                 ResultPageAdapter resultPageAdapter=new ResultPageAdapter(getSupportFragmentManager(),Result_Score);
 
-              //todo put the result activity here
+                //todo put the result activity here
                 progDailog.cancel();
                 for(int i=0;i<mViewPager.getAdapter().getCount();i++)
                 {
@@ -213,10 +393,6 @@ public class AnswerQuiz extends ActionBarActivity {
                 mViewPager.removeAllViews();
                 mViewPager.setAdapter(null);
                 mViewPager.setAdapter(resultPageAdapter);
-
-
-
-
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             } finally {
@@ -227,20 +403,9 @@ public class AnswerQuiz extends ActionBarActivity {
     }
 
 
-
-    public void Monitor_Answers_changes(final int question) {
-        RadioGroup agroup = (RadioGroup) mSectionsPagerAdapter.getItem(question).getView().findViewById(R.id.rgroup);
-        agroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                int answerdIndex = group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId()));
-                Log.d("question ", question-1+" answer " + answerdIndex);
-                Output_Answers.add(question - 1, answerdIndex);
-
-            }
-        });
-    }
-
+    /**
+     * ########################  adapters  ###############################
+     **/
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         QuestionsFragments[] fragment=new QuestionsFragments[NUM_Questions];
@@ -328,169 +493,9 @@ public class AnswerQuiz extends ActionBarActivity {
 
     }
 
-
-
-    public void handleResponse(JSONObject result) {
-
-
-       ArrayList<HashMap<String, String>> AllQuestions =  new ArrayList<HashMap<String, String>>();
-
-        if (result == null) {
-            //Todo here the errore messege
-        }
-        else {
-            try {
-                JSONArray QuestionsJason = result.getJSONArray(KEY_questions);
-
-                for (int i = 0; i < QuestionsJason.length(); i++) {
-                    JSONObject post = QuestionsJason.getJSONObject(i);
-
-
-                    String ID = post.getString(KEY_ID);
-                    String title = post.getString(KEY_TITLE);
-
-                    JSONArray shuffled_answers = post.getJSONArray(KEY_shuffled_answers);
-
-                    String[][] TempAnswerS=new String[4][2];
-
-                    for (int j=0;j<shuffled_answers.length();j++) {
-
-                        TempAnswerS[j][0]=shuffled_answers.getJSONObject(j).getString(KEY_TITLE);
-                        TempAnswerS[j][1]=shuffled_answers.getJSONObject(j).getString(KEY_ID);
-
-                    }
-                    //TempAnswers have all answers of one question
-                    Shuffled_Answers_array.add(TempAnswerS);
-                    //Shuffled answers array have all answers in all questions
-                    Questions.add(title);
-                }
-                Log.e("title is ", Shuffled_Answers_array.get(0)[0].toString());
-                Log.e("id is", Shuffled_Answers_array.get(0)[1].toString());
-                Quiz_Data.put(KEY_ID,result.getString(KEY_ID));
-                Quiz_Data.put(KEY_TITLE,result.getString(KEY_TITLE));
-                Quiz_Data.put(KEY_SUBJECT,result.getString(KEY_SUBJECT));
-                Quiz_Data.put(KEY_YEAR,result.getString(KEY_YEAR));
-                Quiz_Data.put(KEY_Desc,result.getString(KEY_Desc));
-                Quiz_Data.put(KEY_Marks,result.getString(KEY_Marks));
-                NUM_Questions=Questions.size();
-                initiate_view();
-
-            }
-            catch (JSONException e) {
-                Log.e("", "Exception caught!", e);
-            }
-        }
-    }
-
-    private void initiate_view()   {
-        mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),Questions,Shuffled_Answers_array);
-
-        mViewPager = (ViewPager) findViewById(R.id.pager);
-        mViewPager.setAdapter(mSectionsPagerAdapter);
-
-
-        mViewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int i, float v, int i2) {
-            }
-            @Override
-            public void onPageSelected(int i) {
-
-                if(i!= NUM_Questions+1 &&i!=0) {
-
-                    Monitor_Answers_changes(i);
-                    Log.e("i selected is", "" + i);
-
-                }
-                if(i==NUM_Questions+1)
-                {
-
-                    ((Button)mSectionsPagerAdapter.getItem(NUM_Questions+1).getView().findViewById(R.id.submitQuiz)).setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            SubmitQuiz submitQuiz = new SubmitQuiz();
-                            submitQuiz.execute("http://es2alny.herokuapp.com/api/answer_quiz");
-
-                        }
-                    });
-
-                }
-
-            }
-            @Override
-            public void onPageScrollStateChanged(int i) {
-
-            }
-        });
-
-
-
-
-    }
-
-    private class Get_questions_From_server extends AsyncTask<Object, Void, JSONObject> {
-
-        ProgressDialog progDailog = new ProgressDialog(AnswerQuiz.this);
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progDailog.setMessage("Loading...");
-            progDailog.setIndeterminate(false);
-            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-            progDailog.setCancelable(true);
-            progDailog.show();
-        }
-
-
-
-        @Override
-        protected JSONObject doInBackground(Object... arg0) {
-            int responseCode = -1;
-            JSONObject jsonResponse = null;
-
-            try {
-                URL blogFeedUrl = new URL("https://es2alny.herokuapp.com/api/quizzes/"+quizId);
-                HttpURLConnection connection = (HttpURLConnection) blogFeedUrl.openConnection();
-                connection.connect();
-
-                responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    InputStream inputStream = connection.getInputStream();
-                    Reader reader = new InputStreamReader(inputStream);
-                    int contentLength = connection.getContentLength();
-                    char[] charArray = new char[contentLength];
-                    reader.read(charArray);
-                    String responseData = new String(charArray);
-
-
-                    jsonResponse = new JSONObject(responseData);
-                }
-                else {
-                    Log.i(TAG, "Unsuccessful HTTP Response Code: " + responseCode);
-                }
-            }
-            catch (MalformedURLException e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (IOException e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (Exception e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-
-            return jsonResponse;
-        }
-
-        @Override
-        protected void onPostExecute(JSONObject result) {
-
-            progDailog.cancel();
-            handleResponse(result);
-        }
-    }
-
+    /**
+     * ########################  Fragments ###############################
+     */
     public static class QuestionsFragments extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
@@ -591,9 +596,7 @@ public class AnswerQuiz extends ActionBarActivity {
             return rootView;
         }
     }
-    /**
-     this is the Last Fragment to view stats about the quiz
-     */
+
     public static class QuestionsStartFragments extends Fragment {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
@@ -640,7 +643,6 @@ public class AnswerQuiz extends ActionBarActivity {
         }
 
     }
-
 
     public static class answerQuizResult extends Fragment {
 

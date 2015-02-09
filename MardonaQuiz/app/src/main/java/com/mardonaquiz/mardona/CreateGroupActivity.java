@@ -114,6 +114,7 @@ public class CreateGroupActivity extends ActionBarActivity {
                     StringEntity se = new StringEntity(groupObj.toString());
                     post.setEntity(se);
 
+                    Log.e("group json is",groupObj.toString());
                     post.setHeader("Accept", "application/json");
                     post.setHeader("Content-Type", "application/json");
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();

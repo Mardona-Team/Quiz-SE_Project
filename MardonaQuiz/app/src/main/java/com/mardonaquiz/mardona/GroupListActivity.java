@@ -2,6 +2,7 @@ package com.mardonaquiz.mardona;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -20,10 +21,15 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -40,7 +46,6 @@ public class GroupListActivity extends ListActivity {
 
     public static final String TAG = GroupListActivity.class.getSimpleName();
     protected JSONObject mGroups;
-    protected ProgressBar mProgressBar;
 
     private final String KEY_group = "groups";
     private final String KEY_TITLE = "title";
@@ -71,11 +76,9 @@ public class GroupListActivity extends ListActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
 
 
         if (isNetworkAvailable()) {
-            mProgressBar.setVisibility(View.VISIBLE);
             GET_Group_list GETGrouplist = new GET_Group_list();
             GETGrouplist.execute();
         }
@@ -97,6 +100,53 @@ public class GroupListActivity extends ListActivity {
 
         return isAvailable;
     }
+
+    public static JSONObject GET(String url){
+        InputStream inputStream = null;
+        String result = "";
+        JSONObject jsonResponse=null;
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+            // make GET request to the given URL
+            HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+            // receive response as inputStream
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+            JSONArray scoreItemsArray=new JSONArray(result);
+            JSONObject scoreItemsObject=new JSONObject();
+            scoreItemsObject.put("groups",scoreItemsArray);
+            jsonResponse = scoreItemsObject;
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+
+        return jsonResponse;
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException{
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
+    }
+
 
 
 
@@ -135,7 +185,6 @@ public class GroupListActivity extends ListActivity {
     }
 
     public void handleResponse() {
-        mProgressBar.setVisibility(View.INVISIBLE);
         ArrayList<String> GroupTitles = new ArrayList<String>();
 
         if (mGroups == null) {
@@ -188,59 +237,34 @@ public class GroupListActivity extends ListActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-       // TextView emptyTextView = (TextView) getListView().getEmptyView();
-    //    emptyTextView.setText("no items to be displayed");
+
     }
 
     private class GET_Group_list extends AsyncTask<Object, Void, JSONObject> {
 
+        ProgressDialog progDailog = new ProgressDialog(GroupListActivity.this);
+
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
+
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            int responseCode = -1;
-            JSONObject jsonResponse = null;
-
-            try {
-                URL blogFeedUrl = new URL("http://es2alny.herokuapp.com/api/groups");
-                HttpURLConnection connection = (HttpURLConnection) blogFeedUrl.openConnection();
-                connection.connect();
-
-                responseCode = connection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    InputStream inputStream = connection.getInputStream();
-                    Reader reader = new InputStreamReader(inputStream);
-                    int contentLength = connection.getContentLength();
-
-                    char[] charArray = new char[contentLength];
-                    reader.read(charArray);
-                    String responseData = new String(charArray);
-
-                    JSONArray Jinput=new JSONArray(responseData);
-                   JSONObject Jinputobject=new JSONObject();
-                    Jinputobject.put(KEY_group,Jinput);
-                    jsonResponse = Jinputobject;
-                    Log.e("responce data is",responseData);
-                }
-                else {
-                    Log.i(TAG, "Unsuccessful HTTP Response Code: " + responseCode);
-                }
-            }
-            catch (MalformedURLException e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (IOException e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-            catch (Exception e) {
-                Log.e(TAG, "Exception caught: ", e);
-            }
-
-            return jsonResponse;
+                return GET("http://es2alny.herokuapp.com/api/groups/");
         }
 
         @Override
         protected void onPostExecute(JSONObject result) {
             mGroups = result;
             handleResponse();
+            progDailog.cancel();
         }
 
     }

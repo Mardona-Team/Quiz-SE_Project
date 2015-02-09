@@ -3,7 +3,7 @@
     package="com.mardonaquiz.mardona" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -59,6 +59,25 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mardonaquiz.mardona.GroupListActivity" />
         </activity>
+        <activity
+
+            android:name=".StatisticsActivty"
+            android:label="@string/title_activity_statistics_activty" >
+        </activity>
+        <activity
+            android:name=".StudentsScoresActivity"
+            android:label="@string/title_activity_students_scores" >
+        </activity>
+        <activity
+            android:name=".StudentAnswersActivity"
+            android:label="@string/title_activity_student_answers"
+            android:parentActivityName=".StudentsScoresActivity">
+          </activity>
+            <activity
+            android:name=".publishedQuizListActivity"
+            android:label="@string/title_activity_published_quizzes" >
+        </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
     </application>
 
 </manifest>

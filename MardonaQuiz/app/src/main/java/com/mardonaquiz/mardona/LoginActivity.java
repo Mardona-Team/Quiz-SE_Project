@@ -1,5 +1,6 @@
 package com.mardonaquiz.mardona;
 
+import android.support.v7.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.internal.view.SupportActionModeWrapper;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -42,6 +44,9 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.hide();
 
         signUpRedirect=(TextView)findViewById(R.id.signUp_Link);
         signUpRedirect.setOnClickListener(new View.OnClickListener() {
