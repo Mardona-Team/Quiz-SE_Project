@@ -14,7 +14,7 @@
     <string name="role_1_hint">Student</string>
     <string name="role_2_hint">Instructor</string>
     <string name="logInButton_text">Log In</string>
-    <string name="signUp_text">Sign Up </string>
+    <string name="signUp_text">Don\'t have an account? Sign Up </string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="password_confirmation">Confirm Password</string>
     <string name="email_singUp">Email</string>

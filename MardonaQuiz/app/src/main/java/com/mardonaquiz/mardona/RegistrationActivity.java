@@ -1,5 +1,6 @@
 package com.mardonaquiz.mardona;
 
+import android.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -50,6 +51,9 @@ public class RegistrationActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
+
+
+       getActionBar().hide();
 
         addItemsOnRoleSpinner();
 

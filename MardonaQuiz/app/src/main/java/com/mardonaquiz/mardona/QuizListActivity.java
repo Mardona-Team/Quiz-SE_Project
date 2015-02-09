@@ -78,7 +78,7 @@ public class QuizListActivity extends ListActivity {
         publishedFlag = allQuizzes.get(position).get(keyPublished);
 
             new AlertDialog.Builder(this)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setIcon(android.R.drawable.ic_dialog_info)
                     .setTitle(getString(R.string.comfirm_title))
                     .setMessage(getString(R.string.confirmation_msg))
                     .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -86,7 +86,7 @@ public class QuizListActivity extends ListActivity {
                         public void onClick(DialogInterface dialog, int which) {
 
                             AddPublishedQuizToAPI addPublishedQuiztoapi = new AddPublishedQuizToAPI();
-                            addPublishedQuiztoapi.execute("http://es2alny.herokuapp.com/api/groups/2/quizzes/3");
+                            addPublishedQuiztoapi.execute("http://es2alny.herokuapp.com/api/groups/"+groupID+"/quizzes/"+publishedId);
 
                           /*  Intent intent = new Intent(QuizListActivity.this, publishedQuizListActivity.class);
                             intent.putExtra(keyID, allQuizzes.get(position).get(keyID));
