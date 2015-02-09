@@ -77,6 +77,7 @@
             android:name=".publishedQuizListActivity"
             android:label="@string/title_activity_published_quizzes" >
         </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
     </application>
 
 </manifest>
