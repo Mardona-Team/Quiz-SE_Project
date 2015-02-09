@@ -53,7 +53,7 @@ public class RegistrationActivity extends ActionBarActivity {
         setContentView(R.layout.activity_registration);
 
 
-       getActionBar().hide();
+       getSupportActionBar().hide();
 
         addItemsOnRoleSpinner();
 
