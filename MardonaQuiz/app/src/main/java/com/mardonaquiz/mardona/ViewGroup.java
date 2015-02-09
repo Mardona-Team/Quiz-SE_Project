@@ -2,14 +2,16 @@ package com.mardonaquiz.mardona;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Button;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,8 +25,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 
-public class ViewGroup extends ActionBarActivity {
 
+public class ViewGroup extends ActionBarActivity {
+    private SharedPreferences mPreferences;
     private final String KEY_TITLE = "title";
     private final String KEY_SUBJECT = "subject";
     private final String KEY_YEAR = "year";
@@ -44,9 +47,12 @@ public class ViewGroup extends ActionBarActivity {
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_group);
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+
+
 
         Bundle extras = getIntent().getExtras();
 
@@ -59,7 +65,41 @@ public class ViewGroup extends ActionBarActivity {
 
 
         }
+        Button PublishQuiz = (Button) findViewById(R.id.publish);
+        Button PublishedList = (Button) findViewById(R.id.published);
 
+        PublishedList.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View v) {
+                Intent publishedListIntent = new Intent(ViewGroup.this, publishedQuizListActivity.class);
+                String keyQuiz = null;
+                publishedListIntent.putExtra(KEY_ID,group_id);
+                startActivity(publishedListIntent);
+
+            }
+        });
+
+        if(mPreferences.getString("Type","").equals("Instructor")) {
+
+
+            PublishQuiz.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent QuizIntent = new Intent(ViewGroup.this, QuizListActivity.class);
+
+                    QuizIntent.putExtra(KEY_ID, group_id);
+
+                    startActivity(QuizIntent);
+                }
+            });
+
+
+        }
+        else { PublishQuiz.setVisibility(View.GONE);
+
+
+        }
 
 
 
