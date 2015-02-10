@@ -71,41 +71,42 @@ public class QuizForm extends ActionBarActivity {
     protected String final_mark_of_quiz ;
 
 
-    public void SubmitQuiz (){
-        for(int i=0;i<Questions_Numbers;i++) {
+    public void SubmitQuiz () {
+        for (int i = 0; i < Questions_Numbers; i++) {
             Log.e("the value of ", All_Questions[i]);
-            Log.e("Answer1",First_Answer[i]);
-            Log.e("Answer 2",Second_Answer[i]);
-            Log.e("Answer 3",Third_Answer[i]);
-            Log.e("Answer 4",Fourth_Answer[i]);}
-        boolean haveErr=false;
+            Log.e("Answer1", First_Answer[i]);
+            Log.e("Answer 2", Second_Answer[i]);
+            Log.e("Answer 3", Third_Answer[i]);
+            Log.e("Answer 4", Fourth_Answer[i]);
+        }
+        boolean haveErr = false;
         //this for loop is for validation
-       /*or(int i=0;i<Questions_Numbers;i++) {
-         if(  All_Questions[i]==""|| First_Answer[i]==""||Second_Answer[i]==""||Third_Answer[i]==""||Fourth_Answer[i]=="") {
+        for (int i = 0; i < Questions_Numbers; i++) {
+            if (All_Questions[i] == "" || First_Answer[i] == "" || Second_Answer[i] == "" || Third_Answer[i] == "" || Fourth_Answer[i] == "") {
 
-         haveErr=true;
-         }
+                haveErr = true;
+            }
 
         }
-        if(haveErr==true){
+        if (haveErr == true) {
 
-            Toast.makeText(this,"Please make sure that all questions and answers are filled",Toast.LENGTH_SHORT).show();
-        }
-        else
-        {
+            Toast.makeText(this, "Please make sure that all questions and answers are filled", Toast.LENGTH_SHORT).show();
+        } else {
             //here we will write the code when there is no error
-            for(int i=0;i<Questions_Numbers;i++) {
+            for (int i = 0; i < Questions_Numbers; i++) {
                 Log.e("the value of ", All_Questions[i]);
-                Log.e("Answer1",First_Answer[i]);
-                Log.e("Answer 2",Second_Answer[i]);
-                Log.e("Answer 3",Third_Answer[i]);
-                Log.e("Answer 4",Fourth_Answer[i]);
-               //ddQuiztoAPI addGrouptoapi = new AddQuiztoAPI();
-              //addGrouptoapi.execute(CREARTE_QUIZ_URL);
+                Log.e("Answer1", First_Answer[i]);
+                Log.e("Answer 2", Second_Answer[i]);
+                Log.e("Answer 3", Third_Answer[i]);
+                Log.e("Answer 4", Fourth_Answer[i]);
+                AddQuiztoAPI addGrouptoapi = new AddQuiztoAPI();
+                addGrouptoapi.execute(CREARTE_QUIZ_URL);
 
 
             }
-*/      }
+        }
+    }
+
 
 
    public void Monitor_Text_Changes(final int fragment_position){
@@ -134,32 +135,106 @@ public class QuizForm extends ActionBarActivity {
            @Override
            public void afterTextChanged(Editable s) {
 
-             if (s == Questions){
 
                  question = Questions.toString();
                  All_Questions[fragment_position-1]=question;
              }
-               else if (s == First_ans){
 
-                 answer_1 = First_ans.toString();
-                 First_Answer[fragment_position-1]= answer_1;
-             }
-               else if (s == Second_ans){
-                 answer_2 = Second_ans.toString();
-                 Second_Answer[fragment_position-1]= answer_2;
-             }
-             else if (s == Third_ans){
-                 answer_3 = Third_ans.toString();
-               Third_Answer[fragment_position-1]= answer_3;
-             }
-             else if (s == Fourth_ans){
-                 answer_4 = Fourth_ans.toString();
-                 Fourth_Answer[fragment_position-1]= answer_4;
-             }
+
+
+
+       });
+       First_ans.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
            }
 
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable First_ans) {
+
+
+               answer_1 = First_ans.toString();
+               First_Answer[fragment_position - 1] = answer_1;
+           }
+
+
        });
+       Second_ans.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable Second_ans) {
+
+
+               answer_2 = Second_ans.toString();
+               Second_Answer[fragment_position-1]=answer_2;
+           }
+
+       });
+       Third_ans.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable Third_ans) {
+
+
+               answer_3 = Third_ans.toString();
+               Third_Answer[fragment_position-1]=answer_3;
+           }
+       });
+      Fourth_ans.addTextChangedListener(new TextWatcher() {
+           @Override
+           public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+           }
+
+           @Override
+           public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+
+           }
+
+           @Override
+           public void afterTextChanged(Editable Fourth_ans) {
+
+
+              answer_4 = Fourth_ans.toString();
+               Fourth_Answer[fragment_position-1]=answer_4;
+           }
+
+
+
+
+       });
+
+
+
+
 
 
 
@@ -410,10 +485,16 @@ public class QuizForm extends ActionBarActivity {
             HttpPost post = new HttpPost("http://es2alny.herokuapp.com/api/quizzes");
             JSONObject holder = new JSONObject();
             // Quiz_Details object contains details about the quiz (title,marks,...)
-            JSONObject Quiz_Details = new JSONObject();
-            //title object contains the three wrong answers
-            JSONObject Questions_and_answers = new JSONObject();
-            //Wrong_Answers JSON contains the remaining three wrong answers
+            JSONObject quiz = new JSONObject();
+            JSONObject Questions = new JSONObject();
+            JSONObject title = new JSONObject();
+            JSONObject right_answer_attributes = new JSONObject();
+            JSONObject title1 = new JSONObject();
+            JSONObject title2 = new JSONObject();
+            JSONObject title3 = new JSONObject();
+            JSONArray questions_attributes = new JSONArray();
+            JSONArray answers_attributes = new JSONArray();
+
             JSONObject Wrong_Answers = new JSONObject();
             String response = null;
             JSONObject json = new JSONObject();
@@ -425,30 +506,31 @@ public class QuizForm extends ActionBarActivity {
                     json.put("success", false);
                     json.put("info", "Something went wrong. Retry!");
                     //add the quiz details to the params
-                    Quiz_Details.put("title", Title_of_Quiz);
-                    Quiz_Details.put("subject", subject_of_quiz);
-                    Quiz_Details.put("description", Description_of_quiz);
-                    Quiz_Details.put("marks", final_mark_of_quiz);
-                    for (int counter = 0; counter < All_Questions.length; counter++) {
-                        Questions_and_answers.put("title", All_Questions[counter]);
+                    quiz.put("title", Title_of_Quiz);
+                    quiz.put("subject", subject_of_quiz);
+                    quiz.put("description", Description_of_quiz);
+                    quiz.put("marks", final_mark_of_quiz);
+                    for (int counter = 0; counter < Questions_Numbers; counter++) {
+                        Questions.put("title", All_Questions[counter]);
+                        title.put("title", First_Answer[counter]);
+                        right_answer_attributes.put("right_answer_attributes",title);
+                        title1.put("title",Second_Answer[counter]);
+                        title2.put("title",Third_Answer[counter]);
+                        title3.put("title",Fourth_Answer[counter]);
+                        answers_attributes.put(0,title1);
+                        answers_attributes.put(1,title2);
+                        answers_attributes.put(2,title3);
+                        questions_attributes.put(0,title);
+                        questions_attributes.put(1,right_answer_attributes);
+                        questions_attributes.put(2,answers_attributes);
+
                     }
-                    for (int counter2 = 0; counter2 < First_Answer.length; counter2++) {
-                        Questions_and_answers.put("right_answer_attributes", First_Answer[counter2]);
-                    }
-                    Quiz_Details.put("questions_attributes", Questions_and_answers);
-                    for (int counter3 = 0; counter3 < Second_Answer.length; counter3++) {
-                        Wrong_Answers.put("title", Second_Answer[counter3]);
-                    }
-                    for (int counter4 = 0; counter4 < Third_Answer.length; counter4++) {
-                        Wrong_Answers.put("title", Third_Answer[counter4]);
-                    }
-                    for (int counter5 = 0; counter5 < Fourth_Answer.length; counter5++) {
-                        Wrong_Answers.put("title", Fourth_Answer[counter5]);
-                    }
-                    Quiz_Details.put("answers_attributes", Wrong_Answers);
+                    quiz.put("questions_attributes", questions_attributes);
 
 
-                    holder.put("user", Quiz_Details);
+
+
+                    holder.put("user", quiz);
 
                     StringEntity se = new StringEntity(holder.toString());
                     post.setEntity(se);
