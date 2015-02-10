@@ -34,7 +34,7 @@ public class LoginActivity extends ActionBarActivity {
 
     private TextView signUpRedirect;
     private Button logIn;
-    private final static String LOGIN_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions.json";
+    private final static String LOGIN_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/sessions.json";
     private SharedPreferences mPreferences;
     private String mUserEmail;
     private String mUserPassword;
@@ -184,6 +184,12 @@ public class LoginActivity extends ActionBarActivity {
                     // the SharedPreferences
                     editor.putString("AuthToken", json.getJSONObject("data").getString("auth_token"));
                     editor.putString("Type", json.getJSONObject("data").getString("type"));
+                    editor.putString("first_name", json.getJSONObject("data").getString("first_name"));
+                    editor.putString("last_name", json.getJSONObject("data").getString("last_name"));
+                    editor.putString("id", json.getJSONObject("data").getString("id"));
+
+
+
                     editor.commit();
 
                     // launch the HomeActivity and close this one

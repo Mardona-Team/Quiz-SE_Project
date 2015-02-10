@@ -16,15 +16,6 @@
         android:layout_alignParentEnd="true"
         android:onClick="openAnswersQuiz" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Publish Quiz"
-        android:id="@+id/publish"
-        android:layout_above="@+id/button"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,9 +62,9 @@
         android:layout_height="wrap_content"
         android:text="Published Quizzes"
         android:id="@+id/published"
-        android:layout_above="@+id/publish"
-        android:layout_alignRight="@+id/publish"
-        android:layout_alignEnd="@+id/publish" />
+        android:layout_above="@+id/button"
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button" />
 
 
 </RelativeLayout>
