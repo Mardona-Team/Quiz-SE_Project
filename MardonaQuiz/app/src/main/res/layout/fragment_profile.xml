@@ -1,23 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
 
-    <Button
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="Log Out"
-    android:id="@+id/logOut_button"
-        android:layout_marginBottom="92dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="365dp">
 
-    <Button
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/background"
+        android:layout_alignParentTop="true"
+        android:scaleType="fitXY" />
+
+   <LinearLayout
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:weightSum="1"
+       android:orientation="vertical"
+       android:layout_alignParentTop="true"
+       android:layout_alignParentLeft="true"
+       android:layout_alignParentStart="true">
+
+       <ImageView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:id="@+id/profile_picture"
+           android:src="@drawable/user_profile"
+           android:layout_marginTop="55dp"
+           android:layout_centerHorizontal="true"
+           android:layout_gravity="center_horizontal" />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="user_name_profile"
+           android:id="@+id/user_name_profile"
+           android:textColor="@android:color/white"
+           android:textStyle="bold"
+           android:textSize="22sp"
+           android:layout_centerHorizontal="true"
+           android:layout_marginTop="20dp"
+           android:layout_gravity="center_horizontal" />
+
+       <TextView
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:text="Role"
+           android:id="@+id/user_role_profile"
+           android:layout_centerHorizontal="true"
+           android:textColor="@android:color/white"
+           android:textSize="17sp"
+           android:textStyle="italic"
+           android:layout_gravity="center_horizontal" />
+
+
+
+   </LinearLayout>
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.09"
+            android:hint="What Group do you want to join ?!"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Go"
+            android:background="@drawable/button_custom"
+            android:textSize="15sp"/>
+
+
+        </LinearLayout>
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Create Quiz"
-        android:id="@+id/button4"
-        android:layout_below="@+id/logOut_button"
-        android:layout_centerHorizontal="true" />
+        android:text="My Groups"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/background_purple"
+        android:layout_gravity="center_horizontal" />
 
-</RelativeLayout>
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/groupsListView" />
+
+
+</LinearLayout>
+

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 
 public class RegistrationActivity extends ActionBarActivity {
 
-    private final static String REGISTER_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/registrations";
+    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/registrations";
     private SharedPreferences mPreferences;
     private String mUserEmail;
     private String mFirstName;
@@ -53,7 +53,7 @@ public class RegistrationActivity extends ActionBarActivity {
         setContentView(R.layout.activity_registration);
 
 
-       getActionBar().hide();
+       getSupportActionBar().hide();
 
         addItemsOnRoleSpinner();
 
@@ -229,6 +229,9 @@ public class RegistrationActivity extends ActionBarActivity {
                     // the SharedPreferences
                     editor.putString("AuthToken", json.getJSONObject("data").getString("auth_token"));
                     editor.putString("Type",mRole);
+                    editor.putString("first_name", json.getJSONObject("data").getString("first_name"));
+                    editor.putString("last_name", json.getJSONObject("data").getString("last_name"));
+                    editor.putString("id", json.getJSONObject("data").getString("id"));
                     editor.commit();
 
                     // launch the HomeActivity and close this one

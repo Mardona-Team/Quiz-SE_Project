@@ -70,7 +70,6 @@ public class ViewGroup extends ActionBarActivity {
 
 
         }
-        Button PublishQuiz = (Button) findViewById(R.id.publish);
         Button PublishedList = (Button) findViewById(R.id.published);
 
         PublishedList.setOnClickListener(new View.OnClickListener(){
@@ -84,29 +83,6 @@ public class ViewGroup extends ActionBarActivity {
 
             }
         });
-
-        if(mPreferences.getString("Type","").equals("Instructor")) {
-
-
-            PublishQuiz.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent QuizIntent = new Intent(ViewGroup.this, QuizListActivity.class);
-
-                    QuizIntent.putExtra(KEY_ID, group_id);
-
-                    startActivity(QuizIntent);
-                }
-            });
-
-
-        }
-        else { PublishQuiz.setVisibility(View.GONE);
-
-
-        }
-
-
 
 
     }

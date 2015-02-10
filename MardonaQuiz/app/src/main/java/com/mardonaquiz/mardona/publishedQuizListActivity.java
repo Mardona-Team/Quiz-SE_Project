@@ -1,5 +1,6 @@
 package com.mardonaquiz.mardona;
 
+import android.app.ActionBar;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -8,13 +9,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 import android.app.AlertDialog;
 
@@ -38,12 +39,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class publishedQuizListActivity extends ListActivity {
+public class publishedQuizListActivity extends ActionBarActivity {
 
 
     public static final String TAG = publishedQuizListActivity.class.getSimpleName();
     protected JSONObject mPublished;
-    protected ProgressBar mProgressBar;
 
     protected ListView mPublishedListView;
 
@@ -64,18 +64,16 @@ public class publishedQuizListActivity extends ListActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_quiz_list);
+        setContentView(R.layout.activity_published_quizzes);
 
         mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
 
-        mProgressBar = (ProgressBar) findViewById(R.id.progressBar2);
 
 
 
 
         if (isNetworkAvailable()) {
-            mProgressBar.setVisibility(View.VISIBLE);
             GetPublishedList getPublishedQuizList = new GetPublishedList();
             getPublishedQuizList.execute();
         }
@@ -105,7 +103,9 @@ public class publishedQuizListActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_quiz_list, menu);
+        getMenuInflater().inflate(R.menu.menu_published_quizzes, menu);
+        MenuItem item = menu.findItem(R.id.publish_quiz_actionBar);
+        if(mPreferences.getString("Type","").equals("Student")) item.setVisible(false);
         return true;
     }
 
@@ -121,11 +121,16 @@ public class publishedQuizListActivity extends ListActivity {
             return true;
         }
 
+        if(id==R.id.publish_quiz_actionBar){
+            Intent intent= new Intent(publishedQuizListActivity.this,QuizListActivity.class);
+            intent.putExtra("id", getIntent().getStringExtra("id"));
+            startActivity(intent);
+        }
+
         return super.onOptionsItemSelected(item);
     }
 
     public void handleResponse(JSONObject responce) {
-        mProgressBar.setVisibility(View.INVISIBLE);
         ArrayList<PublishedQuizItem> PublishedItems = new ArrayList<PublishedQuizItem>();
         ArrayList<String> publishedTitles= new ArrayList<String>();
 
@@ -159,9 +164,9 @@ public class publishedQuizListActivity extends ListActivity {
                     PublishedItems.add(publishedQuizInstance);
                 }
 
-                mPublishedListView=(ListView) findViewById(R.id.published_quiz_listview);
+                mPublishedListView=(ListView) findViewById(R.id.published_list_view);
                 PublishedQuizListCustomAdapter adapter = new PublishedQuizListCustomAdapter(this,R.layout.item_published_quiz,PublishedItems);
-                setListAdapter(adapter);
+                mPublishedListView.setAdapter(adapter);
             }
             catch (JSONException e) {
                 Log.e(TAG, "Exception caught!", e);
