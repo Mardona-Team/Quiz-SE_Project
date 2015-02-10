@@ -22,42 +22,15 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="- Make sure that all questions and answers are filled"
         android:id="@+id/textView10"
         android:layout_marginTop="34dp"
         android:textSize="20sp"
         android:layout_below="@+id/textView9"
+        android:text="@string/QuizForminst"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- Each question is filled seperately in one page"
-        android:id="@+id/textView11"
-        android:textSize="20sp"
-        android:layout_below="@+id/textView10"
-        android:layout_alignParentRight="true" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- For each question , there must be four different choices"
-        android:id="@+id/textView12"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:textSize="20sp"
-        android:layout_below="@+id/textView11"
-        android:layout_alignParentRight="true" />
+        android:singleLine="false" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="- The first answer in each question should be the right answer then it will be shuffled later with the other ones"
-        android:id="@+id/textView13"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="20sp"
-        android:layout_below="@+id/textView12"
-        android:layout_alignParentRight="true" />
 </RelativeLayout>
