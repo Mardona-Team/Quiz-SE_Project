@@ -1,3 +1,4 @@
+module API
 class MembershipsController < ApplicationController
   before_action :set_membership, only: [:show, :edit, :update, :destroy]
 
@@ -5,6 +6,7 @@ class MembershipsController < ApplicationController
   # GET /memberships.json
   def index
     @memberships = Membership.all
+    render json: @memberships
   end
 
   # GET /memberships/1
@@ -27,11 +29,11 @@ class MembershipsController < ApplicationController
     @membership = Membership.new(membership_params)
 
     respond_to do |format|
-      if @membership.save
-        format.html { redirect_to @membership, notice: 'Membership was successfully created.' }
-        format.json { render :show, status: :created, location: @membership }
+      if Membership.find_by(student_id: params[:student_id], group_id: params[:group_id])
+        format.json { render json: { errors: "You have joined this group before" }, status: :unprocessable_entity }
+      elsif @membership.save
+        format.json { render json: @membership }
       else
-        format.html { render :new }
         format.json { render json: @membership.errors, status: :unprocessable_entity }
       end
     end
@@ -42,10 +44,8 @@ class MembershipsController < ApplicationController
   def update
     respond_to do |format|
       if @membership.update(membership_params)
-        format.html { redirect_to @membership, notice: 'Membership was successfully updated.' }
         format.json { render :show, status: :ok, location: @membership }
       else
-        format.html { render :edit }
         format.json { render json: @membership.errors, status: :unprocessable_entity }
       end
     end
@@ -69,6 +69,7 @@ class MembershipsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def membership_params
-      params.require(:membership).permit(:status, :student_id, :group_id)
+      params.require(:membership).permit(:student_id, :group_id)
     end
+end
 end
