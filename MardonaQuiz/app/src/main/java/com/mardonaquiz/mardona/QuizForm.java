@@ -96,18 +96,8 @@ public class QuizForm extends ActionBarActivity {
 
             Toast.makeText(this, "Please make sure that all questions and answers are filled", Toast.LENGTH_SHORT).show();
         } else {
-            //here we will write the code when there is no error
-            for (int i = 0; i < Questions_Numbers; i++) {
-                Log.e("the value of ", All_Questions[i]);
-                Log.e("Answer1", First_Answer[i]);
-                Log.e("Answer 2", Second_Answer[i]);
-                Log.e("Answer 3", Third_Answer[i]);
-                Log.e("Answer 4", Fourth_Answer[i]);
-                AddQuiztoAPI addGrouptoapi = new AddQuiztoAPI();
-                addGrouptoapi.execute(CREARTE_QUIZ_URL);
-
-
-            }
+            AddQuiztoAPI addGrouptoapi = new AddQuiztoAPI();
+            addGrouptoapi.execute(CREARTE_QUIZ_URL);
         }
     }
 
@@ -518,31 +508,36 @@ public class QuizForm extends ActionBarActivity {
             String response = null;
             JSONObject json = new JSONObject();
 
+
             try {
-                try {
 
                     json.put("success", false);
                     quiz.put("title", Title_of_Quiz);
                     quiz.put("subject", subject_of_quiz);
                     quiz.put("description", Description_of_quiz);
                     quiz.put("marks", final_mark_of_quiz);
-                    quiz.put("year",Year_of_Quiz );
+                    quiz.put("year", Year_of_Quiz);
+
                     for (int counter = 0; counter < Questions_Numbers; counter++) {
-                        JSONObject one_question_attributes= new JSONObject();
+
+                        JSONObject one_question_attributes = new JSONObject();
                         JSONObject right_answer = new JSONObject();
                         one_question_attributes.put("title", All_Questions[counter]);
                         right_answer.put("title", First_Answer[counter]);
-                        one_question_attributes.put("right_answer_attributes",right_answer);
+                        one_question_attributes.put("right_answer_attributes", right_answer);
                         JSONArray answers_attributes = new JSONArray();
-                        title1.put("title",Second_Answer[counter]);
-                        title2.put("title",Third_Answer[counter]);
-                        title3.put("title",Fourth_Answer[counter]);
-                        answers_attributes.put(0,title1);
-                        answers_attributes.put(1,title2);
-                        answers_attributes.put(2,title3);
-                        one_question_attributes.put("answers_attributes",answers_attributes);
-                         questions_attributes.put(one_question_attributes);
+                        title1.put("title", Second_Answer[counter]);
+                        title2.put("title", Third_Answer[counter]);
+                        title3.put("title", Fourth_Answer[counter]);
+
+                        answers_attributes.put(0, title1);
+                        answers_attributes.put(1, title2);
+                        answers_attributes.put(2, title3);
+
+                        one_question_attributes.put("answers_attributes", answers_attributes);
+                        questions_attributes.put(one_question_attributes);
                     }
+
                     quiz.put("questions_attributes", questions_attributes);
                     holder.put("quiz", quiz);
                     StringEntity se = new StringEntity(holder.toString());
@@ -567,7 +562,7 @@ public class QuizForm extends ActionBarActivity {
                     e.printStackTrace();
                     Log.e("IO", "" + e);
                 }
-            } catch (JSONException e) {
+                catch (JSONException e) {
                 e.printStackTrace();
                 Log.e("JSON", "" + e);
             }
