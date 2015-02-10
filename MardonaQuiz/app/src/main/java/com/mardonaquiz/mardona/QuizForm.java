@@ -71,6 +71,7 @@ public class QuizForm extends ActionBarActivity {
     protected String final_mark_of_quiz ;
 
 
+
     public void SubmitQuiz () {
         for (int i = 0; i < Questions_Numbers; i++) {
             Log.e("the value of ", All_Questions[i]);
@@ -136,7 +137,7 @@ public class QuizForm extends ActionBarActivity {
            public void afterTextChanged(Editable s) {
 
 
-                 question = Questions.toString();
+                 question = s.toString();
                  All_Questions[fragment_position-1]=question;
              }
 
@@ -276,6 +277,7 @@ public class QuizForm extends ActionBarActivity {
             Description_of_quiz = Number.getString("Quiz_Description");
             subject_of_quiz = Number.getString("Quiz_Subject");
             final_mark_of_quiz = Number.getString("Final_Mark");
+
 
 
         }
@@ -486,29 +488,25 @@ public class QuizForm extends ActionBarActivity {
             JSONObject holder = new JSONObject();
             // Quiz_Details object contains details about the quiz (title,marks,...)
             JSONObject quiz = new JSONObject();
-            JSONObject Questions = new JSONObject();
-            JSONObject title = new JSONObject();
-            JSONObject right_answer_attributes = new JSONObject();
+
             JSONObject title1 = new JSONObject();
             JSONObject title2 = new JSONObject();
             JSONObject title3 = new JSONObject();
             JSONArray questions_attributes = new JSONArray();
 
-            JSONObject Wrong_Answers = new JSONObject();
             String response = null;
             JSONObject json = new JSONObject();
 
             try {
                 try {
-                    // setup the returned values in case
-                    // something goes wrong
-                    json.put("success", false);
-                    json.put("info", "Something went wrong. Retry!");
-                    //add the quiz details to the params
+
                     quiz.put("title", Title_of_Quiz);
                     quiz.put("subject", subject_of_quiz);
                     quiz.put("description", Description_of_quiz);
                     quiz.put("marks", final_mark_of_quiz);
+                    //TODO put year please
+                    quiz.put("year","NULL" );
+
                     for (int counter = 0; counter < Questions_Numbers; counter++) {
 
                         JSONObject one_question_attributes= new JSONObject();
@@ -516,8 +514,10 @@ public class QuizForm extends ActionBarActivity {
 
                         one_question_attributes.put("title", All_Questions[counter]);
 
-                        title.put("title", First_Answer[counter]);
-                        right_answer.put("right_answer_attributes",title);
+
+
+                        right_answer.put("title", First_Answer[counter]);
+
                         one_question_attributes.put("right_answer_attributes",right_answer);
 
                         JSONArray answers_attributes = new JSONArray();
@@ -542,7 +542,7 @@ public class QuizForm extends ActionBarActivity {
                     StringEntity se = new StringEntity(holder.toString());
                     post.setEntity(se);
 
-
+                     Log.e("el json hwa",holder.toString());
                     // setup the request headers
                     post.setHeader("Accept", "application/json");
                     post.setHeader("Content-Type", "application/json");
@@ -554,7 +554,7 @@ public class QuizForm extends ActionBarActivity {
                 } catch (HttpResponseException e) {
                     e.printStackTrace();
                     Log.e("ClientProtocol", "" + e);
-                    json.put("info", "Email and/or password are invalid. Retry!");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("IO", "" + e);
@@ -571,7 +571,7 @@ public class QuizForm extends ActionBarActivity {
         protected void onPostExecute(JSONObject json) {
 
 
-            Log.e("The Quiz ",json.toString());
+            Log.e("the output is ",json.toString());
 
 
         }
