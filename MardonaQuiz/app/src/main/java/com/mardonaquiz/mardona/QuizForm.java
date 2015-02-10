@@ -32,6 +32,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
@@ -520,26 +521,18 @@ public class QuizForm extends ActionBarActivity {
             try {
                 try {
 
+                    json.put("success", false);
                     quiz.put("title", Title_of_Quiz);
                     quiz.put("subject", subject_of_quiz);
                     quiz.put("description", Description_of_quiz);
                     quiz.put("marks", final_mark_of_quiz);
-
                     quiz.put("year",Year_of_Quiz );
-
                     for (int counter = 0; counter < Questions_Numbers; counter++) {
-
                         JSONObject one_question_attributes= new JSONObject();
                         JSONObject right_answer = new JSONObject();
-
                         one_question_attributes.put("title", All_Questions[counter]);
-
-
-
                         right_answer.put("title", First_Answer[counter]);
-
                         one_question_attributes.put("right_answer_attributes",right_answer);
-
                         JSONArray answers_attributes = new JSONArray();
                         title1.put("title",Second_Answer[counter]);
                         title2.put("title",Third_Answer[counter]);
@@ -548,20 +541,12 @@ public class QuizForm extends ActionBarActivity {
                         answers_attributes.put(1,title2);
                         answers_attributes.put(2,title3);
                         one_question_attributes.put("answers_attributes",answers_attributes);
-
-                       questions_attributes.put(counter,one_question_attributes);
-
+                         questions_attributes.put(one_question_attributes);
                     }
                     quiz.put("questions_attributes", questions_attributes);
-
-
-
-
                     holder.put("quiz", quiz);
-
                     StringEntity se = new StringEntity(holder.toString());
                     post.setEntity(se);
-
                      Log.e("el json hwa",holder.toString());
                     // setup the request headers
                     post.setHeader("Accept", "application/json");
@@ -571,9 +556,12 @@ public class QuizForm extends ActionBarActivity {
                     response = client.execute(post, responseHandler);
                     json = new JSONObject(response);
 
+                    json.put("success", true);
+
                 } catch (HttpResponseException e) {
                     e.printStackTrace();
                     Log.e("ClientProtocol", "" + e);
+
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -589,9 +577,24 @@ public class QuizForm extends ActionBarActivity {
 
         @Override
         protected void onPostExecute(JSONObject json) {
-
-
             Log.e("the output is ",json.toString());
+            try {
+                if (json.getBoolean("success")) {
+
+
+                    // launch the HomeActivity and close this one
+                    Intent intent = new Intent(getApplicationContext(), QuizListActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+                Toast.makeText(getApplicationContext(),"Quiz has been successfully created", Toast.LENGTH_LONG).show();
+                progDailog.cancel();
+            } catch (Exception e) {
+                // something went wrong: show a Toast
+                // with the exception message
+                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+            }
+
 
 
         }

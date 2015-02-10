@@ -60,6 +60,7 @@ public class CreateQuizActivity extends ActionBarActivity {
                     QuizIntent.putExtra("Quiz_Subject",Q_Subj);
                     QuizIntent.putExtra("Quiz_Year",YearString);
                     startActivity(QuizIntent);
+                    finish();
                 }
 
                 }
