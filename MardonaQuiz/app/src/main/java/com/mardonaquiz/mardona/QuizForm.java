@@ -72,10 +72,15 @@ public class QuizForm extends ActionBarActivity {
 
 
     public void SubmitQuiz (){
-
+        for(int i=0;i<Questions_Numbers;i++) {
+            Log.e("the value of ", All_Questions[i]);
+            Log.e("Answer1",First_Answer[i]);
+            Log.e("Answer 2",Second_Answer[i]);
+            Log.e("Answer 3",Third_Answer[i]);
+            Log.e("Answer 4",Fourth_Answer[i]);}
         boolean haveErr=false;
         //this for loop is for validation
-        for(int i=0;i<Questions_Numbers;i++) {
+       /*or(int i=0;i<Questions_Numbers;i++) {
          if(  All_Questions[i]==""|| First_Answer[i]==""||Second_Answer[i]==""||Third_Answer[i]==""||Fourth_Answer[i]=="") {
 
          haveErr=true;
@@ -95,13 +100,13 @@ public class QuizForm extends ActionBarActivity {
                 Log.e("Answer 2",Second_Answer[i]);
                 Log.e("Answer 3",Third_Answer[i]);
                 Log.e("Answer 4",Fourth_Answer[i]);
-                AddQuiztoAPI addGrouptoapi = new AddQuiztoAPI();
-                addGrouptoapi.execute(CREARTE_QUIZ_URL);
+               //ddQuiztoAPI addGrouptoapi = new AddQuiztoAPI();
+              //addGrouptoapi.execute(CREARTE_QUIZ_URL);
 
 
             }
-        }
-    }
+*/      }
+
 
    public void Monitor_Text_Changes(final int fragment_position){
 
@@ -127,27 +132,27 @@ public class QuizForm extends ActionBarActivity {
            }
 
            @Override
-           public void afterTextChanged(Editable editable) {
+           public void afterTextChanged(Editable s) {
 
-             if (editable == Questions){
+             if (s == Questions){
 
                  question = Questions.toString();
                  All_Questions[fragment_position-1]=question;
              }
-               else if (editable == First_ans){
+               else if (s == First_ans){
 
                  answer_1 = First_ans.toString();
                  First_Answer[fragment_position-1]= answer_1;
              }
-               else if (editable == Second_ans){
+               else if (s == Second_ans){
                  answer_2 = Second_ans.toString();
                  Second_Answer[fragment_position-1]= answer_2;
              }
-             else if (editable == Third_ans){
+             else if (s == Third_ans){
                  answer_3 = Third_ans.toString();
                Third_Answer[fragment_position-1]= answer_3;
              }
-             else if (editable == Fourth_ans){
+             else if (s == Fourth_ans){
                  answer_4 = Fourth_ans.toString();
                  Fourth_Answer[fragment_position-1]= answer_4;
              }
@@ -220,7 +225,7 @@ public class QuizForm extends ActionBarActivity {
         Fourth_Answer = new String[Questions_Numbers];
         for(int i = 0 ; i<Questions_Numbers;i++){
             Fourth_Answer[i]="";
-        }
+                    }
 
 
 

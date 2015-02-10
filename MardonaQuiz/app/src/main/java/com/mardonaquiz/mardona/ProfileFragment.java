@@ -18,6 +18,14 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        Button Create_Quiz = (Button)rootView.findViewById(R.id.button4);
+        Create_Quiz.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Quiz = new Intent(getActivity().getApplication(), CreateQuizActivity.class);
+                startActivity(Quiz);
+            }
+        });
 
 
 

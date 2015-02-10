@@ -87,8 +87,6 @@ public class GroupListActivity extends ListActivity {
         Create_Quiz.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent Create =new Intent(GroupListActivity.this,CreateQuizActivity.class);
-                startActivity(Create);
 
 
             }
