@@ -13,6 +13,7 @@ import java.util.HashMap;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
@@ -68,11 +69,12 @@ public class AnswerQuiz extends ActionBarActivity {
      * ########################  variables  ###############################
      **/
 
+    private SharedPreferences mPreferences;
     private String Result_Score;
     private String Result_Max;
     private  String TAG="AnswerQuiz";
-    protected String quizId="1";//todo to be changed
-    protected String userID="1";//todo to be changed
+    protected String quizId;
+    protected String userID;
     protected int NUM_Questions;
     protected ArrayList<String> Questions = new ArrayList<String>();
     protected ArrayList<String[][]> Shuffled_Answers_array =  new ArrayList<String[][]>();
@@ -91,8 +93,21 @@ public class AnswerQuiz extends ActionBarActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_answer_quiz);
+
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+       Log.e("user is", mPreferences.getString("id", ""));
+
+
+        Bundle extras = getIntent().getExtras();
+
+        if (extras != null) {
+
+            quizId    =  extras.getString("Qid");
+            Log.e("quiz id is",quizId);
+        userID= mPreferences.getString("id", "");
         Get_questions_From_server get_questions = new Get_questions_From_server();
         get_questions.execute(); // getting questions from server
+        }
     }
 
     @Override

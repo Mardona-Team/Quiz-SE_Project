@@ -18,8 +18,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:text="@string/CreateTitle"
-    android:textColor="#ff000000"
-    android:textSize="30sp"
+    android:textColor="@color/abc_primary_text_disable_only_material_light"
+    android:textSize="25sp"
     android:layout_margin="10sp" />
     <EditText
         android:layout_width="match_parent"

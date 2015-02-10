@@ -133,6 +133,7 @@ public class publishedQuizListActivity extends ActionBarActivity {
     public void handleResponse(JSONObject responce) {
         ArrayList<PublishedQuizItem> PublishedItems = new ArrayList<PublishedQuizItem>();
         ArrayList<String> publishedTitles= new ArrayList<String>();
+        ArrayList<String> publishedIds= new ArrayList<String>();
 
 
         if (responce == null) {
@@ -155,12 +156,14 @@ public class publishedQuizListActivity extends ActionBarActivity {
 
                    if(pstatus==1){
                     publishedTitles.add(title);
+                       publishedIds.add(ID);
+
                     }
 
                 }
 
                 for(int count=0;count<publishedTitles.size();count++){
-                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""));
+                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""),publishedIds.get(count));
                     PublishedItems.add(publishedQuizInstance);
                 }
 
