@@ -522,9 +522,16 @@ public class QuizForm extends ActionBarActivity {
 
                         JSONObject one_question_attributes = new JSONObject();
                         JSONObject right_answer = new JSONObject();
+
+
                         one_question_attributes.put("title", All_Questions[counter]);
+
+
                         right_answer.put("title", First_Answer[counter]);
+
+
                         one_question_attributes.put("right_answer_attributes", right_answer);
+                        
                         JSONArray answers_attributes = new JSONArray();
                         title1.put("title", Second_Answer[counter]);
                         title2.put("title", Third_Answer[counter]);

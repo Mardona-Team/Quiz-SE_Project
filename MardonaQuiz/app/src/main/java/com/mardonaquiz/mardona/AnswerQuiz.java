@@ -341,25 +341,31 @@ public class AnswerQuiz extends ActionBarActivity {
             String response = null;
             JSONObject json = new JSONObject();
 
+
+
             try{
                 try {
+
+                    json.put("success",false);
+
                     JSONArray answersJSonArray = new JSONArray();
                     for (int i = 0; i < Output_Answers.size(); i++) {
-                        JSONObject tempJson = new JSONObject();
-                        tempJson.put(KEY_ID,Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
-                        answersJSonArray.put(tempJson);
+                      
+                        answersJSonArray.put(Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
                     }
+
+
                     JSONObject quiz_holderJSON =new JSONObject();
                     quiz_holderJSON.put(KEY_ID,quizId);
                     JSONObject user_holderJSON =new JSONObject();
                     user_holderJSON.put(KEY_ID,userID);
                     user_holderJSON.put(KEY_Quiz,quiz_holderJSON);
-                    user_holderJSON.put(KEY_Answe,answersJSonArray);
-                    JSONObject Holder=new JSONObject();
-                    Holder.put(KEY_user,user_holderJSON);
 
-                   Log.e("json sent is",Holder.toString());
-                    StringEntity se = new StringEntity(Holder.toString());
+                    user_holderJSON.put(KEY_Answe,answersJSonArray);
+
+
+                   Log.e("json sent is",user_holderJSON.toString());
+                    StringEntity se = new StringEntity(user_holderJSON.toString());
                     post.setEntity(se);
                     post.setHeader("Accept", "application/json");
                     post.setHeader("Content-Type", "application/json");
@@ -367,6 +373,7 @@ public class AnswerQuiz extends ActionBarActivity {
                     response = client.execute(post, responseHandler);
                     json = new JSONObject(response);
 
+                    json.put("success",true);
                 }catch (HttpResponseException e) {
                     e.printStackTrace();
                     Log.e("ClientProtocol", "" + e);
@@ -389,20 +396,21 @@ public class AnswerQuiz extends ActionBarActivity {
 
             try {
 
-                Log.e("the output is", json.toString());
-                Result_Score=json.getString("marks");
+                if(json.getBoolean("success")) {
+                    Log.e("the output is", json.toString());
+                    Result_Score = json.getString("marks");
 
-                ResultPageAdapter resultPageAdapter=new ResultPageAdapter(getSupportFragmentManager(),Result_Score);
+                    ResultPageAdapter resultPageAdapter = new ResultPageAdapter(getSupportFragmentManager(), Result_Score);
 
-                //todo put the result activity here
-                progDailog.cancel();
-                for(int i=0;i<mViewPager.getAdapter().getCount();i++)
-                {
-                    getSupportFragmentManager().beginTransaction().remove(mSectionsPagerAdapter.getItem(i)).commit();
+                    //todo put the result activity here
+                    progDailog.cancel();
+                    for (int i = 0; i < mViewPager.getAdapter().getCount(); i++) {
+                        getSupportFragmentManager().beginTransaction().remove(mSectionsPagerAdapter.getItem(i)).commit();
+                    }
+                    mViewPager.removeAllViews();
+                    mViewPager.setAdapter(null);
+                    mViewPager.setAdapter(resultPageAdapter);
                 }
-                mViewPager.removeAllViews();
-                mViewPager.setAdapter(null);
-                mViewPager.setAdapter(resultPageAdapter);
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
             } finally {
