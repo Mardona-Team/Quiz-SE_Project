@@ -493,7 +493,6 @@ public class QuizForm extends ActionBarActivity {
             JSONObject title2 = new JSONObject();
             JSONObject title3 = new JSONObject();
             JSONArray questions_attributes = new JSONArray();
-            JSONArray answers_attributes = new JSONArray();
 
             JSONObject Wrong_Answers = new JSONObject();
             String response = null;
@@ -511,18 +510,26 @@ public class QuizForm extends ActionBarActivity {
                     quiz.put("description", Description_of_quiz);
                     quiz.put("marks", final_mark_of_quiz);
                     for (int counter = 0; counter < Questions_Numbers; counter++) {
-                        Questions.put("title", All_Questions[counter]);
+
+                        JSONObject one_question_attributes= new JSONObject();
+                        JSONObject right_answer = new JSONObject();
+
+                        one_question_attributes.put("title", All_Questions[counter]);
+
                         title.put("title", First_Answer[counter]);
-                        right_answer_attributes.put("right_answer_attributes",title);
+                        right_answer.put("right_answer_attributes",title);
+                        one_question_attributes.put("right_answer_attributes",right_answer);
+
+                        JSONArray answers_attributes = new JSONArray();
                         title1.put("title",Second_Answer[counter]);
                         title2.put("title",Third_Answer[counter]);
                         title3.put("title",Fourth_Answer[counter]);
                         answers_attributes.put(0,title1);
                         answers_attributes.put(1,title2);
                         answers_attributes.put(2,title3);
-                        questions_attributes.put(0,title);
-                        questions_attributes.put(1,right_answer_attributes);
-                        questions_attributes.put(2,answers_attributes);
+                        one_question_attributes.put("answers_attributes",answers_attributes);
+
+                       questions_attributes.put(counter,one_question_attributes);
 
                     }
                     quiz.put("questions_attributes", questions_attributes);
@@ -530,7 +537,7 @@ public class QuizForm extends ActionBarActivity {
 
 
 
-                    holder.put("user", quiz);
+                    holder.put("quiz", quiz);
 
                     StringEntity se = new StringEntity(holder.toString());
                     post.setEntity(se);
