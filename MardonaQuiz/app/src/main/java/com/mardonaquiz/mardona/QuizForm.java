@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -69,6 +70,7 @@ public class QuizForm extends ActionBarActivity {
     protected  String Description_of_quiz ;
     protected String subject_of_quiz ;
     protected String final_mark_of_quiz ;
+    protected String Year_of_Quiz ;
 
 
 
@@ -278,6 +280,8 @@ public class QuizForm extends ActionBarActivity {
             subject_of_quiz = Number.getString("Quiz_Subject");
             final_mark_of_quiz = Number.getString("Final_Mark");
 
+            Year_of_Quiz = Number.getString("Quiz_Year");
+
 
 
         }
@@ -434,16 +438,16 @@ public class QuizForm extends ActionBarActivity {
          * The fragment argument representing the section number for this
          * fragment.
          */
-        private static final String ARG_SECTION_NUMBER = "section_number";
+
 
         /**
          * Returns a new instance of this fragment for the given section
          * number.
          */
-        public static PlaceholderFragment newInstance(int sectionNumber) {
+        public static PlaceholderFragment newInstance(int QuestionNumber) {
             PlaceholderFragment fragment = new PlaceholderFragment();
             Bundle args = new Bundle();
-            args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+            args.putInt("q", QuestionNumber+1);
             fragment.setArguments(args);
             return fragment;
         }
@@ -456,6 +460,9 @@ public class QuizForm extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_quiz_form, container, false);
 
+
+
+            ((TextView)(rootView.findViewById(R.id.textView7))).setText("Question "+getArguments().getInt("q"));
 
             return rootView;
         }
@@ -482,6 +489,19 @@ public class QuizForm extends ActionBarActivity {
     }
     private class AddQuiztoAPI extends AsyncTask<String,Void,JSONObject> {
 
+
+
+        ProgressDialog progDailog = new ProgressDialog(QuizForm.this);
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
         protected JSONObject doInBackground(String... urls) {
             DefaultHttpClient client = new DefaultHttpClient();
             HttpPost post = new HttpPost("http://es2alny.herokuapp.com/api/quizzes");
@@ -504,8 +524,8 @@ public class QuizForm extends ActionBarActivity {
                     quiz.put("subject", subject_of_quiz);
                     quiz.put("description", Description_of_quiz);
                     quiz.put("marks", final_mark_of_quiz);
-                    //TODO put year please
-                    quiz.put("year","NULL" );
+
+                    quiz.put("year",Year_of_Quiz );
 
                     for (int counter = 0; counter < Questions_Numbers; counter++) {
 

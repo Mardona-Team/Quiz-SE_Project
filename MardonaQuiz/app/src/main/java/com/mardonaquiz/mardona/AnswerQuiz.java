@@ -116,13 +116,9 @@ public class AnswerQuiz extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-
     /**
      * ########################  Custom functions ###############################
      **/
-
-
-
     //Get data
     private class Get_questions_From_server extends AsyncTask<Object, Void, JSONObject> {
 
@@ -152,6 +148,7 @@ public class AnswerQuiz extends ActionBarActivity {
         }
 
     }
+
     public static JSONObject GET(String url){
         InputStream inputStream = null;
         String result = "";
@@ -185,6 +182,7 @@ public class AnswerQuiz extends ActionBarActivity {
 
         return jsonResponse;
     }
+
     private static String convertInputStreamToString(InputStream inputStream) throws IOException{
         BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
         String line = "";
@@ -196,6 +194,7 @@ public class AnswerQuiz extends ActionBarActivity {
         return result;
 
     }
+
     public void handleResponse(JSONObject result) {
 
 
@@ -246,7 +245,6 @@ public class AnswerQuiz extends ActionBarActivity {
             }
         }
     }
-
     //view data
     private void initiate_view()   {
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),Questions,Shuffled_Answers_array);
@@ -294,7 +292,6 @@ public class AnswerQuiz extends ActionBarActivity {
 
 
     }
-
     //monitor data
     public void Monitor_Answers_changes(final int question) {
         RadioGroup agroup = (RadioGroup) mSectionsPagerAdapter.getItem(question).getView().findViewById(R.id.rgroup);
@@ -308,9 +305,7 @@ public class AnswerQuiz extends ActionBarActivity {
             }
         });
     }
-
-//Post data
-
+    //Post data
     private class SubmitQuiz extends AsyncTask<String,Void,JSONObject> {
 
         ProgressDialog progDailog = new ProgressDialog(AnswerQuiz.this);
@@ -401,8 +396,6 @@ public class AnswerQuiz extends ActionBarActivity {
 
         }
     }
-
-
     /**
      * ########################  adapters  ###############################
      **/
@@ -492,7 +485,6 @@ public class AnswerQuiz extends ActionBarActivity {
         }
 
     }
-
     /**
      * ########################  Fragments ###############################
      */

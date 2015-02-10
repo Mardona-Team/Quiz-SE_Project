@@ -86,7 +86,7 @@ public class GroupListActivity extends ListActivity {
         else {
             Toast.makeText(this, "Network is unavailable!", Toast.LENGTH_LONG).show();
         }
-        
+
 
 
     }

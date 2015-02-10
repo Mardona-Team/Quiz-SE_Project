@@ -41,10 +41,13 @@ public class CreateQuizActivity extends ActionBarActivity {
                  String Qu_NO = Qu_Num.getText().toString();
 
                 EditText Final = (EditText) findViewById(R.id.editText5);
-                 String FinalMarks = Final.getText().toString();
+                String FinalMarks = Final.getText().toString();
+
+                EditText Year = (EditText) findViewById(R.id.editText12);
+                String YearString = Year.getText().toString();
 
 
-                if(Q_Title.length()==0|| Q_Desc.length()==0|| Q_Subj.length()==0||Qu_NO.length()==0||FinalMarks.length()==0) {
+                if(Q_Title.length()==0|| Q_Desc.length()==0|| Q_Subj.length()==0||Qu_NO.length()==0||YearString.length()==0||FinalMarks.length()==0) {
                     Toast.makeText(CreateQuizActivity.this, "Please fill in the missing data", Toast.LENGTH_SHORT).show();
 
                 }
@@ -55,6 +58,7 @@ public class CreateQuizActivity extends ActionBarActivity {
                     QuizIntent.putExtra("Quiz_Description", Q_Desc);
                     QuizIntent.putExtra("Final_Mark",FinalMarks);
                     QuizIntent.putExtra("Quiz_Subject",Q_Subj);
+                    QuizIntent.putExtra("Quiz_Year",YearString);
                     startActivity(QuizIntent);
                 }
 
