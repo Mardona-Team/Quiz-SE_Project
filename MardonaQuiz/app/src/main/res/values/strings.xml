@@ -72,4 +72,13 @@
     <string name="quizPublished">Quiz has been published successfully!</string>
 
 
+    <string name="CreateTitle">Please fill in Quiz details :</string>
+    <string name="QuizTitle">Quiz Title</string>
+    <string name="QuizDesc">Quiz Description</string>
+    <string name="QuizYear">Quiz Year</string>
+    <string name="Quizsubj">Quiz Subj</string>
+    <string name="NumQues">Number of questions</string>
+    <string name="FinalMark">Final Mark</string>
+
+
 </resources>

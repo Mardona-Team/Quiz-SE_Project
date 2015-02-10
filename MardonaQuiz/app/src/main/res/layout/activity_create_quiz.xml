@@ -12,131 +12,81 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quiz Title"
-        android:id="@+id/textView2"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:textSize="20sp"
-        android:textColor="#ff000000" />
+            android:layout_height="wrap_content">
 
+<TextView
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:text="@string/CreateTitle"
+    android:textColor="#ff000000"
+    android:textSize="30sp"
+    android:layout_margin="10sp" />
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText"
-        android:layout_below="@+id/textView2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="30sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Quiz Description"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/editText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:hint="@string/QuizTitle"
+        android:textColorHint="@android:color/darker_gray"
+
+
         android:textSize="20sp"
-        android:textColor="#ff000000" />
+        android:layout_margin="10sp" />
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText2"
-        android:layout_below="@+id/textView3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editText"
-        android:layout_alignEnd="@+id/editText"
-        android:textSize="30sp" />
+        android:hint="@string/QuizDesc"
+        android:textColorHint="@android:color/darker_gray"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Subject"
-        android:id="@+id/textView4"
-        android:layout_below="@+id/editText2"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+
         android:textSize="20sp"
-        android:textColor="#ff000000" />
+        android:layout_margin="10sp" />
+
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText3"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="30sp" />
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Year"
-        android:id="@+id/textView12"
-        android:layout_below="@+id/editText3"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:hint="@string/Quizsubj"
+        android:textColorHint="@android:color/darker_gray"
+
+
         android:textSize="20sp"
-        android:textColor="#ff000000" />
+        android:layout_margin="10sp" />
+
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/editText12"
-        android:layout_below="@+id/textView12"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:textSize="30sp" />
+        android:hint="@string/QuizYear"
+        android:textColorHint="@android:color/darker_gray"
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Number Of Questions"
-        android:id="@+id/textView5"
-        android:layout_below="@+id/editText12"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
         android:textSize="20sp"
-        android:textColor="#ff000000" />
+        android:layout_margin="10sp" />
+
+
 
             <EditText
-        android:layout_width="364dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
         android:ems="10"
-        android:id="@+id/editText4"
-        android:layout_below="@+id/textView5"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editText3"
-        android:layout_alignEnd="@+id/editText3"
-        android:textSize="30sp" />
+                android:hint="@string/NumQues"
+                android:textColorHint="@android:color/darker_gray"
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Final mark"
-        android:id="@+id/textView6"
-        android:layout_below="@+id/editText4"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
+        android:id="@+id/editText4"
+
         android:textSize="20sp"
-        android:textColor="#ff000000" />
+                android:layout_margin="10sp" />
+
+
 
     <EditText
         android:layout_width="match_parent"
@@ -144,12 +94,12 @@
         android:inputType="number"
         android:ems="10"
         android:id="@+id/editText5"
-        android:layout_below="@+id/textView6"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/editText4"
-        android:layout_alignEnd="@+id/editText4"
-        android:textSize="30sp" />
+        android:hint="@string/FinalMark"
+        android:textColorHint="@android:color/darker_gray"
+
+
+        android:textSize="20sp"
+        android:layout_margin="10sp" />
 
             <Button
                 android:layout_width="147dp"
