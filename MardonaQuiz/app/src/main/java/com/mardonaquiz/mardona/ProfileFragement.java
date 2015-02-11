@@ -275,7 +275,7 @@ public class ProfileFragement extends Fragment {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET("http://es2alny.herokuapp.com/api/groups/");
+            return GET("http://es2alny-test.herokuapp.com/api/groups/");
         }
 
         @Override

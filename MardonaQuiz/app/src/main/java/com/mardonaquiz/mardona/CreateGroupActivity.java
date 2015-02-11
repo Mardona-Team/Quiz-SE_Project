@@ -27,7 +27,7 @@ import java.io.IOException;
 
 public class CreateGroupActivity extends ActionBarActivity {
 
-    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/groups";
+    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny-test.herokuapp.com/api/groups";
     //TODO Get instructor ID
     private String instructor_id=null;
     private String GroupName;

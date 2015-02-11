@@ -66,4 +66,7 @@
     <string name="networkMsg">Network is unavailable!</string>
     <string name="connectionError">connection error</string>
    <string name="quizPublished">Quiz has been published successfully!</string>
+    <string name="confirmationMsg1">Are you sure you want to join this group?</string>
+    <string name="confirmTitle1">Joining group</string>
+
 </resources>

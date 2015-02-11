@@ -4,33 +4,36 @@
     android:layout_height="match_parent"
     android:showDividers="middle"
     android:divider="@drawable/empty_tall_divider"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:weightSum="1">
 
     <TextView
         android:id="@+id/published_quiz_title"
-        android:layout_width="wrap_content"
+        android:layout_width="136dp"
         android:layout_height="wrap_content"
         android:text="Quiz"
         android:textSize="18sp"
-        android:layout_weight="0.3" />
-
+        android:layout_weight="1" />
 
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="104dp"
+        android:layout_width="100dp"
         android:layout_height="36dp"
         android:text="Show Answers"
-        android:id="@+id/published_quiz_button_1"
-        android:layout_weight="0.3"/>
+        android:background="@drawable/button_shape"
+        android:textColor="@android:color/white"
+        android:id="@+id/published_quiz_button_1" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="104dp"
+        android:layout_width="100dp"
         android:layout_height="36dp"
         android:text="Show Answers"
-        android:id="@+id/published_quiz_button_2"
-        android:layout_weight="0.3"/>
+        android:background="@drawable/button_shape"
+        android:textColor="@android:color/white"
+        android:id="@+id/published_quiz_button_2" />
 
 
 </LinearLayout>

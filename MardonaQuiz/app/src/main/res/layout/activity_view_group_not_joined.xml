@@ -66,52 +66,17 @@
     </RelativeLayout>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_below="@+id/imageView2"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:weightSum="1"
-            android:paddingTop="10dp"
-            android:paddingLeft="10dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Group Quizzes"
-                android:textSize="21sp"
-                android:textStyle="bold"
-                android:textColor="@color/background_purple"
-                android:layout_gravity="center_horizontal"
-                android:layout_below="@+id/imageView2"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:id="@+id/textView3"
-                android:layout_weight="0.98"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="18dp"
-                android:drawableLeft="@android:drawable/ic_input_add"
-                android:textColor="@color/background_purple"
-                android:id="@+id/add_quiz_icon"
-                android:layout_marginRight="40dp"
-                android:layout_marginEnd="40dp"
-                android:layout_alignTop="@+id/textView3"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-
-        </LinearLayout>
-
-
-    <ListView
-        android:layout_width="match_parent"
+    <Button
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/groupsListView"
-        android:paddingTop="10dp" />
-
+        android:text="Join Group"
+        android:id="@+id/joinGroup"
+        android:layout_alignTop="@+id/published"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/button_shape"
+        android:textColor="@android:color/white"/>
 </LinearLayout>
 
 

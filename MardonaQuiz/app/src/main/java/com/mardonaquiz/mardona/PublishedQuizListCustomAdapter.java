@@ -69,7 +69,7 @@ public class PublishedQuizListCustomAdapter extends ArrayAdapter<PublishedQuizIt
         }
 
         else if(publishedQuizItem.type.equals("Student")){
-            publishedQuizButton1.setText("Answer Quiz");
+            publishedQuizButton1.setText("Answer");
             publishedQuizButton2.setText("Result");
 
             publishedQuizButton1.setOnClickListener(new View.OnClickListener() {

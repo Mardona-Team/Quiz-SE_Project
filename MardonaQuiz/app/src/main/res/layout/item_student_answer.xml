@@ -2,8 +2,10 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:showDividers="middle"
+    android:showDividers="middle|end"
     android:divider="@drawable/empty_tall_divider"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:weightSum="1">
 
     <TextView
@@ -12,7 +14,7 @@
         android:layout_height="wrap_content"
         android:text="Question"
         android:textSize="18sp"
-        android:layout_weight="0.3" />
+        android:layout_weight="0.7" />
 
     <TextView
         android:id="@+id/student_answer"
@@ -20,7 +22,7 @@
         android:layout_height="wrap_content"
         android:text="answer"
         android:textSize="18sp"
-        android:layout_weight="0.30" />
+        android:layout_weight="0.3" />
 
     <TextView
         android:id="@+id/correctness"

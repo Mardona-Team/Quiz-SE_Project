@@ -4,30 +4,35 @@
     android:layout_height="match_parent"
     android:showDividers="middle"
     android:divider="@drawable/empty_tall_divider"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
     android:weightSum="1">
 
     <TextView
         android:id="@+id/student_name"
-        android:layout_width="wrap_content"
+        android:layout_width="136dp"
         android:layout_height="wrap_content"
         android:text="Student Name"
-        android:layout_weight="0.3" />
+        android:layout_weight="0.7" />
 
     <TextView
         android:id="@+id/grade"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:text="Score"
         android:textSize="20sp"
-        android:layout_weight="0.30" />
+        android:layout_weight="0.3" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
+        android:background="@drawable/button_shape"
+        android:textColor="@android:color/white"
+        android:padding="2dp"
+        android:layout_width="100dp"
         android:layout_height="36dp"
-        android:text="Show Answers"
+        android:text="Answers"
         android:id="@+id/show_answers_button"
-        android:layout_weight="0.3" />
+        android:layout_weight="0.2" />
 
 
 </LinearLayout>
