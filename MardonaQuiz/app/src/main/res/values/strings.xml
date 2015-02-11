@@ -50,6 +50,10 @@
     <string name="title_section3">Section 3</string>
     <string name="title_activity_view_group">ViewGroup</string>
     <string name="Group_list">Group List</string>
+    <string name="title_activity_quiz_form">QuizForm</string>
+
+
+    <string name="Submit_Quiz">Submit Quiz</string>
     <string name="title_activity_statistics_activty">Quiz Statistics</string>
     <string name="title_activity_students_scores">Students\' Scores</string>
     <string name="title_activity_student_answers">Answers</string>
@@ -65,8 +69,22 @@
     <string name="no_msg">No</string>
     <string name="networkMsg">Network is unavailable!</string>
     <string name="connectionError">connection error</string>
+
    <string name="quizPublished">Quiz has been published successfully!</string>
     <string name="confirmationMsg1">Are you sure you want to join this group?</string>
     <string name="confirmTitle1">Joining group</string>
+    <string name="CreateTitle">Please fill in Quiz details :</string>
+    <string name="QuizTitle">Quiz Title</string>
+    <string name="QuizDesc">Quiz Description</string>
+    <string name="QuizYear">Quiz Year</string>
+    <string name="Quizsubj">Quiz Subj</string>
+    <string name="NumQues">Number of questions</string>
+    <string name="FinalMark">Final Mark</string>
+    <string name="QuizForminst">
+ Make sure that all questions and answers are filled \n
+ Each question is filled seperately in one page \n
+ For each question , there must be four different choices  \n
+ The first answer in each question should be the right answer then it will be shuffled later with the other ones</string>
+
 
 </resources>

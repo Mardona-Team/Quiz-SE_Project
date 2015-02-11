@@ -77,6 +77,7 @@ public class PublishedQuizListCustomAdapter extends ArrayAdapter<PublishedQuizIt
                 public void onClick(View view) {
                     Intent i = new Intent(mContext, AnswerQuiz.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("Qid",publishedQuizItem.id);
                     mContext.startActivity(i);
                 }
             });

@@ -110,9 +110,11 @@ public class CreateGroupActivity extends ActionBarActivity {
                     groupObj.put("year",GroupYear);
                     groupObj.put("subject",GroupSubj);
                     groupObj.put("description",GroupDesc);
+
                     StringEntity se = new StringEntity(groupObj.toString());
                     post.setEntity(se);
 
+                    Log.e("group json is",groupObj.toString());
                     post.setHeader("Accept", "application/json");
                     post.setHeader("Content-Type", "application/json");
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();

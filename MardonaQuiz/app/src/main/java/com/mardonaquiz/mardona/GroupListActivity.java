@@ -15,6 +15,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleAdapter;
@@ -61,7 +62,7 @@ public class GroupListActivity extends ListActivity {
         super.onListItemClick(l, v, position, id);
 
 
-        Intent intent = new Intent(this, ViewGroup.class);
+                Intent intent = new Intent(this, ViewGroup.class);
 
         intent.putExtra(KEY_ID,allGroups.get(position).get(KEY_ID));
 
@@ -85,6 +86,7 @@ public class GroupListActivity extends ListActivity {
         else {
             Toast.makeText(this, "Network is unavailable!", Toast.LENGTH_LONG).show();
         }
+
 
 
     }
@@ -237,13 +239,13 @@ public class GroupListActivity extends ListActivity {
         AlertDialog dialog = builder.create();
         dialog.show();
 
-//        TextView emptyTextView = (TextView) getListView().getEmptyView();
-//        emptyTextView.setText("no items to be displayed");
+
     }
 
     private class GET_Group_list extends AsyncTask<Object, Void, JSONObject> {
 
         ProgressDialog progDailog = new ProgressDialog(GroupListActivity.this);
+
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -253,6 +255,7 @@ public class GroupListActivity extends ListActivity {
             progDailog.setCancelable(true);
             progDailog.show();
         }
+
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
