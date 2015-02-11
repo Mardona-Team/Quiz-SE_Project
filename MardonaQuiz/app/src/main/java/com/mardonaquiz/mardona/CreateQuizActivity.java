@@ -1,6 +1,7 @@
 package com.mardonaquiz.mardona;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,12 +13,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+
+
+
 public class CreateQuizActivity extends ActionBarActivity {
+
+    protected SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_quiz);
+
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+
 
         Button Submit = (Button) findViewById(R.id.button3);
 
@@ -59,6 +68,7 @@ public class CreateQuizActivity extends ActionBarActivity {
                     QuizIntent.putExtra("Final_Mark",FinalMarks);
                     QuizIntent.putExtra("Quiz_Subject",Q_Subj);
                     QuizIntent.putExtra("Quiz_Year",YearString);
+                    QuizIntent.putExtra("Instructor_Id",mPreferences.getString("id",""));
                     startActivity(QuizIntent);
                     finish();
                 }

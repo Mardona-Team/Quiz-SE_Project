@@ -72,6 +72,9 @@ public class QuizForm extends ActionBarActivity {
     protected String subject_of_quiz ;
     protected String final_mark_of_quiz ;
     protected String Year_of_Quiz ;
+    protected String Instructor_Id;
+
+
 
 
 
@@ -270,8 +273,8 @@ public class QuizForm extends ActionBarActivity {
             Description_of_quiz = Number.getString("Quiz_Description");
             subject_of_quiz = Number.getString("Quiz_Subject");
             final_mark_of_quiz = Number.getString("Final_Mark");
-
             Year_of_Quiz = Number.getString("Quiz_Year");
+            Instructor_Id=Number.getString("Instructor_Id");
 
 
 
@@ -342,8 +345,8 @@ public class QuizForm extends ActionBarActivity {
 
 
 
-                Toast.makeText(QuizForm.this,
-                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(QuizForm.this,
+//                        "Selected page position: " + position, Toast.LENGTH_SHORT).show();
             }
 
             // This method will be invoked when the current page is scrolled
@@ -517,6 +520,7 @@ public class QuizForm extends ActionBarActivity {
                     quiz.put("description", Description_of_quiz);
                     quiz.put("marks", final_mark_of_quiz);
                     quiz.put("year", Year_of_Quiz);
+                    quiz.put("instructor_id",Instructor_Id);
 
                     for (int counter = 0; counter < Questions_Numbers; counter++) {
 

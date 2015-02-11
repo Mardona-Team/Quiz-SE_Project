@@ -77,7 +77,7 @@ public class ViewGroup extends ActionBarActivity {
     private final String keyPublished = "published";
 
 
-    private final String keyId = "id";
+    private final String keyId = "refrence_id";
 
     private ArrayList<HashMap<String, String>> allPublished =
             new ArrayList<HashMap<String, String>>();

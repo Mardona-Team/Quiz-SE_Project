@@ -374,6 +374,9 @@ public class AnswerQuiz extends ActionBarActivity {
                     json = new JSONObject(response);
 
                     json.put("success",true);
+
+                    Log.e("Json being sent", "" + json);
+
                 }catch (HttpResponseException e) {
                     e.printStackTrace();
                     Log.e("ClientProtocol", "" + e);
