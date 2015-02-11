@@ -1,4 +1,4 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,11 +9,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-
-
+import com.mardonaquiz.mardona.R;
 
 
 public class CreateQuizActivity extends ActionBarActivity {
@@ -61,7 +59,7 @@ public class CreateQuizActivity extends ActionBarActivity {
 
                 }
                 else {
-                    Intent QuizIntent=new Intent(CreateQuizActivity.this,QuizForm.class);
+                    Intent QuizIntent=new Intent(CreateQuizActivity.this,QuizFormActivity.class);
                     QuizIntent.putExtra("Number_Of_Questions",Qu_NO);
                     QuizIntent.putExtra("Quiz_Title",Q_Title);
                     QuizIntent.putExtra("Quiz_Description", Q_Desc);

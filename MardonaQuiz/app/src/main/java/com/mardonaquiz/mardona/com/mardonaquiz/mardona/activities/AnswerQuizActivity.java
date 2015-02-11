@@ -1,21 +1,15 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -34,6 +28,8 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.mardonaquiz.mardona.R;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.HttpResponseException;
@@ -48,7 +44,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class AnswerQuiz extends ActionBarActivity {
+public class AnswerQuizActivity extends ActionBarActivity {
 
     /**
      * ########################  Kyes ###############################
@@ -137,7 +133,7 @@ public class AnswerQuiz extends ActionBarActivity {
     //Get data
     private class Get_questions_From_server extends AsyncTask<Object, Void, JSONObject> {
 
-        ProgressDialog progDailog = new ProgressDialog(AnswerQuiz.this);
+        ProgressDialog progDailog = new ProgressDialog(AnswerQuizActivity.this);
 
 
         protected void onPreExecute() {
@@ -323,7 +319,7 @@ public class AnswerQuiz extends ActionBarActivity {
     //Post data
     private class SubmitQuiz extends AsyncTask<String,Void,JSONObject> {
 
-        ProgressDialog progDailog = new ProgressDialog(AnswerQuiz.this);
+        ProgressDialog progDailog = new ProgressDialog(AnswerQuizActivity.this);
         protected void onPreExecute() {
             super.onPreExecute();
             progDailog.setMessage("Loading...");

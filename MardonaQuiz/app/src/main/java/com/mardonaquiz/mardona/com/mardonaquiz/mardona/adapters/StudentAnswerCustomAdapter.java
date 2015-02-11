@@ -1,15 +1,16 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters;
 
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
+
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.StudentAnswerItem;
 
 import java.util.ArrayList;
 

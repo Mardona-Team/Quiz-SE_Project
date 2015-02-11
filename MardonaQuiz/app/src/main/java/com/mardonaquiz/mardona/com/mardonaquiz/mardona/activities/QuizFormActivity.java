@@ -1,27 +1,19 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Locale;
 
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,7 +24,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.apache.http.HttpResponse;
+import com.mardonaquiz.mardona.R;
+
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
@@ -44,7 +37,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 
-public class QuizForm extends ActionBarActivity {
+public class QuizFormActivity extends ActionBarActivity {
 
     private final static String CREARTE_QUIZ_URL = "http://es2alny-test.herokuapp.com/api/quizzes";
 
@@ -485,7 +478,7 @@ public class QuizForm extends ActionBarActivity {
 
 
 
-        ProgressDialog progDailog = new ProgressDialog(QuizForm.this);
+        ProgressDialog progDailog = new ProgressDialog(QuizFormActivity.this);
 
         protected void onPreExecute() {
             super.onPreExecute();

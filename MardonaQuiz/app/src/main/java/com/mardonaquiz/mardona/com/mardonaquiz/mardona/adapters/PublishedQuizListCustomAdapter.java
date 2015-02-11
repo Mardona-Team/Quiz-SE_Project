@@ -1,21 +1,19 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters;
 
 
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.model.CategorySeries;
-import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.renderer.SimpleSeriesRenderer;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.AnswerQuizActivity;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.PublishedQuizItem;
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.StudentsScoresActivity;
 
 import java.util.ArrayList;
 
@@ -75,7 +73,7 @@ public class PublishedQuizListCustomAdapter extends ArrayAdapter<PublishedQuizIt
             publishedQuizButton1.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    Intent i = new Intent(mContext, AnswerQuiz.class);
+                    Intent i = new Intent(mContext, AnswerQuizActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("Qid",publishedQuizItem.id);
                     mContext.startActivity(i);
@@ -87,6 +85,7 @@ public class PublishedQuizListCustomAdapter extends ArrayAdapter<PublishedQuizIt
                 public void onClick(View view) {
                     Intent i = new Intent(mContext, StudentsScoresActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.putExtra("quiz_title", publishedQuizItem.title);
                     mContext.startActivity(i);
                  }
             });

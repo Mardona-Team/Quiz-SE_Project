@@ -1,6 +1,5 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -14,11 +13,14 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.StudentScoreItem;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters.StudentsScoresCustomAdapter;
 
 import org.achartengine.ChartFactory;
 import org.achartengine.model.CategorySeries;
@@ -36,13 +38,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 
 
 public class StudentsScoresActivity extends ActionBarActivity {

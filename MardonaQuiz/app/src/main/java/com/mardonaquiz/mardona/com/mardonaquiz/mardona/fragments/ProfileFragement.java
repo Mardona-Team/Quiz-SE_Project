@@ -1,29 +1,26 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.fragments;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
+
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.CreateGroupActivity;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.MainActivity;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.ViewGroupActivity;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -53,7 +50,7 @@ public class ProfileFragement extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public static final String TAG = GroupListActivity.class.getSimpleName();
+    public static final String TAG = MainActivity.class.getSimpleName();
     protected JSONObject mGroups;
 
     private final String KEY_group = "groups";
@@ -103,7 +100,7 @@ public class ProfileFragement extends Fragment {
         groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(getActivity(), com.mardonaquiz.mardona.ViewGroup.class);
+                Intent intent = new Intent(getActivity(), ViewGroupActivity.class);
 
                 intent.putExtra(KEY_ID,allGroups.get(i).get(KEY_ID));
 

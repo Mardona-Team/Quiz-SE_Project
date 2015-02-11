@@ -1,6 +1,6 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
-import android.app.ActionBar;
+import android.support.v7.app.ActionBar;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -11,12 +11,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mardonaquiz.mardona.R;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -28,34 +28,43 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.util.ArrayList;
 
 
-public class RegistrationActivity extends ActionBarActivity {
+public class LoginActivity extends ActionBarActivity {
 
-    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/registrations";
+    private TextView signUpRedirect;
+    private Button logIn;
+    private final static String LOGIN_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/sessions.json";
     private SharedPreferences mPreferences;
     private String mUserEmail;
-    private String mFirstName;
-    private String mLastName;
-    private String mRole;
     private String mUserPassword;
-    private String mUserPasswordConfirmation;
-
-    private Spinner mRoleSpinner;
-    private Button mSignUpButton;
-
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_registration);
+        setContentView(R.layout.activity_login);
+
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.hide();
+
+        signUpRedirect=(TextView)findViewById(R.id.signUp_Link);
+        signUpRedirect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent registerIntent=new Intent(LoginActivity.this,RegistrationActivity.class);
+                startActivity(registerIntent);
+            }
+        });
 
 
-       getSupportActionBar().hide();
-
-        addItemsOnRoleSpinner();
+        logIn=(Button)findViewById(R.id.logInButton);
+        logIn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                login(logIn);
+            }
+        });
 
         mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
     }
@@ -64,7 +73,7 @@ public class RegistrationActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_registration, menu);
+        getMenuInflater().inflate(R.menu.menu_login, menu);
         return true;
     }
 
@@ -83,81 +92,28 @@ public class RegistrationActivity extends ActionBarActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-    public void addItemsOnRoleSpinner() {
-
-        mRoleSpinner = (Spinner) findViewById(R.id.role);
-        final ArrayList<String> list = new ArrayList<String>();
-        list.add("Student");
-        list.add("Instructor");
-
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, list);
-        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        mRoleSpinner.setAdapter(dataAdapter);
-        mRoleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                mRole=list.get(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-                mRole=list.get(0);
-
-            }
-        });
-
-
-        mSignUpButton=(Button)findViewById(R.id.signUp_button);
-        mSignUpButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                registerNewAccount(mSignUpButton);
-            }
-        });
-
-    }
-
-
-    public void registerNewAccount(View button) {
-        EditText userEmailField = (EditText) findViewById(R.id.email_SignUp_Field);
+    public void login(View button) {
+        EditText userEmailField = (EditText) findViewById(R.id.email_editText_logIn);
         mUserEmail = userEmailField.getText().toString();
-        EditText firstNameField = (EditText) findViewById(R.id.first_name);
-        mFirstName = firstNameField.getText().toString();
-        EditText lastNameField = (EditText) findViewById(R.id.last_name);
-        mLastName = lastNameField.getText().toString();
-        EditText userPasswordField = (EditText) findViewById(R.id.password_signUp);
+        EditText userPasswordField = (EditText) findViewById(R.id.passwordField);
         mUserPassword = userPasswordField.getText().toString();
-        EditText userPasswordConfirmationField = (EditText) findViewById(R.id.password_confirm);
-        mUserPasswordConfirmation = userPasswordConfirmationField.getText().toString();
 
-
-        if (mUserEmail.length() == 0 || mFirstName.length() == 0 ||mLastName.length() == 0
-                || mUserPassword.length() == 0 || mUserPasswordConfirmation.length() == 0 || mRole==null) {
+        if (mUserEmail.length() == 0 || mUserPassword.length() == 0) {
             // input fields are empty
             Toast.makeText(this, "Please complete all the fields",
                     Toast.LENGTH_LONG).show();
             return;
         } else {
-            if (!mUserPassword.equals(mUserPasswordConfirmation)) {
-                // password doesn't match confirmation
-                Toast.makeText(this, "Your password doesn't match confirmation, check again",
-                        Toast.LENGTH_LONG).show();
-                return;
-            } else {
-                // everything is ok!
-                RegisterTask registerTask = new RegisterTask();
-                registerTask.execute(REGISTER_API_ENDPOINT_URL);
-            }
+            LoginTask loginTask = new LoginTask();
+            loginTask.execute(LOGIN_API_ENDPOINT_URL);
         }
     }
 
 
 
-    private class RegisterTask extends AsyncTask<String,Void,JSONObject> {
+    private class LoginTask extends AsyncTask<String,Void,JSONObject> {
 
-        ProgressDialog progDailog = new ProgressDialog(RegistrationActivity.this);
+        ProgressDialog progDailog = new ProgressDialog(LoginActivity.this);
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -168,6 +124,7 @@ public class RegistrationActivity extends ActionBarActivity {
             progDailog.show();
         }
 
+
         @Override
         protected JSONObject doInBackground(String... urls) {
             DefaultHttpClient client = new DefaultHttpClient();
@@ -177,21 +134,18 @@ public class RegistrationActivity extends ActionBarActivity {
             String response = null;
             JSONObject json = new JSONObject();
 
+
+
             try {
                 try {
                     // setup the returned values in case
                     // something goes wrong
                     json.put("success", false);
                     json.put("info", "Something went wrong. Retry!");
-
-                    // add the users's info to the post params
+                    // add the user email and password to
+                    // the params
                     userObj.put("email", mUserEmail);
-                    userObj.put("first_name", mFirstName);
-                    userObj.put("last_name", mLastName);
                     userObj.put("password", mUserPassword);
-                    userObj.put("password_confirmation", mUserPasswordConfirmation);
-                    userObj.put("type",mRole);
-                    userObj.put("username",mFirstName+mLastName);
                     holder.put("user", userObj);
                     StringEntity se = new StringEntity(holder.toString());
                     post.setEntity(se);
@@ -207,6 +161,7 @@ public class RegistrationActivity extends ActionBarActivity {
                 } catch (HttpResponseException e) {
                     e.printStackTrace();
                     Log.e("ClientProtocol", "" + e);
+                    json.put("info", "Email and/or password are invalid. Retry!");
                 } catch (IOException e) {
                     e.printStackTrace();
                     Log.e("IO", "" + e);
@@ -228,10 +183,13 @@ public class RegistrationActivity extends ActionBarActivity {
                     // save the returned auth_token into
                     // the SharedPreferences
                     editor.putString("AuthToken", json.getJSONObject("data").getString("auth_token"));
-                    editor.putString("Type",mRole);
+                    editor.putString("Type", json.getJSONObject("data").getString("type"));
                     editor.putString("first_name", json.getJSONObject("data").getString("first_name"));
                     editor.putString("last_name", json.getJSONObject("data").getString("last_name"));
                     editor.putString("id", json.getJSONObject("data").getString("id"));
+
+
+
                     editor.commit();
 
                     // launch the HomeActivity and close this one

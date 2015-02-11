@@ -1,4 +1,4 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters;
 
 import android.app.Activity;
 import android.content.Context;
@@ -9,10 +9,9 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
-import org.achartengine.ChartFactory;
-import org.achartengine.model.CategorySeries;
-import org.achartengine.renderer.DefaultRenderer;
-import org.achartengine.renderer.SimpleSeriesRenderer;
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.StudentAnswersActivity;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.StudentScoreItem;
 
 import java.util.ArrayList;
 

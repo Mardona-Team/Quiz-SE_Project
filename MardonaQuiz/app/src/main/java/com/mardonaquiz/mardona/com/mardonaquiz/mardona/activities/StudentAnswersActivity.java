@@ -1,4 +1,4 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +13,11 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.StudentAnswerItem;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.StudentScoreItem;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters.StudentAnswerCustomAdapter;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
@@ -26,7 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 public class StudentAnswersActivity extends ActionBarActivity {

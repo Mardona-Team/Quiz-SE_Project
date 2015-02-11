@@ -1,8 +1,7 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +18,11 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.ObjectDrawerItem;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.fragments.ProfileFragement;
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters.DrawerItemCustomAdapter;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -66,7 +70,6 @@ public class MainActivity extends ActionBarActivity {
 
         drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Profile"));
         if (mPreferences.getString("Type", "").equals("Instructor")){
-            drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "My Quizzes"));
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Group"));
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Quiz"));
     }
@@ -191,19 +194,15 @@ public class MainActivity extends ActionBarActivity {
             case 1:
                 if(mPreferences.getString("Type","").equals("Student")) logOut(mLogOutButton);
                 else {
-                    Intent quizListintent = new Intent(this, QuizListActivity.class);
-                    startActivity(quizListintent);
+                    Intent createGroupintent = new Intent(this,CreateGroupActivity.class);
+                    startActivity(createGroupintent);
                 }
                 break;
             case 2:
-                Intent createGroupintent = new Intent(this,CreateGroupActivity.class);
-                startActivity(createGroupintent);
-                break;
-            case 3:
                 Intent createQuizintent = new Intent(this, CreateQuizActivity.class);
                 startActivity(createQuizintent);
                 break;
-            case 4:
+            case 3:
                 logOut(mLogOutButton);
             default:
                 break;

@@ -1,4 +1,4 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -18,11 +18,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Button;
+
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import android.widget.Toast;
+
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.PublishedQuizItem;
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters.PublishedQuizListCustomAdapter;
+
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpPost;
@@ -37,15 +42,11 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 
-public class ViewGroup extends ActionBarActivity {
+public class ViewGroupActivity extends ActionBarActivity {
     private final String KEY_TITLE = "title";
     private final String KEY_SUBJECT = "subject";
     private final String KEY_YEAR = "year";
@@ -119,7 +120,7 @@ public class ViewGroup extends ActionBarActivity {
             addQuiz.setOnClickListener(new View.OnClickListener(){
                 @Override
                 public void onClick(View v) {
-                    Intent publishedListIntent = new Intent(ViewGroup.this, QuizListActivity.class);
+                    Intent publishedListIntent = new Intent(ViewGroupActivity.this, QuizListActivity.class);
                     publishedListIntent.putExtra(KEY_ID,group_id);
                     startActivity(publishedListIntent);
                 }
@@ -162,7 +163,7 @@ protected void joinGroup() {
            joinGroup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new AlertDialog.Builder(ViewGroup.this)
+                new AlertDialog.Builder(ViewGroupActivity.this)
                         .setIcon(android.R.drawable.ic_input_add)
                         .setTitle(getString(R.string.confirmTitle1))
                         .setMessage(getString(R.string.confirmationMsg1))
@@ -296,7 +297,7 @@ protected void joinGroup() {
 
     private class Get_Group_info_from_server extends AsyncTask<String, Void, JSONObject> {
 
-        ProgressDialog progDailog = new ProgressDialog(ViewGroup.this);
+        ProgressDialog progDailog = new ProgressDialog(ViewGroupActivity.this);
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -349,7 +350,7 @@ protected void joinGroup() {
     }
     private class GetMembershipTask extends AsyncTask<String, Void, String> {
 
-        ProgressDialog progDailog = new ProgressDialog(ViewGroup.this);
+        ProgressDialog progDailog = new ProgressDialog(ViewGroupActivity.this);
 
         protected void onPreExecute() {
             super.onPreExecute();
@@ -437,7 +438,7 @@ protected void joinGroup() {
                 //todo get student id from login
 
             }
-            Intent intent= new Intent(ViewGroup.this,ViewGroup.class);
+            Intent intent= new Intent(ViewGroupActivity.this,ViewGroupActivity.class);
             intent.putExtra("id",group_id);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
