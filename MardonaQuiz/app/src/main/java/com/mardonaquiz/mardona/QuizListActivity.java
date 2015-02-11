@@ -86,7 +86,7 @@ public class QuizListActivity extends ListActivity {
                         public void onClick(DialogInterface dialog, int which) {
 
                             AddPublishedQuizToAPI addPublishedQuiztoapi = new AddPublishedQuizToAPI();
-                            addPublishedQuiztoapi.execute("http://es2alny.herokuapp.com/api/groups/"+groupID+"/quizzes/"+publishedId);
+                            addPublishedQuiztoapi.execute("http://es2alny-test.herokuapp.com/api/groups/"+groupID+"/quizzes/"+publishedId);
 
                           /*  Intent intent = new Intent(QuizListActivity.this, publishedQuizListActivity.class);
                             intent.putExtra(keyID, allQuizzes.get(position).get(keyID));
@@ -328,7 +328,7 @@ Log.e("the responce is ",json.toString());
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET("http://es2alny.herokuapp.com/api/groups/"+groupID+"/quizzes");
+            return GET("http://es2alny-test.herokuapp.com/api/groups/"+groupID+"/quizzes");
         }
 
         @Override

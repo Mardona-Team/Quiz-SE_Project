@@ -46,7 +46,7 @@ import org.json.JSONObject;
 
 public class QuizForm extends ActionBarActivity {
 
-    private final static String CREARTE_QUIZ_URL = "http://es2alny.herokuapp.com/api/quizzes";
+    private final static String CREARTE_QUIZ_URL = "http://es2alny-test.herokuapp.com/api/quizzes";
 
     protected String [] All_Questions ;
     protected String [] First_Answer ;
@@ -495,7 +495,7 @@ public class QuizForm extends ActionBarActivity {
 
         protected JSONObject doInBackground(String... urls) {
             DefaultHttpClient client = new DefaultHttpClient();
-            HttpPost post = new HttpPost("http://es2alny.herokuapp.com/api/quizzes");
+            HttpPost post = new HttpPost("http://es2alny-test.herokuapp.com/api/quizzes");
             JSONObject holder = new JSONObject();
             // Quiz_Details object contains details about the quiz (title,marks,...)
             JSONObject quiz = new JSONObject();

@@ -450,6 +450,8 @@ protected void joinGroup() {
     public void handleResponse_published(JSONObject responce) {
         ArrayList<PublishedQuizItem> PublishedItems = new ArrayList<PublishedQuizItem>();
         ArrayList<String> publishedTitles= new ArrayList<String>();
+        ArrayList<String> publishedIds= new ArrayList<String>();
+
 
 
         if (responce == null) {
@@ -472,12 +474,14 @@ protected void joinGroup() {
 
                     if(pstatus==1){
                         publishedTitles.add(title);
+                        publishedIds.add(ID);
+
                     }
 
                 }
 
                 for(int count=0;count<publishedTitles.size();count++){
-                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""));
+                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""),publishedIds.get(count));
                     PublishedItems.add(publishedQuizInstance);
                 }
 
@@ -540,7 +544,7 @@ protected void joinGroup() {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET_Published("https://es2alny.herokuapp.com/api/groups/2/quizzes/");
+            return GET_Published("https://es2alny-test.herokuapp.com/api/groups/"+group_id+"/quizzes/");
         }
 
         @Override

@@ -152,7 +152,7 @@ public class AnswerQuiz extends ActionBarActivity {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET( "https://es2alny.herokuapp.com/api/quizzes/"+quizId);
+            return GET( "https://es2alny-test.herokuapp.com/api/quizzes/"+quizId);
         }
 
         @Override
@@ -289,7 +289,7 @@ public class AnswerQuiz extends ActionBarActivity {
                         public void onClick(View v) {
 
                             SubmitQuiz submitQuiz = new SubmitQuiz();
-                            submitQuiz.execute("http://es2alny.herokuapp.com/api/answer_quiz");
+                            submitQuiz.execute("http://es2alny-test.herokuapp.com/api/answer_quiz");
 
                         }
                     });
