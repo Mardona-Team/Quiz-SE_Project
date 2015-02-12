@@ -1,24 +1,54 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
-    android:layout_height="match_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.mardonaquiz.mardona.RegistrationActivity">
+    android:layout_height="match_parent"
+    android:background="@drawable/background_fill"
+    tools:context="com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.RegistrationActivity">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/imageView"
+        android:src="@drawable/background"
+        android:scaleType="fitStart"
+        android:layout_alignParentBottom="true"
+       />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Es2alny"
+        android:id="@+id/title"
+        android:textSize="50sp"
+        android:textColor="@android:color/white"
+        android:textStyle="bold"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="41dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@android:color/white"
+        android:id="@+id/linearLayout"
+        android:padding="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_centerVertical="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
 
 
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/firstName_hint"
-        android:ems="10"
         android:id="@+id/first_name"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="@dimen/sign_up_spacing"
         android:autoText="false"
-        android:inputType="text" />
+        android:inputType="text"
+        android:layout_below="@+id/title"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="17sp"/>
     <requestFocus/>
 
     <EditText
@@ -27,11 +57,11 @@
         android:hint="@string/lastName_hint"
         android:ems="10"
         android:id="@+id/last_name"
+        android:inputType="text"
         android:layout_below="@+id/first_name"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"
-        android:inputType="text" />
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="17sp"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -42,32 +72,23 @@
         android:hint="@string/email_singUp"
         android:layout_below="@+id/last_name"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp" />
-
-    <Spinner
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/role"
-        android:layout_below="@+id/role_textview"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="10dp"/>
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="17sp"/>
 
 
-    <EditText
+        <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:id="@+id/password_signUp"
         android:hint="@string/password_hint"
-        android:layout_below="@+id/role_textview"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="70dp" />
+        android:layout_below="@+id/role"
+        android:layout_alignParentLeft="true"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="17sp"/>
 
-    <EditText
+        <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="textPassword"
@@ -75,10 +96,19 @@
         android:id="@+id/password_confirm"
         android:hint="@string/password_confirmation"
         android:layout_below="@+id/password_signUp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="33dp"/>
+        android:layout_alignParentLeft="true"
+        android:textColorHint="@android:color/darker_gray"
+        android:textSize="17sp"    />
 
+        <Spinner
+            android:layout_width="200dp"
+            android:layout_height="36dp"
+            android:id="@+id/role"
+            android:layout_below="@+id/email_SignUp_Field"
+            android:layout_alignParentLeft="true"
+            />
+
+    </LinearLayout>
 
 
     <Button
@@ -86,24 +116,15 @@
         android:layout_height="wrap_content"
         android:text="@string/signUp_button"
         android:id="@+id/signUp_button"
-        android:layout_below="@+id/password_confirm"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="33dp"/>
-
-
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="@string/role_Hint"
-        android:id="@+id/role_textview"
-        android:layout_below="@+id/email_SignUp_Field"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="23dp" />
+        android:background="@drawable/button_custom"
+        android:textSize="13sp"
+        android:textColor="#250054"
+        android:layout_below="@+id/linearLayout"
+        android:layout_alignLeft="@+id/imageView"
+        android:layout_alignStart="@+id/imageView"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+       />
 
 
 </RelativeLayout>

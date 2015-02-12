@@ -3,15 +3,15 @@
     package="com.mardonaquiz.mardona" >
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/user_profile"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/CustomActionBarTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".com.mardonaquiz.mardona.activities.MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
             <intent-filter>
@@ -21,14 +21,14 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".com.mardonaquiz.mardona.activities.LoginActivity"
             android:label="@string/title_activity_login"
             android:screenOrientation="portrait" >
         </activity>
         <activity
-            android:name=".RegistrationActivity"
+            android:name=".com.mardonaquiz.mardona.activities.RegistrationActivity"
             android:label="@string/title_activity_registration"
-            android:parentActivityName=".LoginActivity"
+            android:parentActivityName=".com.mardonaquiz.mardona.activities.LoginActivity"
             android:screenOrientation="portrait" >
         </activity>
         <activity
@@ -36,29 +36,57 @@
             android:label="@string/title_activity_group_list" >
         </activity>
         <activity
-            android:name=".QuizListActivity"
+            android:name=".com.mardonaquiz.mardona.activities.QuizListActivity"
             android:label="@string/title_activity_quiz_list" >
         </activity>
         <activity
-            android:name=".CreateGroupActivity"
+            android:name=".com.mardonaquiz.mardona.activities.CreateGroupActivity"
             android:label="@string/title_activity_create_group" >
         </activity>
         <activity
-            android:name=".CreateQuizActivity"
+            android:name=".com.mardonaquiz.mardona.activities.CreateQuizActivity"
             android:label="@string/title_activity_create_quiz" >
         </activity>
         <activity
-            android:name=".AnswerQuiz"
+            android:name=".com.mardonaquiz.mardona.activities.AnswerQuizActivity"
             android:label="@string/title_activity_answer_quiz" >
         </activity>
         <activity
-            android:name=".ViewGroup"
+            android:name=".com.mardonaquiz.mardona.activities.ViewGroupActivity"
             android:label="@string/title_activity_view_group"
             android:parentActivityName=".GroupListActivity" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mardonaquiz.mardona.GroupListActivity" />
         </activity>
+        <activity
+            android:name=".StatisticsActivty"
+            android:label="@string/title_activity_statistics_activty" >
+        </activity>
+        <activity
+            android:name=".com.mardonaquiz.mardona.activities.StudentsScoresActivity"
+            android:label="@string/title_activity_students_scores" >
+        </activity>
+        <activity
+            android:name=".com.mardonaquiz.mardona.activities.StudentAnswersActivity"
+            android:label="@string/title_activity_student_answers"
+            android:parentActivityName=".com.mardonaquiz.mardona.activities.StudentsScoresActivity">
+          </activity>
+            <activity
+            android:name=".publishedQuizListActivity"
+            android:label="@string/title_activity_published_quizzes" >
+        </activity>
+        <activity android:name="org.achartengine.GraphicalActivity" />
+
+        <activity
+            android:name=".com.mardonaquiz.mardona.activities.QuizFormActivity"
+            android:label="@string/title_activity_quiz_form"
+            android:parentActivityName=".com.mardonaquiz.mardona.activities.CreateQuizActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".com.mardonaquiz.mardona.activities.CreateQuizActivity" />
+        </activity>
+
     </application>
 
 </manifest>

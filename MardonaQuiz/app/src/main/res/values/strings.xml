@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Mardona Quiz</string>
+    <string name="app_name">Es2alny</string>
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-    <string name="title_activity_login">Log In</string>
+    <string name="title_activity_login">SIGN IN</string>
     <string name="title_activity_registration">Sign Up</string>
     <string name="title_activity_log_in">LogInActivity</string>
     <string name="firstName_hint">First Name</string>
@@ -14,11 +14,12 @@
     <string name="role_1_hint">Student</string>
     <string name="role_2_hint">Instructor</string>
     <string name="logInButton_text">Log In</string>
-    <string name="signUp_text">Sign Up </string>
+    <string name="signUp_text">Don\'t have an account? Sign Up </string>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="password_confirmation">Confirm Password</string>
     <string name="email_singUp">Email</string>
     <string name="signUp_button">Sign Up</string>
+    <string name="No_Quizzes">No Quizzes to publish!</string>
 
     <string-array name="navigation_drawer_items_array">
         <item>Profile</item>
@@ -47,8 +48,43 @@
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
-    <string name="title_activity_view_group">ViewGroup</string>
-
+    <string name="title_activity_view_group">Groups</string>
     <string name="Group_list">Group List</string>
+    <string name="title_activity_quiz_form">QuizForm</string>
+
+
+    <string name="Submit_Quiz">Submit Quiz</string>
+    <string name="title_activity_statistics_activty">Quiz Statistics</string>
+    <string name="title_activity_students_scores">Students\' Scores</string>
+    <string name="title_activity_student_answers">Answers</string>
+    <string name="network_error">Network is unavailable!</string>
+    <string name="unsuccessful_response">"Unsuccessful HTTP response code: "</string>
+    <string name="No_Quizzes_msg">No Quizzes to Publish</string>
+    <string name="Publish">Publish</string>
+    <string name="really_publish">Publish this Quiz?</string>
+    <string name="confirmation_msg">Are you sure you want to publish this Quiz?</string>
+    <string name="comfirm_title">Publishing Quiz</string>
+    <string name="title_activity_published_quizzes">Published_quizzes</string>
+    <string name="Error_msg">there is a connection error</string>
+    <string name="no_msg">No</string>
+    <string name="networkMsg">Network is unavailable!</string>
+    <string name="connectionError">connection error</string>
+
+   <string name="quizPublished">Quiz has been published successfully!</string>
+    <string name="confirmationMsg1">Are you sure you want to join this group?</string>
+    <string name="confirmTitle1">Joining group</string>
+    <string name="CreateTitle">Please fill in Quiz details :</string>
+    <string name="QuizTitle">Quiz Title</string>
+    <string name="QuizDesc">Quiz Description</string>
+    <string name="QuizYear">Quiz Year</string>
+    <string name="Quizsubj">Quiz Subj</string>
+    <string name="NumQues">Number of questions</string>
+    <string name="FinalMark">Final Mark</string>
+    <string name="QuizForminst">
+ Make sure that all questions and answers are filled \n
+ Each question is filled seperately in one page \n
+ For each question , there must be four different choices  \n
+ The first answer in each question should be the right answer then it will be shuffled later with the other ones</string>
+
 
 </resources>

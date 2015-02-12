@@ -11,7 +11,7 @@ Rails.application.routes.draw do
     resources :questions 
     resources :users 
     post '/answer_quiz', to: "students_answers#create"
-    
+    resources :memberships
     devise_scope :user do
       post 'registrations' => 'registrations#create', :as => 'register'
       post 'sessions' => 'sessions#create', :as => 'login'
