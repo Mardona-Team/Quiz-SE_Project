@@ -7,15 +7,40 @@ module API
   # GET /users
   # GET /users.json
   def index
-    @users = User.all
-    render json: @users
+    if params[:quiz_id]
+      @students_quizzes = Quiz.find(params[:quiz_id]).students_quizzes
+      render json: @students_quizzes.as_json(only: [:marks], :include => { student: { only: [:id], :methods => [:full_name] }, quiz: { only: [:marks] }})
+    else
+      @users = User.all
+      render json: @users
+    end
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-     @user=User.find(params[:id])
-    render json: @user
+    if params[:quiz_id]
+      @quiz = Quiz.find(params[:quiz_id])
+      @students_quiz = StudentsQuiz.find_by(quiz_id: params[:quiz_id], student_id: params[:id])
+      render json: {
+        student: {
+          id: @user.id,
+          full_name: @user.full_name,
+          marks: @students_quiz.marks
+        },
+        quiz: {
+          id: @quiz.id,
+          title: @quiz.title,
+          marks: @quiz.marks,
+          questions: 
+            @quiz.questions.as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
+          answers: 
+            @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).as_json(only: [:id, :title, :question_id])
+        }
+      }
+    else
+      render json: @user
+    end
   end
 
   # GET /users/new
