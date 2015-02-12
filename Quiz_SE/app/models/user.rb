@@ -30,7 +30,10 @@ before_save :ensure_authentication_token
 def skip_confirmation!
   self.confirmed_at = Time.now
 end
-   
+  
+  def full_name
+    first_name + " " + last_name 
+  end 
 
 end
 

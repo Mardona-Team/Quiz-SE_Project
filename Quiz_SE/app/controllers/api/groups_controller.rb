@@ -6,8 +6,19 @@ module API
   # GET /groups
   # GET /groups.json
   def index
-    @groups = Group.all
-    render json: @groups
+    if (params[:query])
+      @group = Group.find_by(group_name: params[:query])
+      if @group
+        render json: @group
+      else
+        respond_to do |format|
+          format.json { render json: { errors: "No Groups found" }, status: :unprocessable_entity }
+        end
+      end
+    else
+      @groups = Group.all
+      render json: @groups.limit(20).as_json(only: [:id, :title])
+    end
   end
 
   # GET /groups/1
