@@ -1,0 +1,23 @@
+<h1>Listing students_quizzes</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @students_quizzes.each do |students_quiz| %>
+      <tr>
+        <td><%= link_to 'Show', students_quiz %></td>
+        <td><%= link_to 'Edit', edit_students_quiz_path(students_quiz) %></td>
+        <td><%= link_to 'Destroy', students_quiz, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Students quiz', new_students_quiz_path %>
