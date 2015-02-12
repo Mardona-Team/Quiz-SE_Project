@@ -1,4 +1,4 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters;
 
 
 import android.app.Activity;
@@ -9,6 +9,9 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.ObjectDrawerItem;
+import com.mardonaquiz.mardona.R;
 
 import java.util.ArrayList;
 
