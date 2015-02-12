@@ -42,3 +42,7 @@ gem 'devise'
 
 gem 'devise-token_authenticatable'
 
+group :production do
+	gem 'pg'
+	gem 'rails_12factor'
+end
