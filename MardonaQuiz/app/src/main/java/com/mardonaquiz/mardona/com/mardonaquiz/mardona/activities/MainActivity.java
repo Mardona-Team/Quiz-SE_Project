@@ -118,17 +118,17 @@ public class MainActivity extends ActionBarActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
            }
+else {
 
-
-        Bundle userData=new Bundle();
-        userData.putString("user_fullname",mPreferences.getString("first_name","")+" "+mPreferences.getString("last_name",""));
-        userData.putString("Type",mPreferences.getString("Type",""));
-        userData.putString("id",mPreferences.getString("id",""));
-        Fragment fragment =new ProfileFragement();
-        fragment.setArguments(userData);
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
+            Bundle userData = new Bundle();
+            userData.putString("user_fullname", mPreferences.getString("first_name", "") + " " + mPreferences.getString("last_name", ""));
+            userData.putString("Type", mPreferences.getString("Type", ""));
+            userData.putString("id", mPreferences.getString("id", ""));
+            Fragment fragment = new ProfileFragement();
+            fragment.setArguments(userData);
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
 
     }
 

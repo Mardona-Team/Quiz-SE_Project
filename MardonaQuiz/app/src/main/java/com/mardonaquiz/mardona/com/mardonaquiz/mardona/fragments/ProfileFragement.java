@@ -8,14 +8,18 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Fragment;
+import android.text.Layout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mardonaquiz.mardona.R;
 import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.CreateGroupActivity;
@@ -52,6 +56,9 @@ public class ProfileFragement extends Fragment {
 
     public static final String TAG = MainActivity.class.getSimpleName();
     protected JSONObject mGroups;
+    protected JSONObject mGroup;
+
+
 
     private final String KEY_group = "groups";
     private final String KEY_TITLE = "title";
@@ -63,10 +70,13 @@ public class ProfileFragement extends Fragment {
             new ArrayList<HashMap<String, String>>();
 
     protected String user_id;
+    protected String searchInput;
 
 
     protected TextView userFullName,userRole;
+    protected EditText searchBox;
     protected ListView groupsListView;
+    protected Button goSearchButton;
     protected SharedPreferences mPreferences;
 
 
@@ -84,8 +94,11 @@ public class ProfileFragement extends Fragment {
 
 
         user_id=getArguments().getString("id");
+
+
+
         GET_Group_list GETGrouplist = new GET_Group_list();
-            GETGrouplist.execute();
+        GETGrouplist.execute();
 
 
     }
@@ -99,6 +112,23 @@ public class ProfileFragement extends Fragment {
         userRole=(TextView) rootView.findViewById(R.id.user_role_profile);
         userFullName.setText(getArguments().getString("user_fullname"));
         userRole.setText(getArguments().getString("Type"));
+
+        searchBox=(EditText) rootView.findViewById(R.id.search_box);
+
+        goSearchButton=(Button) rootView.findViewById(R.id.go_button);
+        goSearchButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                GetSearchResultTask getSearchResultTask=new GetSearchResultTask();
+                getSearchResultTask.execute();
+            }
+        });
+
+        if (getArguments().getString("Type").equals("Instructor")) {
+            View searchLayout=  rootView.findViewById(R.id.search_layout);
+            searchLayout.setVisibility(View.GONE);
+        }
+
 
         groupsListView=(ListView) rootView.findViewById(R.id.groupsListView);
         groupsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -193,23 +223,11 @@ public class ProfileFragement extends Fragment {
 
 
 
-
-    public void openCreateGroup(View view) {
-
-
-        Intent intent = new Intent(getActivity(), CreateGroupActivity.class);
-        startActivity(intent);
-
-    }
-
-
-
-
     public void handleResponse() {
         ArrayList<String> GroupTitles = new ArrayList<String>();
 
         if (mGroups == null) {
-            //updateDisplayForError();
+            updateDisplayForError();
         }
         else {
             try {
@@ -287,6 +305,111 @@ public class ProfileFragement extends Fragment {
             progDailog.cancel();
         }
 
+    }
+
+
+    /**
+     * ########################  search Group  ###############################
+     **/
+
+
+    private class GetSearchResultTask extends AsyncTask<Object, Void, JSONObject> {
+
+        ProgressDialog progDailog = new ProgressDialog(getActivity());
+
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progDailog.setMessage("Loading...");
+            progDailog.setIndeterminate(false);
+            progDailog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+            progDailog.setCancelable(true);
+            progDailog.show();
+        }
+
+        @Override
+        protected JSONObject doInBackground(Object... arg0) {
+
+            searchInput=searchBox.getText().toString();
+
+
+            return Get_Search("http://es2alny.herokuapp.com/api/groups?query="+searchInput);
+        }
+
+        @Override
+        protected void onPostExecute(JSONObject result) {
+            mGroup = result;
+            handleResponse_search();
+            progDailog.cancel();
+        }
+
+    }
+
+    public static JSONObject Get_Search(String url){
+        InputStream inputStream = null;
+        String result = "";
+        JSONObject jsonResponse=null;
+        try {
+
+            // create HttpClient
+            HttpClient httpclient = new DefaultHttpClient();
+
+
+
+            // receive response as inputStream
+            // make GET request to the given URL
+           // HttpResponse httpResponse = httpclient.execute(new HttpGet(url));
+
+
+            HttpGet httpGet=new HttpGet(url);
+            httpGet.setHeader("Accept", "application/json");
+
+            HttpResponse httpResponse=httpclient.execute(httpGet);
+
+            inputStream = httpResponse.getEntity().getContent();
+
+            // convert inputstream to string
+            if(inputStream != null)
+                result = convertInputStreamToString(inputStream);
+            else
+                result = "Did not work!";
+
+            JSONObject scoreItemsObject=new JSONObject(result);
+            jsonResponse = scoreItemsObject;
+
+        } catch (Exception e) {
+            Log.d("InputStream", e.getLocalizedMessage());
+        }
+
+
+        return jsonResponse;
+    }
+
+    public void handleResponse_search() {
+
+        if (mGroup == null) {
+            updateDisplayForError();
+        }
+        else {
+            try {
+
+                String ID = mGroup.getString("id");
+
+                Intent intent = new Intent(getActivity(), ViewGroupActivity.class);
+                intent.putExtra(KEY_ID,ID);
+                startActivity(intent);
+
+            }
+            catch (JSONException e) {
+                Log.e(TAG, "Exception caught!", e);
+                try {
+                    Toast.makeText(getActivity(),"No groups found with this name , Check spelling", Toast.LENGTH_LONG).show();
+
+                }
+                catch (Exception f){
+                    Log.e(TAG, "Exception caught!", f);
+                }
+            }
+        }
     }
 
 }
