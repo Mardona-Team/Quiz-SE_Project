@@ -42,8 +42,8 @@ public class StudentsScoresCustomAdapter extends ArrayAdapter<StudentScoreItem> 
         Button showAnswersButton = (Button) listItem.findViewById(R.id.show_answers_button);
 
 
-        StudentScoreItem studentScoreItem = studentScoreItems.get(position);
-        final String studentID=studentScoreItem.id;
+        final StudentScoreItem studentScoreItem = studentScoreItems.get(position);
+        final String studentID=studentScoreItem.user_id;
 
         showAnswersButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +51,8 @@ public class StudentsScoresCustomAdapter extends ArrayAdapter<StudentScoreItem> 
                 Intent i = new Intent(mContext, StudentAnswersActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 i.putExtra("id",studentID);
+                i.putExtra("Qid",studentScoreItem.quiz_id);
+                i.putExtra("Gid",studentScoreItem.group_id);
                 mContext.startActivity(i);
             }
         });

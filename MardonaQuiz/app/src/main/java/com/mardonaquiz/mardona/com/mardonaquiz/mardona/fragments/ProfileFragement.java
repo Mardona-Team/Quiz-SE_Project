@@ -62,6 +62,8 @@ public class ProfileFragement extends Fragment {
     private ArrayList<HashMap<String, String>> allGroups =
             new ArrayList<HashMap<String, String>>();
 
+    protected String user_id;
+
 
     protected TextView userFullName,userRole;
     protected ListView groupsListView;
@@ -80,7 +82,9 @@ public class ProfileFragement extends Fragment {
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-            GET_Group_list GETGrouplist = new GET_Group_list();
+
+        user_id=getArguments().getString("id");
+        GET_Group_list GETGrouplist = new GET_Group_list();
             GETGrouplist.execute();
 
 
@@ -205,7 +209,7 @@ public class ProfileFragement extends Fragment {
         ArrayList<String> GroupTitles = new ArrayList<String>();
 
         if (mGroups == null) {
-            updateDisplayForError();
+            //updateDisplayForError();
         }
         else {
             try {
@@ -272,7 +276,8 @@ public class ProfileFragement extends Fragment {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET("http://es2alny-test.herokuapp.com/api/groups/");
+
+            return GET("http://es2alny.herokuapp.com/api/groups?user_id="+user_id);
         }
 
         @Override

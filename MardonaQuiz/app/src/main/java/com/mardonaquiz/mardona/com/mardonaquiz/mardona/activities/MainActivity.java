@@ -123,6 +123,7 @@ public class MainActivity extends ActionBarActivity {
         Bundle userData=new Bundle();
         userData.putString("user_fullname",mPreferences.getString("first_name","")+" "+mPreferences.getString("last_name",""));
         userData.putString("Type",mPreferences.getString("Type",""));
+        userData.putString("id",mPreferences.getString("id",""));
         Fragment fragment =new ProfileFragement();
         fragment.setArguments(userData);
         FragmentManager fragmentManager = getFragmentManager();

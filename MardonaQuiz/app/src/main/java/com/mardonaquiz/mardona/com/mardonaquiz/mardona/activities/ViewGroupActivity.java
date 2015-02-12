@@ -90,18 +90,19 @@ public class ViewGroupActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
+        student_id=mPreferences.getString("id","");
+
         Bundle extras = getIntent().getExtras();
 
         if (extras != null) {
 
             group_id    =  extras.getString(KEY_ID);
-            student_id="1";
             //todo get student id from login
 
         }
 
         GetMembershipTask getMembershipTask=new GetMembershipTask();
-        getMembershipTask.execute("http://es2alny-test.herokuapp.com/api/groups/"+group_id+"?student_id="+student_id);
+        getMembershipTask.execute("http://es2alny.herokuapp.com/api/groups/"+group_id+"?student_id="+student_id);
         try {
             membershipStatus = getMembershipTask.get();
         }catch(Exception e){Log.d(TAG, e.getLocalizedMessage());}
@@ -135,7 +136,7 @@ public class ViewGroupActivity extends ActionBarActivity {
             }
         }
         Get_Group_info_from_server get_group_info_from_server = new Get_Group_info_from_server();
-        get_group_info_from_server.execute("https://es2alny-test.herokuapp.com/api/groups/"+group_id); // getting questions from server
+        get_group_info_from_server.execute("https://es2alny.herokuapp.com/api/groups/"+group_id); // getting questions from server
 
 
         }
@@ -172,7 +173,7 @@ protected void joinGroup() {
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.e("this is", "join group");
                                 JoinGroupAPI joinGroupAPI = new JoinGroupAPI();
-                                joinGroupAPI.execute("http://es2alny-test.herokuapp.com/api/memberships");
+                                joinGroupAPI.execute("http://es2alny.herokuapp.com/api/memberships");
                             }
                         })
                         .setNegativeButton(getString(R.string.no_msg), null)
@@ -482,7 +483,7 @@ protected void joinGroup() {
                 }
 
                 for(int count=0;count<publishedTitles.size();count++){
-                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""),publishedIds.get(count));
+                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""),publishedIds.get(count),group_id);
                     PublishedItems.add(publishedQuizInstance);
                 }
 
@@ -545,7 +546,7 @@ protected void joinGroup() {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET_Published("https://es2alny-test.herokuapp.com/api/groups/"+group_id+"/quizzes/");
+            return GET_Published("https://es2alny.herokuapp.com/api/groups/"+group_id+"/quizzes/");
         }
 
         @Override

@@ -3,6 +3,7 @@ package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -59,6 +60,9 @@ public class StudentsScoresActivity extends ActionBarActivity {
     protected final String KEY_NAME="full_name";
     protected final String KEY_QUIZ="quiz";
 
+    private String group_id,quiz_id,user_id;
+    protected SharedPreferences mPreferences;
+
     private ArrayList<StudentScoreItem> scoreItemsArrayList=new ArrayList<StudentScoreItem>();
 
 
@@ -66,6 +70,14 @@ public class StudentsScoresActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_students_scores);
+
+        group_id=getIntent().getStringExtra("Gid");
+        quiz_id=getIntent().getStringExtra("Qid");
+
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+
+        user_id=mPreferences.getString("id","");
+
 
         String quizTitleString=getIntent().getStringExtra("quiz_title");
         quizTitle=(TextView) findViewById(R.id.quiz_title_header);
@@ -151,7 +163,7 @@ public class StudentsScoresActivity extends ActionBarActivity {
 
                     boolean passing=((floatFullMarks/2)<=floatStudentMarks);
 
-                    studentScoreItem=new StudentScoreItem(studentFullName,studentMarks,studentID,passing);
+                    studentScoreItem=new StudentScoreItem(studentFullName,studentMarks,studentID,quiz_id,group_id,passing);
 
                     scoreItemsArrayList.add(studentScoreItem);
                     fullMark=floatFullMarks;
@@ -257,7 +269,7 @@ public class StudentsScoresActivity extends ActionBarActivity {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-                return GET("http://es2alny.herokuapp.com/api/groups/1/quizzes/1/users");
+                return GET("http://es2alny.herokuapp.com/api/groups/"+group_id+"/quizzes/"+quiz_id+"/users");
         }
 
         @Override

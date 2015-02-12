@@ -48,6 +48,7 @@ public class StudentAnswersActivity extends ActionBarActivity {
     protected final String KEY_ANSWERS="answers";
 
 
+    private String group_id,quiz_id,user_id;
 
 
     //Dummy DAta
@@ -57,6 +58,10 @@ public class StudentAnswersActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_answers);
+
+        group_id=getIntent().getStringExtra("Gid");
+        quiz_id=getIntent().getStringExtra("Qid");
+        user_id=getIntent().getStringExtra("id");
 
         if (isNetworkAvailable()) {
             GetStudentAnswersTask getStudentAnswersTask=new GetStudentAnswersTask();
@@ -218,7 +223,7 @@ public class StudentAnswersActivity extends ActionBarActivity {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET("http://es2alny.herokuapp.com/api/groups/1/quizzes/1/users/15");
+            return GET("http://es2alny.herokuapp.com/api/groups/"+group_id+"/quizzes/"+quiz_id+"/users/"+user_id);
         }
 
         @Override

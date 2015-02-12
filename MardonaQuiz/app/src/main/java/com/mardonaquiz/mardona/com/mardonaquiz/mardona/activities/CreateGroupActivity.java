@@ -29,9 +29,9 @@ import java.io.IOException;
 
 public class CreateGroupActivity extends ActionBarActivity {
 
-    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny-test.herokuapp.com/api/groups";
+    private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/groups";
     //TODO Get instructor ID
-    private String instructor_id=null;
+    private String instructor_id;
     private String GroupName;
     private String GroupTitle;
     private String GroupYear;
@@ -42,6 +42,8 @@ public class CreateGroupActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+        instructor_id=mPreferences.getString("id","");
         Button b1=(Button) findViewById(R.id.submit);
         b1.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -122,6 +124,9 @@ public class CreateGroupActivity extends ActionBarActivity {
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();
                     response = client.execute(post, responseHandler);
                     json = new JSONObject(response);
+
+                    Log.e("JSON sent", "" + json);
+
 
 
                 }catch (HttpResponseException e) {
