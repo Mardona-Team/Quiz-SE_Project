@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150203011918) do
+ActiveRecord::Schema.define(version: 20150209073505) do
 
   create_table "answers", force: true do |t|
     t.integer  "question_id"
@@ -62,6 +62,7 @@ ActiveRecord::Schema.define(version: 20150203011918) do
     t.boolean  "status"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "refrence_id"
   end
 
   add_index "quizzes", ["group_id"], name: "index_quizzes_on_group_id", using: :btree
@@ -72,6 +73,14 @@ ActiveRecord::Schema.define(version: 20150203011918) do
   end
 
   add_index "students_answers", ["student_id", "answer_id"], name: "index_students_answers_on_student_id_and_answer_id", using: :btree
+
+  create_table "students_quizzes", force: true do |t|
+    t.integer  "student_id"
+    t.integer  "quiz_id"
+    t.integer  "marks"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "users", force: true do |t|
     t.string   "username",                            null: false

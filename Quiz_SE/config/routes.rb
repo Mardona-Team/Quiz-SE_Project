@@ -1,12 +1,16 @@
 Rails.application.routes.draw do
 
 
+  resources :students_quizzes
+
   devise_for :users
   namespace :api do
 
     resources :quizzes, only: [:index, :show, :create, :destroy]
     resources :groups do
-      resources :quizzes, only: [:index, :update]
+      resources :quizzes, only: [:index, :update] do
+        resources :users, only: [:index, :show]
+      end
     end
     resources :questions 
     resources :users 
