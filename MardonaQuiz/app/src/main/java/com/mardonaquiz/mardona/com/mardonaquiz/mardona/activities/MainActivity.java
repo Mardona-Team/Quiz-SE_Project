@@ -1,37 +1,32 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.ObjectDrawerItem;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.fragments.ProfileFragement;
+import com.mardonaquiz.mardona.R;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.adapters.DrawerItemCustomAdapter;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpDelete;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.BasicResponseHandler;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.json.JSONException;
@@ -46,7 +41,7 @@ public class MainActivity extends ActionBarActivity {
 
     private SharedPreferences mPreferences;
     private Button mLogOutButton;
-    private final static String LOGOUT_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions";
+    private final static String LOGOUT_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/sessions";
 
     private String[] mNavigationDrawerItemTitles;
     private DrawerLayout mDrawerLayout;
@@ -62,6 +57,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
         mTitle = mDrawerTitle = getTitle();
@@ -73,9 +69,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Profile"));
-        drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "My Groups"));
         if (mPreferences.getString("Type", "").equals("Instructor")){
-            drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "My Quizzes"));
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Group"));
             drawerItem.add(new ObjectDrawerItem(R.drawable.abc_ab_share_pack_holo_dark, "Create Quiz"));
     }
@@ -107,6 +101,10 @@ public class MainActivity extends ActionBarActivity {
                 super.onDrawerOpened(drawerView);
                 getSupportActionBar().setTitle(mDrawerTitle);
             }
+
+
+
+
         };
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
@@ -120,6 +118,17 @@ public class MainActivity extends ActionBarActivity {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);
            }
+else {
+
+            Bundle userData = new Bundle();
+            userData.putString("user_fullname", mPreferences.getString("first_name", "") + " " + mPreferences.getString("last_name", ""));
+            userData.putString("Type", mPreferences.getString("Type", ""));
+            userData.putString("id", mPreferences.getString("id", ""));
+            Fragment fragment = new ProfileFragement();
+            fragment.setArguments(userData);
+            FragmentManager fragmentManager = getFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+        }
 
     }
 
@@ -177,28 +186,24 @@ public class MainActivity extends ActionBarActivity {
 
         switch (position) {
             case 0:
-                fragment = new ProfileFragment();
+                fragment = new ProfileFragement();
+                Bundle userData=new Bundle();
+                userData.putString("user_fullname",mPreferences.getString("first_name","")+" "+mPreferences.getString("last_name",""));
+                userData.putString("Type",mPreferences.getString("Type",""));
+                fragment.setArguments(userData);
                 break;
             case 1:
-                Intent groupListintent = new Intent(this, GroupListActivity.class);
-                startActivity(groupListintent);
-                break;
-            case 2:
                 if(mPreferences.getString("Type","").equals("Student")) logOut(mLogOutButton);
                 else {
-                    Intent quizListintent = new Intent(this, QuizListActivity.class);
-                    startActivity(quizListintent);
+                    Intent createGroupintent = new Intent(this,CreateGroupActivity.class);
+                    startActivity(createGroupintent);
                 }
                 break;
-            case 3:
-                Intent createGroupintent = new Intent(this,CreateGroupActivity.class);
-                startActivity(createGroupintent);
-                break;
-            case 4:
+            case 2:
                 Intent createQuizintent = new Intent(this, CreateQuizActivity.class);
                 startActivity(createQuizintent);
                 break;
-            case 5:
+            case 3:
                 logOut(mLogOutButton);
             default:
                 break;

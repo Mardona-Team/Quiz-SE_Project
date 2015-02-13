@@ -1,4 +1,4 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,6 +12,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.mardonaquiz.mardona.R;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -29,19 +31,22 @@ public class CreateGroupActivity extends ActionBarActivity {
 
     private final static String REGISTER_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/groups";
     //TODO Get instructor ID
-    private String instructor_id=null;
+    private String instructor_id;
     private String GroupName;
     private String GroupTitle;
     private String GroupYear;
     private String GroupSubj;
     private String GroupDesc;
     private SharedPreferences mPreferences;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_group);
-        Button b1=(Button) findViewById(R.id.submit);
-        b1.setOnClickListener(new View.OnClickListener(){
+        mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
+        instructor_id = mPreferences.getString("id", "");
+        Button b1 = (Button) findViewById(R.id.submit);
+        b1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 create_group();
@@ -71,26 +76,26 @@ public class CreateGroupActivity extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    public void create_group(){
 
-        GroupTitle=((EditText) findViewById(R.id.Group_title)).getText().toString();
-        GroupYear=((EditText) findViewById(R.id.Group_year)).getText().toString();
-        GroupSubj=((EditText) findViewById(R.id.Group_subject)).getText().toString();
-        GroupDesc=((EditText) findViewById(R.id.Group_desc)).getText().toString();
+    public void create_group() {
+
+        GroupTitle = ((EditText) findViewById(R.id.Group_title)).getText().toString();
+        GroupYear = ((EditText) findViewById(R.id.Group_year)).getText().toString();
+        GroupSubj = ((EditText) findViewById(R.id.Group_subject)).getText().toString();
+        GroupDesc = ((EditText) findViewById(R.id.Group_desc)).getText().toString();
         //TODO get a uniq group name
-        GroupName=GroupTitle;
+        GroupName = GroupTitle;
 
 
-        if(GroupTitle.length()==0||GroupYear.length()==0||GroupSubj.length()==0)
-        {
+        if (GroupTitle.length() == 0 || GroupYear.length() == 0 || GroupSubj.length() == 0) {
             Toast.makeText(this, getString(R.string.empty_field_error), Toast.LENGTH_LONG).show();
-        }
-        else{
+        } else {
             AddGroupToAPI addGrouptoapi = new AddGroupToAPI();
             addGrouptoapi.execute(REGISTER_API_ENDPOINT_URL);
         }
     }
-    private class AddGroupToAPI extends AsyncTask<String,Void,JSONObject> {
+
+    private class AddGroupToAPI extends AsyncTask<String, Void, JSONObject> {
 
         @Override
         protected JSONObject doInBackground(String... urls) {
@@ -102,25 +107,29 @@ public class CreateGroupActivity extends ActionBarActivity {
             JSONObject groupObj = new JSONObject();
             JSONObject holder = new JSONObject();
             JSONObject json = new JSONObject();
-            try{
+            try {
                 try {
-                    groupObj.put("instructor_id",instructor_id);
-                    groupObj.put("group_name",GroupName);
-                    groupObj.put("title",GroupTitle);
-                    groupObj.put("year",GroupYear);
-                    groupObj.put("subject",GroupSubj);
-                    groupObj.put("description",GroupDesc);
+                    groupObj.put("instructor_id", instructor_id);
+                    groupObj.put("group_name", GroupName);
+                    groupObj.put("title", GroupTitle);
+                    groupObj.put("year", GroupYear);
+                    groupObj.put("subject", GroupSubj);
+                    groupObj.put("description", GroupDesc);
+
                     StringEntity se = new StringEntity(groupObj.toString());
                     post.setEntity(se);
 
+                    Log.e("group json is", groupObj.toString());
                     post.setHeader("Accept", "application/json");
                     post.setHeader("Content-Type", "application/json");
                     ResponseHandler<String> responseHandler = new BasicResponseHandler();
                     response = client.execute(post, responseHandler);
                     json = new JSONObject(response);
 
+                    Log.e("JSON sent", "" + json);
 
-                }catch (HttpResponseException e) {
+
+                } catch (HttpResponseException e) {
                     e.printStackTrace();
                     Log.e("ClientProtocol", "" + e);
                 } catch (IOException e) {
@@ -142,19 +151,25 @@ public class CreateGroupActivity extends ActionBarActivity {
 
             try {
                 // launch the HomeActivity and close this one
-                Intent intent = new Intent(getApplicationContext(), GroupListActivity.class);
+                String jsonTest = json.getString("id");
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(intent);
                 finish();
 
 
-                Toast.makeText(getApplicationContext(),GroupTitle+ " " +getString(R.string.Group_Created), Toast.LENGTH_LONG).show();
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            } finally {
-                super.onPostExecute(json);
+                Toast.makeText(getApplicationContext(), GroupTitle + " " + getString(R.string.Group_Created), Toast.LENGTH_LONG).show();
+            } catch (JSONException e) {
+                try {
+                    Toast.makeText(getApplicationContext(),"Group title is wrong Or already taken" , Toast.LENGTH_LONG).show();
+
+                } catch (Exception f) {
+                    Toast.makeText(getApplicationContext(), f.getMessage(), Toast.LENGTH_LONG).show();
+                } finally {
+                    super.onPostExecute(json);
+                }
+
             }
-
         }
-    }
 
+    }
 }

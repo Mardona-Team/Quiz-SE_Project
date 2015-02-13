@@ -1,7 +1,7 @@
-package com.mardonaquiz.mardona;
+package com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities;
 
+import android.support.v7.app.ActionBar;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.mardonaquiz.mardona.R;
 
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
@@ -32,7 +34,7 @@ public class LoginActivity extends ActionBarActivity {
 
     private TextView signUpRedirect;
     private Button logIn;
-    private final static String LOGIN_API_ENDPOINT_URL = "http://mardonaquiz.herokuapp.com/api/sessions.json";
+    private final static String LOGIN_API_ENDPOINT_URL = "http://es2alny.herokuapp.com/api/sessions.json";
     private SharedPreferences mPreferences;
     private String mUserEmail;
     private String mUserPassword;
@@ -42,6 +44,9 @@ public class LoginActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        ActionBar actionBar=getSupportActionBar();
+        actionBar.hide();
 
         signUpRedirect=(TextView)findViewById(R.id.signUp_Link);
         signUpRedirect.setOnClickListener(new View.OnClickListener() {
@@ -179,6 +184,12 @@ public class LoginActivity extends ActionBarActivity {
                     // the SharedPreferences
                     editor.putString("AuthToken", json.getJSONObject("data").getString("auth_token"));
                     editor.putString("Type", json.getJSONObject("data").getString("type"));
+                    editor.putString("first_name", json.getJSONObject("data").getString("first_name"));
+                    editor.putString("last_name", json.getJSONObject("data").getString("last_name"));
+                    editor.putString("id", json.getJSONObject("data").getString("id"));
+
+
+
                     editor.commit();
 
                     // launch the HomeActivity and close this one
