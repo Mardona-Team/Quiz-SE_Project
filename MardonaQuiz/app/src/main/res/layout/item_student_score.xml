@@ -28,8 +28,8 @@
         android:background="@drawable/button_shape"
         android:textColor="@android:color/white"
         android:padding="2dp"
-        android:layout_width="100dp"
-        android:layout_height="36dp"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
         android:text="Answers"
         android:id="@+id/show_answers_button"
         android:layout_weight="0.2" />

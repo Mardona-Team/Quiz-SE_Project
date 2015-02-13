@@ -585,6 +585,7 @@ public class QuizFormActivity extends ActionBarActivity {
                     Intent intent = new Intent(getApplicationContext(), QuizListActivity.class);
                     startActivity(intent);
                     finish();
+
                 }
                 Toast.makeText(getApplicationContext(),"Quiz has been successfully created", Toast.LENGTH_LONG).show();
                 progDailog.cancel();

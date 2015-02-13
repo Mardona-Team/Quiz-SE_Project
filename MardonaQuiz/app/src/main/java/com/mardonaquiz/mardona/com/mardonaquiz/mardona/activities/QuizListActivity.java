@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -148,7 +149,10 @@ public class QuizListActivity extends ListActivity {
 
                 try {
                     // launch the HomeActivity and close this one
-Log.e("the responce is ",json.toString());
+                      Log.e("the responce is ",json.toString());
+                    Intent intent =new Intent(getApplicationContext(),ViewGroupActivity.class);
+                    intent.putExtra("id",groupID);
+                    startActivity(intent);
 
 
                     Toast.makeText(getApplicationContext(),"Quiz has been published successfully!", Toast.LENGTH_LONG).show();
