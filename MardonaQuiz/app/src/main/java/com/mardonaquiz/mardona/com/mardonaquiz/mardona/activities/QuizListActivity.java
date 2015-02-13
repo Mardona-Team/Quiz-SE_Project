@@ -186,7 +186,6 @@ public class QuizListActivity extends ListActivity {
           }
 
           groupID = getIntent().getStringExtra(keyID);
-        instructorID="1";
         //todo get instuctor id
 
 
@@ -287,7 +286,7 @@ public class QuizListActivity extends ListActivity {
 
                 for (int i = 0; i < MQuiz.length(); i++) {
                     JSONObject post = MQuiz.getJSONObject(i);
-                    String ID = post.getString(keyID);
+                    String ID = post.getString("refrence_id");
                     String title = post.getString(keyTitle);
 
 

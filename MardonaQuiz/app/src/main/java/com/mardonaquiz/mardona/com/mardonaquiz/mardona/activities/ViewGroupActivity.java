@@ -453,6 +453,8 @@ protected void joinGroup() {
         ArrayList<PublishedQuizItem> PublishedItems = new ArrayList<PublishedQuizItem>();
         ArrayList<String> publishedTitles= new ArrayList<String>();
         ArrayList<String> publishedIds= new ArrayList<String>();
+        ArrayList<String> publishedRefrenceIds= new ArrayList<String>();
+
 
 
 
@@ -467,7 +469,8 @@ protected void joinGroup() {
 
                 for (int i = 0; i < MPublished.length(); i++) {
                     JSONObject post = MPublished.getJSONObject(i);
-                    String ID = post.getString(keyId);
+                    String refrenceID = post.getString(keyId);
+                    String id=post.getString(KEY_ID);
                     String title = post.getString(keyTitle);
                     String published = post.getString(keyPublished);
                     int pstatus=Integer.parseInt(published);
@@ -476,14 +479,15 @@ protected void joinGroup() {
 
                     if(pstatus==1){
                         publishedTitles.add(title);
-                        publishedIds.add(ID);
+                        publishedIds.add(id);
+                        publishedRefrenceIds.add(refrenceID);
 
                     }
 
                 }
 
                 for(int count=0;count<publishedTitles.size();count++){
-                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""),publishedIds.get(count),group_id);
+                    PublishedQuizItem publishedQuizInstance=new PublishedQuizItem(publishedTitles.get(count),mPreferences.getString("Type",""),publishedIds.get(count),publishedRefrenceIds.get(count),group_id);
                     PublishedItems.add(publishedQuizInstance);
                 }
 
