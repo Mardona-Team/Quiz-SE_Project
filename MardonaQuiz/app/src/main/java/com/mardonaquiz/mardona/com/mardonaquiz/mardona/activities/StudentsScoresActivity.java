@@ -72,7 +72,7 @@ public class StudentsScoresActivity extends ActionBarActivity {
         setContentView(R.layout.activity_students_scores);
 
         group_id=getIntent().getStringExtra("Gid");
-        quiz_id=getIntent().getStringExtra("Qid");
+        quiz_id=getIntent().getStringExtra("id");
 
         mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 

@@ -19,8 +19,8 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100dp"
-        android:layout_height="36dp"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
         android:text="Show Answers"
         android:background="@drawable/button_shape"
         android:textColor="@android:color/white"
@@ -28,8 +28,8 @@
 
     <Button
         style="?android:attr/buttonStyleSmall"
-        android:layout_width="100dp"
-        android:layout_height="36dp"
+        android:layout_width="80dp"
+        android:layout_height="25dp"
         android:text="Show Answers"
         android:background="@drawable/button_shape"
         android:textColor="@android:color/white"

@@ -81,10 +81,10 @@
     <string name="NumQues">Number of questions</string>
     <string name="FinalMark">Final Mark</string>
     <string name="QuizForminst">
- Make sure that all questions and answers are filled \n
- Each question is filled seperately in one page \n
- For each question , there must be four different choices  \n
- The first answer in each question should be the right answer then it will be shuffled later with the other ones</string>
+ 1) Make sure that all questions and answers are filled \n
+ 2) Each question is filled seperately in one page \n
+ 3) For each question , there must be four different choices  \n
+ 4) The first answer in each question should be the right answer then it will be shuffled later with the other ones</string>
 
 
 </resources>
