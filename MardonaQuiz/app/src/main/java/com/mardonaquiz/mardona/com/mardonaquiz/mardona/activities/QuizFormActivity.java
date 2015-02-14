@@ -582,7 +582,7 @@ public class QuizFormActivity extends ActionBarActivity {
 
 
                     // launch the HomeActivity and close this one
-                    Intent intent = new Intent(getApplicationContext(), QuizListActivity.class);
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
 

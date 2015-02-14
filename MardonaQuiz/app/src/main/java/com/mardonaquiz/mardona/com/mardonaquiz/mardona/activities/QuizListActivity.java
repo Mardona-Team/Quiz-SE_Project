@@ -291,8 +291,7 @@ public class QuizListActivity extends ListActivity {
 
 
                     HashMap<String, String> myQuizzes = new HashMap<String, String>();
-                    myQuizzes.put(keyID, ID);
-                    myQuizzes.put(keyTitle, title);
+
 
 
                     String published = post.getString(keyPublished);
@@ -302,10 +301,12 @@ public class QuizListActivity extends ListActivity {
 
                     if(pstatus==0){
                         QuizTitles.add(title);
+                        myQuizzes.put(keyID, ID);
+                        myQuizzes.put(keyTitle, title);
+                        allQuizzes.add(myQuizzes);
                     }
 
 
-                    allQuizzes.add(myQuizzes);
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, QuizTitles);
                 setListAdapter(adapter);

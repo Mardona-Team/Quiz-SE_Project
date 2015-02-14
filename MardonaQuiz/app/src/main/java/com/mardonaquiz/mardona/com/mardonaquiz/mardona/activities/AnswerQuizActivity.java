@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -397,7 +398,7 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
             try {
 
-                if(json.getBoolean("success")) {
+
                     Log.e("the output is", json.toString());
                     Result_Score = json.getString("marks");
 
@@ -411,14 +412,22 @@ public class AnswerQuizActivity extends ActionBarActivity {
                     mViewPager.removeAllViews();
                     mViewPager.setAdapter(null);
                     mViewPager.setAdapter(resultPageAdapter);
-                }
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            } finally {
-                super.onPostExecute(json);
-            }
 
-        }
+        } catch (JSONException e) {
+            try {
+                Log.e("the output is", json.toString());
+                Toast.makeText(getApplicationContext(), "You already answered this Quiz !", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(),ViewGroupActivity.class);
+                startActivity(intent);
+
+            }catch (Exception f) {
+                        Toast.makeText(getApplicationContext(), f.getMessage(), Toast.LENGTH_LONG).show();
+                    } finally {
+                        super.onPostExecute(json);
+                    }
+
+                }
+            }
     }
     /**
      * ########################  adapters  ###############################
