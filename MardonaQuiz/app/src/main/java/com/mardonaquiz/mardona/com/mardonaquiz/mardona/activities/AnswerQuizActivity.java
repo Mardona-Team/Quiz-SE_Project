@@ -77,7 +77,8 @@ public class AnswerQuizActivity extends ActionBarActivity {
     protected ArrayList<String> Questions = new ArrayList<String>();
     protected ArrayList<String[][]> Shuffled_Answers_array =  new ArrayList<String[][]>();
     HashMap<String, String> Quiz_Data = new HashMap<String, String>();
-    protected   ArrayList<Integer> Output_Answers = new ArrayList<Integer>();
+
+    protected int[] OutputAnswers;
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
 
@@ -163,6 +164,19 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
     }
 
+    public  boolean isFull(){
+
+        boolean result=true;
+        for (int i=0;i<OutputAnswers.length;i++)
+        {
+
+            if(OutputAnswers[i]==-1){
+
+                result=false;
+            }
+        }
+        return result;
+    }
     public static JSONObject GET(String url){
         InputStream inputStream = null;
         String result = "";
@@ -261,6 +275,14 @@ public class AnswerQuizActivity extends ActionBarActivity {
     }
     //view data
     private void initiate_view()   {
+
+
+        OutputAnswers=new int[NUM_Questions];
+        for (int i=0;i<NUM_Questions;i++)
+        {
+           OutputAnswers[i]=-1;
+        }
+
         mSectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(),Questions,Shuffled_Answers_array);
 
         mViewPager = (ViewPager) findViewById(R.id.pager);
@@ -282,7 +304,11 @@ public class AnswerQuizActivity extends ActionBarActivity {
                 }
                 if(i==NUM_Questions+1)
                 {
-
+                    if(!isFull()) {
+                        ((TextView) (mSectionsPagerAdapter.getItem(NUM_Questions + 1).getView().findViewById(R.id.QuizEr))).setVisibility(View.VISIBLE);
+                    }else{
+                        ((TextView) (mSectionsPagerAdapter.getItem(NUM_Questions + 1).getView().findViewById(R.id.QuizEr))).setVisibility(View.INVISIBLE);
+                    }
                     ((Button)mSectionsPagerAdapter.getItem(NUM_Questions+1).getView().findViewById(R.id.submitQuiz)).setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -314,7 +340,8 @@ public class AnswerQuizActivity extends ActionBarActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 int answerdIndex = group.indexOfChild(group.findViewById(group.getCheckedRadioButtonId()));
                 Log.d("question ", question-1+" answer " + answerdIndex);
-                Output_Answers.add(question - 1, answerdIndex);
+
+                OutputAnswers[question - 1]=answerdIndex;
 
             }
         });
@@ -348,9 +375,10 @@ public class AnswerQuizActivity extends ActionBarActivity {
                     json.put("success",false);
 
                     JSONArray answersJSonArray = new JSONArray();
-                    for (int i = 0; i < Output_Answers.size(); i++) {
-                      
-                        answersJSonArray.put(Shuffled_Answers_array.get(i)[Output_Answers.get(i)][1]);
+                    for (int i = 0; i < OutputAnswers.length; i++) {
+                        if(OutputAnswers[i]!=-1) {
+                            answersJSonArray.put(Shuffled_Answers_array.get(i)[OutputAnswers[i]][1]);
+                        }
                     }
 
 
@@ -419,6 +447,7 @@ public class AnswerQuizActivity extends ActionBarActivity {
                 Toast.makeText(getApplicationContext(), "You already answered this Quiz !", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(getApplicationContext(),ViewGroupActivity.class);
                 startActivity(intent);
+                finish();
 
             }catch (Exception f) {
                         Toast.makeText(getApplicationContext(), f.getMessage(), Toast.LENGTH_LONG).show();
@@ -475,6 +504,8 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
             if(position== NUM_Questions+1)
             {
+
+
                 // last fragment = number of questions + 1 and this one is the first fragment which is intro
                 return fragmentEnd;
             }
@@ -593,11 +624,14 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
         private static final String ARG_SECTION_NUMBER = "section_number";
 
+
+
         public static QuestionsEndFragments newInstance(int sectionNumber) {
             QuestionsEndFragments fragment = new QuestionsEndFragments();
 
             Bundle args = new Bundle();
             args.putInt(ARG_SECTION_NUMBER, sectionNumber);
+
 
             fragment.setArguments(args);
 
@@ -616,6 +650,8 @@ public class AnswerQuizActivity extends ActionBarActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_answer_quiz_last, container, false);
+
+
 
 
             return rootView;
@@ -656,10 +692,10 @@ public class AnswerQuizActivity extends ActionBarActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_answer_quiz_first, container, false);
             ((TextView)rootView.findViewById(R.id.QuizTitle)).setText(getArguments().getString(KEY_TITLE));
-            ((TextView)rootView.findViewById(R.id.QuizSubj)).setText("Subject "+getArguments().getString(KEY_SUBJECT));
-            ((TextView)rootView.findViewById(R.id.QuizDesc)).setText("Desc "+getArguments().getString(KEY_Desc));
-            ((TextView)rootView.findViewById(R.id.QuizMarks)).setText("Total Marks "+getArguments().getString(KEY_Marks));
-            ((TextView)rootView.findViewById(R.id.QuizYear)).setText("Year "+getArguments().getString(KEY_YEAR));
+            ((TextView)rootView.findViewById(R.id.QuizSubj)).setText(getArguments().getString(KEY_SUBJECT));
+            ((TextView)rootView.findViewById(R.id.QuizDesc)).setText(getArguments().getString(KEY_Desc));
+            ((TextView)rootView.findViewById(R.id.QuizMarks)).setText(getArguments().getString(KEY_Marks));
+            ((TextView)rootView.findViewById(R.id.QuizYear)).setText(getArguments().getString(KEY_YEAR));
 
             TextView t1;
 

@@ -20,9 +20,14 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:textSize="22dp"
-        android:textStyle="italic"
-        android:textColor="@color/background_purple"/>
+        android:textSize="35sp"
+        android:textStyle="bold|italic"
+        android:textColor="@color/background_purple"
+        android:paddingLeft="7sp"
+        android:paddingTop="20sp"
+        android:paddingBottom="20sp"
+        android:layout_marginBottom="15sp"
+        android:layout_marginTop="15sp" />
 
     <RadioGroup
         android:layout_width="fill_parent"
@@ -36,26 +41,38 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
-            android:id="@+id/r1" />
+            android:id="@+id/r1"
+            android:layout_marginTop="15sp"
+            android:textSize="20sp"
+            android:padding="7sp" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
-            android:id="@+id/r2" />
+            android:id="@+id/r2"
+            android:layout_marginTop="15sp"
+            android:textSize="20sp"
+            android:padding="7sp" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
-            android:id="@+id/r3" />
+            android:id="@+id/r3"
+            android:layout_marginTop="15sp"
+            android:textSize="20sp"
+            android:padding="7sp" />
 
         <RadioButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New RadioButton"
             android:id="@+id/r4"
-            android:checked="false" />
+            android:checked="false"
+            android:layout_marginTop="15sp"
+            android:textSize="20sp"
+            android:padding="7sp" />
 
 
 

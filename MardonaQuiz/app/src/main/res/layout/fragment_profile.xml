@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/profile_picture"
-                android:src="@drawable/user_profile"
+                android:src="@drawable/studentavatar"
                 android:layout_marginTop="35dp"
                 android:layout_centerHorizontal="true"
                 android:layout_gravity="center_horizontal" />

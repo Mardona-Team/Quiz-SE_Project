@@ -111,6 +111,8 @@
         android:text="Submit"
         android:id="@+id/button5"
         android:textSize="25sp"
+        android:background="@drawable/button_shape"
+        android:textColor="@android:color/white"
         android:visibility="invisible"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
