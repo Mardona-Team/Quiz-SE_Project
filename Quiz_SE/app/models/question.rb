@@ -16,7 +16,7 @@ class Question < ActiveRecord::Base
 	def add_right_answer_to_answers
 		self.answers << right_answer
 	end
-   	
+
 	def shuffled_answers
 		self.answers.select("id, title").shuffle
 	end

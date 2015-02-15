@@ -18,8 +18,14 @@ module API
       @user = User.find(params[:id])
       @user.answer_ids = params[:answers]
 
-      respond_to do |format|
-          format.json { render json: { marks: @user.answer_quiz(params[:answers], params[:quiz][:id]), total_marks: Quiz.find(params[:quiz][:id]).marks.to_f } }
+      unless (StudentsQuiz.find_by(student_id: params[:id], publication_id: params[:quiz][:id]))
+        respond_to do |format|
+            format.json { render json: { marks: @user.answer_quiz(params[:answers], params[:quiz][:id]), total_marks: Publication.find(params[:quiz][:id]).quiz.marks.to_f } }
+        end
+      else
+        respond_to do |format|
+          format.json { render json: { errors: "You have answered before" }, status: :unprocessable_entity }
+        end
       end
     end
 
