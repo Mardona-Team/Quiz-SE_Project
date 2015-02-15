@@ -60,7 +60,7 @@ public class StudentsScoresActivity extends ActionBarActivity {
     protected final String KEY_NAME="full_name";
     protected final String KEY_QUIZ="quiz";
 
-    private String group_id,quiz_id,user_id;
+    private String group_id,quiz_id,user_id,user_type;
     protected SharedPreferences mPreferences;
 
     private ArrayList<StudentScoreItem> scoreItemsArrayList=new ArrayList<StudentScoreItem>();
@@ -77,6 +77,7 @@ public class StudentsScoresActivity extends ActionBarActivity {
         mPreferences = getSharedPreferences("CurrentUser", MODE_PRIVATE);
 
         user_id=mPreferences.getString("id","");
+        user_type=mPreferences.getString("Type","");
 
 
         String quizTitleString=getIntent().getStringExtra("quiz_title");
@@ -163,7 +164,7 @@ public class StudentsScoresActivity extends ActionBarActivity {
 
                     boolean passing=((floatFullMarks/2)<=floatStudentMarks);
 
-                    studentScoreItem=new StudentScoreItem(studentFullName,studentMarks,studentID,quiz_id,group_id,passing);
+                    studentScoreItem=new StudentScoreItem(studentFullName,studentMarks,studentID,quiz_id,group_id,user_type,passing);
 
                     scoreItemsArrayList.add(studentScoreItem);
                     fullMark=floatFullMarks;
@@ -177,6 +178,7 @@ public class StudentsScoresActivity extends ActionBarActivity {
 
                 final float pieChartFullMark=fullMark;
                 showStatstics=(Button)findViewById(R.id.pie_chart_button);
+                if(mPreferences.getString("Type","").equals("Student"))  showStatstics.setVisibility(View.GONE);
                 showStatstics.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

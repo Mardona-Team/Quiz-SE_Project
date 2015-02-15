@@ -113,6 +113,8 @@ public class ProfileFragement extends Fragment {
         userRole=(TextView) rootView.findViewById(R.id.user_role_profile);
         userFullName.setText(getArguments().getString("user_fullname"));
         userRole.setText(getArguments().getString("Type"));
+        user_id=getArguments().getString("id");
+
 
         searchBox=(EditText) rootView.findViewById(R.id.search_box);
 
