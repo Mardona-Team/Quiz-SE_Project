@@ -1,8 +1,11 @@
 language: ruby
 rvm:
   2.1.1
+gemfile: Quiz_SE/Gemfile
 bundler_args: --without production
 before_script:
+  - cd Quiz_SE
   - mysql -e 'create database Goaled_test;'
-script: bundle exec rspec Quiz_SE/spec
-gemfile: /Quiz_SE/Gemfile
+  - rake db:create
+  - rake db:migrate
+script: bundle exec rspec spec
