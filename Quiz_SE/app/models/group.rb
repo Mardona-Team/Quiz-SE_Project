@@ -1,6 +1,6 @@
 class Group < ActiveRecord::Base
 
-	NAME_REGEX = /\A[a-zA-Z]+\z/
+	NAME_REGEX = /[a-zA-Z](([\._\-][a-zA-Z0-9])|[a-zA-Z0-9])*[a-z0-9]/
 
 	#Relationships
 	has_many :memberships
@@ -13,4 +13,5 @@ class Group < ActiveRecord::Base
 	validates_presence_of :year
 	validates_presence_of :subject
 	validates :group_name, presence: true, uniqueness: true, format: NAME_REGEX, length: { minimum: 4, maximum: 12}
+	validates :instructor, presence: true
 end

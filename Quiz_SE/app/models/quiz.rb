@@ -3,7 +3,7 @@ class Quiz < ActiveRecord::Base
 	#Relatioships
 	belongs_to :instructor, class_name: 'User', foreign_key: 'instructor_id'
 	has_many :publications
-	has_many :groups, through: :publicationsup
+	has_many :groups, through: :publications
 	has_many :questions
 	has_many :students_quizzes
 	has_many :students, through: :students_quizzes
@@ -14,6 +14,8 @@ class Quiz < ActiveRecord::Base
 	validates_presence_of :subject
 	validates_presence_of :year
 	validates :marks, presence: true, :numericality => { less_than_or_equal_to: 10000, greater_than: 0 }
+	validates :instructor, presence: true
+	validates :questions, presence: true
 
     def set_published
     	self.status = true
