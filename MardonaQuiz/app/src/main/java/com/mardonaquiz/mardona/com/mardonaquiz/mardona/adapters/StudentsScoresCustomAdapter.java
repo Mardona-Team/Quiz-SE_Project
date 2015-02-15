@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.mardonaquiz.mardona.R;
 import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.StudentAnswersActivity;
+import com.mardonaquiz.mardona.com.mardonaquiz.mardona.activities.ViewGroupActivity;
 import com.mardonaquiz.mardona.com.mardonaquiz.mardona.items.StudentScoreItem;
 
 import java.util.ArrayList;
@@ -45,14 +46,16 @@ public class StudentsScoresCustomAdapter extends ArrayAdapter<StudentScoreItem> 
         final StudentScoreItem studentScoreItem = studentScoreItems.get(position);
         final String studentID=studentScoreItem.user_id;
 
+        if(studentScoreItem.user_type.equals("Student")) showAnswersButton.setVisibility(View.GONE);
+
         showAnswersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(mContext, StudentAnswersActivity.class);
                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                i.putExtra("id",studentID);
-                i.putExtra("Qid",studentScoreItem.quiz_id);
-                i.putExtra("Gid",studentScoreItem.group_id);
+                i.putExtra("id", studentID);
+                i.putExtra("Qid", studentScoreItem.quiz_id);
+                i.putExtra("Gid", studentScoreItem.group_id);
                 mContext.startActivity(i);
             }
         });
