@@ -61,7 +61,8 @@ public class PublishedQuizListCustomAdapter extends ArrayAdapter<PublishedQuizIt
                     Intent i = new Intent(mContext, StudentsScoresActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("quiz_title", publishedQuizItem.title);
-                    i.putExtra("Qid",publishedQuizItem.quiz_id);
+                    i.putExtra("Qid",publishedQuizItem.quiz_refrence_id);
+                    i.putExtra("id",publishedQuizItem.quiz_id);
                     i.putExtra("Gid",publishedQuizItem.group_id);
                     mContext.startActivity(i);
                 }
@@ -77,8 +78,8 @@ public class PublishedQuizListCustomAdapter extends ArrayAdapter<PublishedQuizIt
                 public void onClick(View view) {
                     Intent i = new Intent(mContext, AnswerQuizActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    i.putExtra("Qid",publishedQuizItem.quiz_id);
-                    mContext.startActivity(i);
+                    i.putExtra("Qid",publishedQuizItem.quiz_refrence_id);
+                    i.putExtra("id",publishedQuizItem.quiz_id);                    mContext.startActivity(i);
                 }
             });
 
@@ -88,7 +89,8 @@ public class PublishedQuizListCustomAdapter extends ArrayAdapter<PublishedQuizIt
                     Intent i = new Intent(mContext, StudentsScoresActivity.class);
                     i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     i.putExtra("quiz_title", publishedQuizItem.title);
-                    i.putExtra("Qid",publishedQuizItem.quiz_id);
+                    i.putExtra("Qid",publishedQuizItem.quiz_refrence_id);
+                    i.putExtra("id",publishedQuizItem.quiz_id);
                     i.putExtra("Gid",publishedQuizItem.group_id);
                     mContext.startActivity(i);
                  }
