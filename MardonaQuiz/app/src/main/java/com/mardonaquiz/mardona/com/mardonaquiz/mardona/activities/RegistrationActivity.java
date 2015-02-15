@@ -141,15 +141,22 @@ public class RegistrationActivity extends ActionBarActivity {
                     Toast.LENGTH_LONG).show();
             return;
         } else {
-            if (!mUserPassword.equals(mUserPasswordConfirmation)) {
-                // password doesn't match confirmation
-                Toast.makeText(this, "Your password doesn't match confirmation, check again",
+            if(mUserPassword.length()<8)
+            { Toast.makeText(this, "Password must be at least 8 characters",
                         Toast.LENGTH_LONG).show();
-                return;
-            } else {
-                // everything is ok!
-                RegisterTask registerTask = new RegisterTask();
-                registerTask.execute(REGISTER_API_ENDPOINT_URL);
+                return;}
+            else {
+                if (!mUserPassword.equals(mUserPasswordConfirmation)) {
+                    // password doesn't match confirmation
+                    Toast.makeText(this, "Your password doesn't match confirmation, check again",
+                            Toast.LENGTH_LONG).show();
+                    return;
+
+                } else {
+                    // everything is ok!
+                    RegisterTask registerTask = new RegisterTask();
+                    registerTask.execute(REGISTER_API_ENDPOINT_URL);
+                }
             }
         }
     }
