@@ -15,9 +15,13 @@ module API
           format.json { render json: { errors: "No Groups found" }, status: :unprocessable_entity }
         end
       end
-    else
-      @groups = Group.all.where(instructor_id: params[:instructor_id])
+    elsif (params[:user_id])
+      @groups = User.find(params[:user_id]).groups
       render json: @groups.limit(20).as_json(only: [:id, :title])
+    else
+      respond_to do |format|
+        format.json { render json: { errors: "No Groups found" }, status: :unprocessable_entity }
+      end
     end
   end
 

@@ -1,6 +1,6 @@
 class User < ActiveRecord::Base
 
-before_save :ensure_authentication_token
+  before_save :ensure_authentication_token
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -9,10 +9,10 @@ before_save :ensure_authentication_token
        :token_authenticatable,:confirmable
 
 
-    USERNAME_REGEX = /[a-zA-Z](([\._\-][a-zA-Z0-9])|[a-zA-Z0-9])*[a-z0-9]/
-    NAME_REGEX = /[a-zA-Z]/
-	
-	validates :username, 
+  USERNAME_REGEX = /[a-zA-Z](([\._\-][a-zA-Z0-9])|[a-zA-Z0-9])*[a-z0-9]/
+  NAME_REGEX = /[a-zA-Z]/
+
+	validates :username,
 	presence: true,
 	length: { minimum: 5, maximum: 25},
 	uniqueness: true,
@@ -26,14 +26,14 @@ before_save :ensure_authentication_token
 
 
 
-#A method used to bypass confirmation step after creating a new userx
-def skip_confirmation!
-  self.confirmed_at = Time.now
-end
-  
+  #A method used to bypass confirmation step after creating a new userx
+  def skip_confirmation!
+    self.confirmed_at = Time.now
+  end
+
   def full_name
-    first_name + " " + last_name 
-  end 
+    first_name + " " + last_name
+  end
 
 end
 
@@ -42,6 +42,7 @@ end
 class Student < User
 
     has_many    :memberships ,foreign_key: 'student_id'
+    has_many :groups, through: :memberships
     has_and_belongs_to_many :answers, join_table: :students_answers, foreign_key: :student_id
     has_many :students_quizzes
     has_many :quizzes, through: :students_quizzes, foreign_key: :student_id
