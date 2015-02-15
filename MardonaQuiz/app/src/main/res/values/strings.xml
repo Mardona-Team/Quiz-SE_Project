@@ -44,7 +44,7 @@
     <string name="Create_group">Create new group</string>
     <string name="empty_field_error">Please complete all the fields </string>
     <string name="Group_Created">group has been Created Successfully</string>
-    <string name="title_activity_answer_quiz">Answer_quiz</string>
+    <string name="title_activity_answer_quiz">Quiz</string>
     <string name="title_section1">Section 1</string>
     <string name="title_section2">Section 2</string>
     <string name="title_section3">Section 3</string>
@@ -53,9 +53,12 @@
     <string name="title_activity_quiz_form">QuizForm</string>
 
 
-    <string name="Submit_Quiz">Submit Quiz</string>
+
+    <string name="Quiz_Last">End of quiz</string>
+    <string name="QuizEr">You didn\'t answer all questions</string>
+    <string name="Submit_Quiz">Submit your answers</string>
     <string name="title_activity_statistics_activty">Quiz Statistics</string>
-    <string name="title_activity_students_scores">Students\' Scores</string>
+    <string name="title_activity_students_scores">Student\'s Scores</string>
     <string name="title_activity_student_answers">Answers</string>
     <string name="network_error">Network is unavailable!</string>
     <string name="unsuccessful_response">"Unsuccessful HTTP response code: "</string>

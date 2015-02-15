@@ -581,14 +581,15 @@ public class QuizFormActivity extends ActionBarActivity {
                 if (json.getBoolean("success")) {
 
 
+                    Toast.makeText(getApplicationContext(),"Quiz has been successfully created", Toast.LENGTH_LONG).show();
+                    progDailog.cancel();
                     // launch the HomeActivity and close this one
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();
 
                 }
-                Toast.makeText(getApplicationContext(),"Quiz has been successfully created", Toast.LENGTH_LONG).show();
-                progDailog.cancel();
+
             } catch (Exception e) {
                 // something went wrong: show a Toast
                 // with the exception message

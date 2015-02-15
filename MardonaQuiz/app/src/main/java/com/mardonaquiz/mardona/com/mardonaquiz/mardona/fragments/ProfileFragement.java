@@ -17,6 +17,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -127,6 +128,8 @@ public class ProfileFragement extends Fragment {
         if (getArguments().getString("Type").equals("Instructor")) {
             View searchLayout=  rootView.findViewById(R.id.search_layout);
             searchLayout.setVisibility(View.GONE);
+
+            ((ImageView)rootView.findViewById(R.id.profile_picture)).setImageResource(R.drawable.user_profile);
         }
 
 
