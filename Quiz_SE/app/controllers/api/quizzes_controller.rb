@@ -10,7 +10,7 @@ class QuizzesController < ApplicationController
     if params[:group_id]
       render json: Quiz.where("group_id = #{params[:group_id]} or group_id IS NULL AND status IS NULL").limit(20).as_json(only: [:id, :title, :refrence_id], :methods => [:published])
     else
-      render json: Quiz.limit(20).as_json(only: [:id, :title], :methods => [:published])
+      render json: Quiz.where(instructor_id: params[:instructor_id]).limit(20).as_json(only: [:id, :title], :methods => [:published])
     end
   end
 

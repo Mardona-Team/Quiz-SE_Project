@@ -16,7 +16,7 @@ module API
         end
       end
     else
-      @groups = Group.all
+      @groups = Group.all.where(instructor_id: params[:instructor_id])
       render json: @groups.limit(20).as_json(only: [:id, :title])
     end
   end
