@@ -16,7 +16,10 @@ module API
         :json => { :success => true,
           :info => "Registered",
           :data => { :user => resource,
-           :auth_token => current_user.authentication_token } }
+           :auth_token => current_user.authentication_token,
+           :id => current_user.id,
+           :first_name => current_user.first_name,
+           :last_name => current_user.last_name } }
          else
           render :status => :unprocessable_entity,
           :json => { :success => false,

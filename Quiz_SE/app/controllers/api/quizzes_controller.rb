@@ -8,9 +8,11 @@ class QuizzesController < ApplicationController
   # GET /quizzes.json
   def index
     if params[:group_id]
-      render json: Quiz.where("group_id = #{params[:group_id]} or group_id IS NULL AND status IS NULL").limit(20).as_json(only: [:id, :title, :refrence_id], :methods => [:published])
+      @group = Group.find(params[:group_id])
+      @quizzes =  Quiz.where(instructor_id: @group.instructor_id).limit(20)
+      render :index
     else
-      render json: Quiz.limit(20).as_json(only: [:id, :title], :methods => [:published])
+      render json: Quiz.where(instructor_id: params[:instructor_id]).limit(20).as_json(only: [:id, :title], :methods => [:published])
     end
   end
 
@@ -47,12 +49,8 @@ class QuizzesController < ApplicationController
   # PATCH/PUT /quizzes/1.json
   def update
     respond_to do |format|
-      unless Quiz.find_by(group_id: params[:group_id], refrence_id: params[:id])
-        @quiz.set_published
-        @quiz.save
-        @new_quiz = @quiz.dup
-        @new_quiz.group_id = params[:group_id]
-        @new_quiz.save
+      unless Publication.find_by(group_id: params[:group_id], quiz_id: params[:id])
+        @quiz.groups << Group.find(params[:group_id])
         format.json { render json: @quiz.show_full_details }
       else
         format.json { render json: { errors: "Either published before or not found"}, status: :unprocessable_entity }
@@ -77,7 +75,7 @@ class QuizzesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def quiz_params
-      params.require(:quiz).permit(:title, :subject, :year, :description, :marks, questions_attributes: [:title, right_answer_attributes: [:title], answers_attributes: [:title]])
+      params.require(:quiz).permit(:instructor_id, :title, :subject, :year, :description, :marks, questions_attributes: [:title, right_answer_attributes: [:title], answers_attributes: [:title]])
     end
 end
 

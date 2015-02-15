@@ -1,11 +1,13 @@
 class Group < ActiveRecord::Base
-	
+
 	NAME_REGEX = /\A[a-zA-Z]+\z/
 
 	#Relationships
 	has_many :memberships
+	has_many :students, class_name: 'User', through: :memberships
 	belongs_to :instructor, class_name: 'User', foreign_key: 'instructor_id'
-	has_many :quizzes
+	has_many :quizzes, through: :publications
+	has_many :publications
 
 	#Validations
 	validates_presence_of :year

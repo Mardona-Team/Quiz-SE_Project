@@ -1,4 +1,6 @@
 json.array!(@quizzes) do |quiz|
-  json.extract! quiz, :id, :title, :subject, :year, :description, :marks, :status
-  json.url quiz_url(quiz, format: :json)
+  json.id quiz.published_on?(@group) ? Publication.find_by(group_id: @group.id, quiz_id: quiz.id).id : nil
+  json.title quiz.title
+  json.refrence_id quiz.id
+  json.published quiz.published_on(@group)
 end

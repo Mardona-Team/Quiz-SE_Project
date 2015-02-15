@@ -4,16 +4,17 @@ Rails.application.routes.draw do
   resources :students_quizzes
 
   devise_for :users
-  namespace :api do
+  namespace :api, defaults: {format: :json} do
 
     resources :quizzes, only: [:index, :show, :create, :destroy]
     resources :groups do
+      resources :users, only: [:index]
       resources :quizzes, only: [:index, :update] do
         resources :users, only: [:index, :show]
       end
     end
-    resources :questions 
-    resources :users 
+    resources :questions
+    resources :users
     post '/answer_quiz', to: "students_answers#create"
     resources :memberships
     devise_scope :user do
@@ -21,8 +22,6 @@ Rails.application.routes.draw do
       post 'sessions' => 'sessions#create', :as => 'login'
       delete 'sessions' => 'sessions#destroy', :as => 'logout'
     end
-  
-
 end
 
   # The priority is based upon order of creation: first created -> highest priority.
