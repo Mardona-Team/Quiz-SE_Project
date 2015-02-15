@@ -445,8 +445,7 @@ public class AnswerQuizActivity extends ActionBarActivity {
             try {
                 Log.e("the output is", json.toString());
                 Toast.makeText(getApplicationContext(), "You already answered this Quiz !", Toast.LENGTH_LONG).show();
-//                Intent intent = new Intent(getApplicationContext(),ViewGroupActivity.class);
-//                startActivity(intent);
+
                 finish();
 
             }catch (Exception f) {
