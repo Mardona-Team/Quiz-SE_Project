@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
@@ -69,7 +70,8 @@ public class AnswerQuizActivity extends ActionBarActivity {
     private String Result_Score;
     private String Result_Max;
     private  String TAG="AnswerQuiz";
-    protected String quizId;
+    protected String quizRefrenceId;
+    protected String quizid;
     protected String userID;
     protected int NUM_Questions;
     protected ArrayList<String> Questions = new ArrayList<String>();
@@ -98,8 +100,9 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
         if (extras != null) {
 
-            quizId    =  extras.getString("Qid");
-            Log.e("quiz id is",quizId);
+            quizRefrenceId =  extras.getString("Qid");
+            quizid =extras.getString("id");
+            Log.e("quiz id is", quizRefrenceId);
         userID= mPreferences.getString("id", "");
         Get_questions_From_server get_questions = new Get_questions_From_server();
         get_questions.execute(); // getting questions from server
@@ -148,7 +151,7 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
         @Override
         protected JSONObject doInBackground(Object... arg0) {
-            return GET( "https://es2alny.herokuapp.com/api/quizzes/"+quizId);
+            return GET( "https://es2alny.herokuapp.com/api/quizzes/"+ quizRefrenceId);
         }
 
         @Override
@@ -352,7 +355,7 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
 
                     JSONObject quiz_holderJSON =new JSONObject();
-                    quiz_holderJSON.put(KEY_ID,quizId);
+                    quiz_holderJSON.put(KEY_ID, quizid);
                     JSONObject user_holderJSON =new JSONObject();
                     user_holderJSON.put(KEY_ID,userID);
                     user_holderJSON.put(KEY_Quiz,quiz_holderJSON);
@@ -395,7 +398,7 @@ public class AnswerQuizActivity extends ActionBarActivity {
 
             try {
 
-                if(json.getBoolean("success")) {
+
                     Log.e("the output is", json.toString());
                     Result_Score = json.getString("marks");
 
@@ -409,14 +412,22 @@ public class AnswerQuizActivity extends ActionBarActivity {
                     mViewPager.removeAllViews();
                     mViewPager.setAdapter(null);
                     mViewPager.setAdapter(resultPageAdapter);
-                }
-            } catch (Exception e) {
-                Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-            } finally {
-                super.onPostExecute(json);
-            }
 
-        }
+        } catch (JSONException e) {
+            try {
+                Log.e("the output is", json.toString());
+                Toast.makeText(getApplicationContext(), "You already answered this Quiz !", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getApplicationContext(),ViewGroupActivity.class);
+                startActivity(intent);
+
+            }catch (Exception f) {
+                        Toast.makeText(getApplicationContext(), f.getMessage(), Toast.LENGTH_LONG).show();
+                    } finally {
+                        super.onPostExecute(json);
+                    }
+
+                }
+            }
     }
     /**
      * ########################  adapters  ###############################

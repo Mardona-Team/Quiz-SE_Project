@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -148,7 +149,10 @@ public class QuizListActivity extends ListActivity {
 
                 try {
                     // launch the HomeActivity and close this one
-Log.e("the responce is ",json.toString());
+                      Log.e("the responce is ",json.toString());
+                    Intent intent =new Intent(getApplicationContext(),ViewGroupActivity.class);
+                    intent.putExtra("id",groupID);
+                    startActivity(intent);
 
 
                     Toast.makeText(getApplicationContext(),"Quiz has been published successfully!", Toast.LENGTH_LONG).show();
@@ -182,7 +186,6 @@ Log.e("the responce is ",json.toString());
           }
 
           groupID = getIntent().getStringExtra(keyID);
-        instructorID="1";
         //todo get instuctor id
 
 
@@ -283,13 +286,12 @@ Log.e("the responce is ",json.toString());
 
                 for (int i = 0; i < MQuiz.length(); i++) {
                     JSONObject post = MQuiz.getJSONObject(i);
-                    String ID = post.getString(keyID);
+                    String ID = post.getString("refrence_id");
                     String title = post.getString(keyTitle);
 
 
                     HashMap<String, String> myQuizzes = new HashMap<String, String>();
-                    myQuizzes.put(keyID, ID);
-                    myQuizzes.put(keyTitle, title);
+
 
 
                     String published = post.getString(keyPublished);
@@ -299,10 +301,12 @@ Log.e("the responce is ",json.toString());
 
                     if(pstatus==0){
                         QuizTitles.add(title);
+                        myQuizzes.put(keyID, ID);
+                        myQuizzes.put(keyTitle, title);
+                        allQuizzes.add(myQuizzes);
                     }
 
 
-                    allQuizzes.add(myQuizzes);
                 }
                 ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, QuizTitles);
                 setListAdapter(adapter);
