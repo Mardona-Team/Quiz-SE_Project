@@ -19,9 +19,8 @@ module API
       @groups = User.find(params[:user_id]).groups
       render json: @groups.limit(20).as_json(only: [:id, :title])
     else
-      respond_to do |format|
-        format.json { render json: { errors: "No Groups found" }, status: :unprocessable_entity }
-      end
+      @groups = Group.all.where(instructor_id: params[:instructor_id])
+      render json: @groups.limit(20).as_json(only: [:id, :title])
     end
   end
 
@@ -90,7 +89,7 @@ module API
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def group_params
-      params.require(:group).permit(:group_name, :title, :year, :subject, :description)
+      params.require(:group).permit(:group_name, :title, :year, :subject, :description, :instructor_id)
     end
   end
 end
