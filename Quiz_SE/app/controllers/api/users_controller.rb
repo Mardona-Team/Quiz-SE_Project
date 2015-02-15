@@ -7,7 +7,10 @@ module API
   # GET /users
   # GET /users.json
   def index
-    if params[:quiz_id]
+    if params[:quiz_id] && params[:group_id]
+      @students_quizzes = Publication.find(params[:quiz_id]).students_quizzes
+      render json: @students_quizzes.as_json(only: [:marks], :include => { student: { only: [:id], :methods => [:full_name] }, quiz: { only: [:marks] }})
+    elsif params[:quiz_id]
       @students_quizzes = Quiz.find(params[:quiz_id]).students_quizzes
       render json: @students_quizzes.as_json(only: [:marks], :include => { student: { only: [:id], :methods => [:full_name] }, quiz: { only: [:marks] }})
     elsif params[:group_id]
@@ -23,24 +26,58 @@ module API
   # GET /users/1.json
   def show
     if params[:quiz_id]
-      @quiz = Quiz.find(params[:quiz_id])
-      @students_quiz = StudentsQuiz.find_by(quiz_id: params[:quiz_id], student_id: params[:id])
-      render json: {
-        student: {
-          id: @user.id,
-          full_name: @user.full_name,
-          marks: @students_quiz.marks
-        },
-        quiz: {
-          id: @quiz.id,
-          title: @quiz.title,
-          marks: @quiz.marks,
-          questions: 
-            @quiz.questions.as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
-          answers: 
-            @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).as_json(only: [:id, :title, :question_id])
-        }
-      }
+      if params[:group_id]
+        @student_quiz = StudentsQuiz.find_by(publication_id: params[:quiz_id], student_id: params[:id])
+        if (@student_quiz)
+          @quiz = Publication.find(params[:quiz_id]).quiz
+          render json: {
+            student: {
+              id: @user.id,
+              full_name: @user.full_name,
+              marks: @student_quiz.marks
+            },
+            quiz: {
+              id: @quiz.id,
+              title: @quiz.title,
+              marks: @quiz.marks,
+              questions:
+                @quiz.questions.as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
+              answers:
+                @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).as_json(only: [:id, :title, :question_id])
+            }
+          }
+        else
+          respond_to do |format|
+            format.json { render json: { errors: "No Users found" }, status: :unprocessable_entity }
+          end
+        end
+      else
+        @student_quiz = StudentsQuiz.find_by(quiz_id: params[:quiz_id], student_id: params[:id])
+        if (@student_quiz)
+          @quiz = Quiz.find(params[:quiz_id])
+          @students_quiz = StudentsQuiz.find_by(quiz_id: params[:quiz_id], student_id: params[:id])
+          render json: {
+            student: {
+              id: @user.id,
+              full_name: @user.full_name,
+              marks: @student_quiz.marks
+            },
+            quiz: {
+              id: @quiz.id,
+              title: @quiz.title,
+              marks: @quiz.marks,
+              questions:
+                @quiz.questions.as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
+              answers:
+                @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).as_json(only: [:id, :title, :question_id])
+            }
+          }
+        else
+          respond_to do |format|
+            format.json { render json: { errors: "No Users found" }, status: :unprocessable_entity }
+          end
+        end
+      end
     else
       render json: @user
     end

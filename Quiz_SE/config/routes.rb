@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :students_quizzes
 
   devise_for :users
-  namespace :api do
+  namespace :api, defaults: {format: :json} do
 
     resources :quizzes, only: [:index, :show, :create, :destroy]
     resources :groups do
