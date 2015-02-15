@@ -10,7 +10,10 @@ module API
     if params[:quiz_id]
       @students_quizzes = Quiz.find(params[:quiz_id]).students_quizzes
       render json: @students_quizzes.as_json(only: [:marks], :include => { student: { only: [:id], :methods => [:full_name] }, quiz: { only: [:marks] }})
-    else
+    elsif params[:group_id]
+      @students = Group.find(params[:group_id]).students
+      render json: @students.as_json(only: [:id], :methods => [:full_name])
+     else
       @users = User.all
       render json: @users
     end
