@@ -9,7 +9,7 @@ class QuizzesController < ApplicationController
   def index
     if params[:group_id]
       @group = Group.find(params[:group_id])
-      @quizzes =  Quiz.where(instructor_id: params[:instructor_id]).limit(20)
+      @quizzes =  Quiz.where(instructor_id: @group.instructor_id).limit(20)
       render :index
     else
       render json: Quiz.where(instructor_id: params[:instructor_id]).limit(20).as_json(only: [:id, :title], :methods => [:published])

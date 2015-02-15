@@ -53,15 +53,15 @@ class Student < User
 
 	def answer_quiz(answers_id, quiz_id)
         mark = 0
-        answered_quiz = Quiz.find(quiz_id)
+        answered_quiz = Publication.find(quiz_id)
         answers_id.each do |answer_id|
             answer = Answer.find(answer_id)
             if answer.question.right_answer == answer
                 mark += 1
             end
         end
-        grade = mark.to_f / answered_quiz.questions.count * answered_quiz.marks
-        StudentsQuiz.create(student_id: id, quiz_id: quiz_id, marks: grade)
+        grade = mark.to_f / answered_quiz.quiz.questions.count * answered_quiz.quiz.marks
+        StudentsQuiz.create(student_id: id, quiz_id: answered_quiz.quiz.id, publication_id: quiz_id, marks: grade)
         grade
     end
 

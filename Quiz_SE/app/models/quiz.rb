@@ -20,7 +20,11 @@ class Quiz < ActiveRecord::Base
     end
 
 	def published
-		self.groups.any?
+		if self.groups.any?
+			"1"
+		else
+			"0"
+		end
 	end
 
     def published_on(group)

@@ -41,9 +41,9 @@ module API
               title: @quiz.title,
               marks: @quiz.marks,
               questions:
-                @quiz.questions.as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
+                @quiz.questions.order(:id).as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
               answers:
-                @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).as_json(only: [:id, :title, :question_id])
+                @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).order(:question_id).as_json(only: [:id, :title, :question_id])
             }
           }
         else
@@ -67,9 +67,9 @@ module API
               title: @quiz.title,
               marks: @quiz.marks,
               questions:
-                @quiz.questions.as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
+                @quiz.questions.order(:id).as_json(only: [:id, :title], :include => { right_answer: { only: [:id, :title] } }),
               answers:
-                @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).as_json(only: [:id, :title, :question_id])
+                @user.answers.joins(:question).where(questions: { quiz_id: @quiz.id }).order(:question_id).as_json(only: [:id, :title, :question_id])
             }
           }
         else
