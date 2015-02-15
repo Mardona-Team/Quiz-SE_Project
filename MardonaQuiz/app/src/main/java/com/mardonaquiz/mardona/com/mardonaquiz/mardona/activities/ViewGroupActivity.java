@@ -124,6 +124,7 @@ public class ViewGroupActivity extends ActionBarActivity {
                     Intent publishedListIntent = new Intent(ViewGroupActivity.this, QuizListActivity.class);
                     publishedListIntent.putExtra(KEY_ID,group_id);
                     startActivity(publishedListIntent);
+                    finish();
                 }
             });
 
@@ -443,6 +444,7 @@ protected void joinGroup() {
             intent.putExtra("id",group_id);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
             startActivity(intent);
+            finish();
 
         }
     }

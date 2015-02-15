@@ -153,6 +153,7 @@ public class QuizListActivity extends ListActivity {
                     Intent intent =new Intent(getApplicationContext(),ViewGroupActivity.class);
                     intent.putExtra("id",groupID);
                     startActivity(intent);
+                    finish();
 
 
                     Toast.makeText(getApplicationContext(),"Quiz has been published successfully!", Toast.LENGTH_LONG).show();
